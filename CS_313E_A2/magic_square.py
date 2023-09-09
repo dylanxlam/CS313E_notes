@@ -68,8 +68,10 @@ def sum_adjacent_numbers(square, n):
 
 
 def main():
-    n = int(input())
-    numbers = [int(line.strip()) for line in sys.stdin]
+    n_str = sys.stdin.readline().strip()  # Read n as a string from stdin
+    n = int(n_str)  # Convert the input to an integer
+
+    numbers = [int(line.strip()) for line in sys.stdin]  # Read numbers from stdin
 
     magic_square = make_square(n)
     print_square(magic_square)
