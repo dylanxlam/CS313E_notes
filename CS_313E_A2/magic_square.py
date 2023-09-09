@@ -68,27 +68,17 @@ def sum_adjacent_numbers(square, n):
 
 
 def main():
-    inputs = []
-    for line in sys.stdin:
-        try:
-            # Process each line as input
-            n_str = line.strip()
-            if not n_str:
-                continue  # Skip empty lines
-            n = int(n_str)
-            inputs.append(n)
-        except ValueError:
-            print("Invalid input:", line.strip())
+    n = int(input())
+    numbers = [int(line.strip()) for line in sys.stdin]
 
-    for n in inputs:
-        # Create and print the magic square
-        magic_square = make_square(n)
-        print_square(magic_square)
+    magic_square = make_square(n)
+    print_square(magic_square)
 
-# Rest of your code here
+    for num in numbers:
+        adjacent_sum = sum_adjacent_numbers(magic_square, num)
+        print(adjacent_sum)
 
-if __name__ == "__main__":
-    main()
+
 
 
 if __name__ == "__main__":
