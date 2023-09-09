@@ -66,27 +66,30 @@ def sum_adjacent_numbers(square, n):
 
     return adjacent_sum
 
+
 def main():
-    # Read the input file from stdin
-    n_str = sys.stdin.readline().strip()
-
-    # Convert the input to an integer
-    n = int(n_str)
-
-    # Create the magic square
-    square = make_square(n)
-
-    # Print the sum of the adjacent numbers
-    while True:
+    inputs = []
+    for line in sys.stdin:
         try:
-            num_str = sys.stdin.readline().strip()
-            if not num_str:
-                break
-            num = int(num_str)
-            print(sum_adjacent_numbers(square, num))
+            # Process each line as input
+            n_str = line.strip()
+            if not n_str:
+                continue  # Skip empty lines
+            n = int(n_str)
+            inputs.append(n)
         except ValueError:
-            # Handle invalid input (e.g., non-integer values)
-            pass
+            print("Invalid input:", line.strip())
+
+    for n in inputs:
+        # Create and print the magic square
+        magic_square = make_square(n)
+        print_square(magic_square)
+
+# Rest of your code here
+
+if __name__ == "__main__":
+    main()
+
 
 if __name__ == "__main__":
     main()
