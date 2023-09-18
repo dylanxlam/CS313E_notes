@@ -219,7 +219,7 @@ class Cylinder(object):
             return False  # Input is not a Cube object
     
     def is_inside_cylinder(self, other):
-        # Calculate the z-range of this cylinder
+    # Calculate the z-range of this cylinder
         z_range_self = (
             self.center.z - self.height / 2,
             self.center.z + self.height / 2
