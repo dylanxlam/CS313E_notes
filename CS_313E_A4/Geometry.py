@@ -89,8 +89,10 @@ class Sphere(object):
         return distance <= self.radius
     
     def circumscribe_cube(self):
-        side_length = 2 * self.radius
-        return Cube(self.center.x, self.center.y, self.center.z, side_length)
+        side_length = 2 * self.radius * math.sqrt(3)
+        # Calculate the center of the circumscribing cube (same as the sphere's center)
+        cube_center = self.center
+        return Cube(cube_center.x, cube_center.y, cube_center.z, side_length)
 
 class Cube(object):
     def __init__(self, x=0, y=0, z=0, side=1):
@@ -105,6 +107,20 @@ class Cube(object):
 
     def volume(self):
         return self.side ** 3
+    
+    def get_corners(self):
+        half_side = self.side / 2
+        corners = [
+            Point(self.center.x + half_side, self.center.y + half_side, self.center.z + half_side),
+            Point(self.center.x + half_side, self.center.y + half_side, self.center.z - half_side),
+            Point(self.center.x + half_side, self.center.y - half_side, self.center.z + half_side),
+            Point(self.center.x + half_side, self.center.y - half_side, self.center.z - half_side),
+            Point(self.center.x - half_side, self.center.y + half_side, self.center.z + half_side),
+            Point(self.center.x - half_side, self.center.y + half_side, self.center.z - half_side),
+            Point(self.center.x - half_side, self.center.y - half_side, self.center.z + half_side),
+            Point(self.center.x - half_side, self.center.y - half_side, self.center.z - half_side),
+        ]
+        return corners
 
     def is_inside_point(self, p):
         return (abs(self.center.x - p.x) <= self.side / 2 and
