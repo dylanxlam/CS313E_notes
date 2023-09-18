@@ -109,12 +109,29 @@ class Cube(object):
         return a_sphere.center.distance(self.center) + a_sphere.radius <= self.side / 2
 
     def is_inside_cube(self, other):
-        half_side = self.side / 2
-        return (
-            self.center.x - half_side < other.x < self.center.x + half_side and
-            self.center.y - half_side < other.y < self.center.y + half_side and
-            self.center.z - half_side < other.z < self.center.z + half_side
-        )
+        if isinstance(other, Point):
+            p = other
+            # Check if the point p is strictly inside the Cube.
+            half_side = self.side / 2
+            return (
+                self.center.x - half_side < p.x < self.center.x + half_side and
+                self.center.y - half_side < p.y < self.center.y + half_side and
+                self.center.z - half_side < p.z < self.center.z + half_side
+            )
+        elif isinstance(other, Cube):
+            other = other
+            half_side = self.side / 2
+            other_half_side = other.side / 2
+
+            # Check if all eight corners of the other Cube are strictly inside this Cube.
+            return (
+                self.center.x - half_side < other.center.x - other_half_side and
+                self.center.x + half_side > other.center.x + other_half_side and
+                self.center.y - half_side < other.center.y - other_half_side and
+                self.center.y + half_side > other.center.y + other_half_side and
+                self.center.z - half_side < other.center.z - other_half_side and
+                self.center.z + half_side > other.center.z + other_half_side
+            )
     
 
     def does_intersect_cube(self, other):
