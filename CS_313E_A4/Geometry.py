@@ -157,7 +157,7 @@ class Cylinder(object):
         self.height = height
 
     def __str__(self):
-        return f"Center: {self.center}, Radius: {self.radius:.1f}, Height: {self.height:.1f}"
+        return f"Center: ({self.center.x:.1f}, {self.center.y:.1f}, {self.center.z:.1f}), Radius: {self.radius:.1f}, Height: {self.height:.1f}"
 
     def area(self):
         return 2 * math.pi * self.radius * (self.radius + self.height)
@@ -166,19 +166,38 @@ class Cylinder(object):
         return math.pi * (self.radius ** 2) * self.height
 
     def is_inside_point(self, p):
-        return (p.z >= self.center.z and
-                p.z <= self.center.z + self.height and
-                p.center.distance(Point(p.x, p.y, self.center.z)) <= self.radius)
+        z_range = (
+            self.center.z - self.height / 2,
+            self.center.z + self.height / 2
+        )
 
+        # Check if the point is inside the cylinder
+        return (
+            abs(self.center.x - p.x) <= self.radius and
+            abs(self.center.y - p.y) <= self.radius and
+            z_range[0] <= p.z <= z_range[1]
+        )
     def is_inside_sphere(self, a_sphere):
         return (a_sphere.center.distance(Point(a_sphere.center.x, a_sphere.center.y, self.center.z)) + a_sphere.radius <= self.radius and
                 a_sphere.center.z >= self.center.z and
                 a_sphere.center.z <= self.center.z + self.height)
 
     def is_inside_cube(self, a_cube):
-        return all(abs(self.center.x - a_cube.center.x) + self.radius <= a_cube.side / 2,
-                   abs(self.center.y - a_cube.center.y) + self.radius <= a_cube.side / 2,
-                   abs(self.center.z - a_cube.center.z) + self.height / 2 <= a_cube.side / 2)
+    # Calculate the half side length of the cube
+        half_side = a_cube.side / 2
+
+        # Calculate the range of z-values that would be inside the cylinder
+        z_range = (
+            self.center.z - self.height / 2,
+            self.center.z + self.height / 2
+        )
+
+        return (
+            abs(self.center.x - a_cube.center.x) <= half_side and
+            abs(self.center.y - a_cube.center.y) <= half_side and
+            z_range[0] <= a_cube.center.z <= z_range[1]
+        )
+    
 
     def is_inside_cylinder(self, other):
         return (self.center.distance(Point(other.center.x, other.center.y, self.center.z)) + other.radius <= self.radius and
