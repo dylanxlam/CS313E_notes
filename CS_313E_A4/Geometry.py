@@ -112,15 +112,16 @@ class Sphere(object):
             return False
 
     def does_intersect_cube(self, a_cube):
+        # Calculate the closest point on the cube to the sphere's center
         closest_x = max(a_cube.center.x - a_cube.side / 2, min(self.center.x, a_cube.center.x + a_cube.side / 2))
         closest_y = max(a_cube.center.y - a_cube.side / 2, min(self.center.y, a_cube.center.y + a_cube.side / 2))
         closest_z = max(a_cube.center.z - a_cube.side / 2, min(self.center.z, a_cube.center.z + a_cube.side / 2))
 
-        # Calculate the distance between the sphere's center and the closest point on the cube
-        distance = self.center.distance(Point(closest_x, closest_y, closest_z))
+        # Create a Point object for the closest point
+        closest_point = Point(closest_x, closest_y, closest_z)
 
-        # Check if the distance is less than or equal to the sphere's radius
-        return distance <= self.radius
+        # Check if the closest point is inside the sphere
+        return self.is_inside_point(closest_point)
 
     def circumscribe_cube(self):
         # Calculate the side length of the circumscribing cube
