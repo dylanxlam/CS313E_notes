@@ -265,7 +265,7 @@ class Cylinder (object):
     # Returns a string representation of a Cylinder of the form: 
     # Center: (x, y, z), Radius: value, Height: value
     def __str__ (self):
-        return f'Center: ({self.center[0]:.1f}, {self.center[1]:.1f}, {self.center[2]:.1f}), Radius: {self.radius:.1f}, Height: {self.height:.1f}'
+        return f"Center: ({self.x}, {self.y}, {self.z}), Radius: {self.radius}, Height: {self.height}"
 
     # Compute surface area of Cylinder
     # Returns a floating-point number
@@ -407,7 +407,6 @@ def main():
 
     # print if the intersection volume of cubeA and cubeB (is / is not) greater than the volume of sphereA
     intersection_vol = cubeA.intersection_volume(cubeB)
-
     sphereA_vol = sphereA.volume()
     print(f"Intersection volume of cubeA and cubeB {'is' if intersection_vol > sphereA_vol else 'is not'} greater than the volume of sphereA")
 
@@ -429,4 +428,4 @@ def main():
     print(f"cylB {'is' if cylA.is_inside_cylinder(cylB) else 'is not'} inside cylA")
         
 if __name__ == "__main__":
-    main()
+  main()
