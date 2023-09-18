@@ -1,5 +1,38 @@
+# File: TestCipher.py
+
+# Description: This assignment delves into the realm
+# of cryptography, an ancient art of secure communication.
+# It introduces two fundamental cipher types: substitution
+# and transposition. The Rail Fence Cipher, a transposition
+# technique, rearranges characters in a zigzag pattern for
+# encryption and decryption. In parallel, it explores the
+# Vigenere Cipher, a substitution method using passphrases.
+# Using an input file, this program takes encrypted and
+# decrypted strings and uses the previously mentioned cryptology
+# methods to complete cryptology tasks.
+
+# Student's Name: Dylan Lam
+
+# Student's UT EID: DXl85
+
+# Partner's Name: Alexander Romero-Barrionuevo
+
+# Partner's UT EID: ANR3784
+
+# Course Name: CS 313E
+
+# Unique Number: 52605
+
+# Date Created: 9/15/2023
+
+# Date Last Modified: 9/15/2023
+
+#  Input: strng is a string of characters and key is a positive
+#         integer 2 or greater and strictly less than the length
+#         of strng
+#  Output: function returns a single string that is encoded with
+#          rail fence algorithm
 def rail_fence_encode(text, key):
-    # Encode using Rail Fence Cipher
     rails = [[] for _ in range(key)]
     rail_idx = 0
     direction = 1
@@ -14,6 +47,11 @@ def rail_fence_encode(text, key):
     encoded_text = ''.join([''.join(rail) for rail in rails])
     return encoded_text
 
+#  Input: strng is a string of characters and key is a positive
+#         integer 2 or greater and strictly less than the length
+#         of strng
+#  Output: function returns a single string that is decoded with
+#          rail fence algorithm
 def rail_fence_decode(strng, key):
     fence = [[] for _ in range(key)]
     rail = 0
@@ -45,7 +83,9 @@ def rail_fence_decode(strng, key):
 
     return decoded_text
 
-
+#  Input: strng is a string of characters and phrase is a pass phrase
+#  Output: function returns a single string that is encoded with
+#          Vigenere algorithm
 def vigenere_encode(text, passphrase):
     # Encode using Vigenere Cipher
     encoded_text = ''
@@ -59,6 +99,9 @@ def vigenere_encode(text, passphrase):
 
     return encoded_text
 
+#  Input: strng is a string of characters and phrase is a pass phrase
+#  Output: function returns a single string that is decoded with
+#          Vigenere algorithm
 def vigenere_decode(encoded_text, passphrase):
     # Decode using Vigenere Cipher
     decoded_text = ''
@@ -72,6 +115,10 @@ def vigenere_decode(encoded_text, passphrase):
 
     return decoded_text
 
+#  Input: strng is a string of characters
+#  Output: function converts all characters to lower case and then
+#          removes all digits, punctuation marks, and spaces. It
+#          returns a single string with only lower case characters
 def filter_string(text):
     # Filter the input string
     filtered_text = ''
@@ -179,3 +226,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
