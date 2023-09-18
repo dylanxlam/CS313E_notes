@@ -112,35 +112,14 @@ class Sphere(object):
             return False
 
     def does_intersect_cube(self, a_cube):
-        # Calculate the distance between the centers of the two spheres
+        # Calculate the distance between the centers of the sphere and the cube
         distance_between_centers = self.center.distance(a_cube.center)
 
-        if distance_between_centers + min(self.radius, a_cube.radius) < max(self.radius, a_cube.radius):
-            return False
+        # Calculate the maximum possible distance for intersection
+        max_possible_distance = self.radius + (a_cube.side / 2)
 
-        # Check if the spheres have exactly the same center and radius
-        if self.center == a_cube.center and self.radius == a_cube.radius:
-            return True
-
-        # Check if the distance is less than or equal to the sum of their radii
-        if distance_between_centers <= (self.radius + a_cube.radius):
-            # If the centers are too close, they may be considered intersecting,
-            # even if the distance is very close to the sum of radii, we'll return True
-            return True
-
-        # Check if one sphere is fully contained within the other
-        if self.radius >= (distance_between_centers + a_cube.radius):
-            return True
-
-        if a_cube.radius >= (distance_between_centers + self.radius):
-            return True
-
-        # Check if the spheres touch each other from outside (tangential intersection)
-        if distance_between_centers == (self.radius + a_cube.radius):
-            return True
-
-        # If none of the above conditions are met, the spheres partially intersect
-        return False
+        # Check if the distance between centers is less than the maximum possible distance
+        return distance_between_centers <= max_possible_distance
 
     def circumscribe_cube(self):
         # Calculate the side length of the circumscribing cube
