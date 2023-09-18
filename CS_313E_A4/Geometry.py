@@ -68,8 +68,6 @@ class Sphere(object):
 
         # Check if the given sphere is strictly inside the current sphere
         return (distance + other.radius) < self.radius
-    
-
 
     def is_inside_cube(self, a_cube):
         corners = a_cube.get_corners()
@@ -103,7 +101,6 @@ class Sphere(object):
 
         # Create the circumscribed cube with the sphere's center as its center
         return Cube(self.center.x, self.center.y, self.center.z, side_length)
-
 
 class Cube(object):
     def __init__(self, x=0, y=0, z=0, side=1):
