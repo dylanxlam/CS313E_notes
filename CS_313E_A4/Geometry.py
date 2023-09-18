@@ -175,7 +175,6 @@ class Cylinder(object):
             )
         else:
             return False  # Input is not a Point object
-
     
     def is_inside_sphere (self, a_sphere):
         return (a_sphere.center.distance(Point(a_sphere.center.x, a_sphere.center.y, self.center.z)) + a_sphere.radius <= self.radius and
@@ -183,35 +182,36 @@ class Cylinder(object):
                 a_sphere.center.z <= self.center.z + self.height)
 
     def is_inside_cube(self, a_cube):
-       if isinstance(a_cube, Cube):
-        half_side = a_cube.side / 2
-        # Calculate the range for each dimension (x, y, z) of the cube
-        x_range = (
-            a_cube.center.x - half_side,
-            a_cube.center.x + half_side
-        )
-        y_range = (
-            a_cube.center.y - half_side,
-            a_cube.center.y + half_side
-        )
-        z_range = (
-            a_cube.center.z - half_side,
-            a_cube.center.z + half_side
-        )
+        if isinstance(a_cube, Cube):
+            half_side = a_cube.side / 2
+            # Calculate the range for each dimension (x, y, z) of the cube
+            x_range = (
+                a_cube.center.x - half_side,
+                a_cube.center.x + half_side
+            )
+            y_range = (
+                a_cube.center.y - half_side,
+                a_cube.center.y + half_side
+            )
+            z_range = (
+                a_cube.center.z - half_side,
+                a_cube.center.z + half_side
+            )
 
-        # Check if all eight corners of the Cube are inside the Cylinder
-        for corner in a_cube.get_corners():
-            if (
-                x_range[0] <= corner.x <= x_range[1] and
-                y_range[0] <= corner.y <= y_range[1] and
-                z_range[0] <= corner.z <= z_range[1]
-            ):
-                return False  # Cube is not strictly outside the Cylinder
+            # Check if all eight corners of the Cube are inside the Cylinder
+            for corner in a_cube.get_corners():
+                if (
+                    x_range[0] <= corner.x <= x_range[1] and
+                    y_range[0] <= corner.y <= y_range[1] and
+                    z_range[0] <= corner.z <= z_range[1]
+                ):
+                    return False  # Cube is not strictly outside the Cylinder
 
             return True  # Cube is strictly outside the Cylinder
         else:
             return False  # Input is not a Cube object
-   
+
+
     def is_inside_cylinder(self, other):
         if isinstance(other, Cylinder):
             # Check if the other Cylinder is strictly inside this Cylinder
@@ -223,6 +223,7 @@ class Cylinder(object):
             )
         else:
             return False  # Input is not a Cylinder object
+
 
 
 def main():
