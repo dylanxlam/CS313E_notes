@@ -11,13 +11,13 @@
 #  to these geometric inquiries, making it a valuable tool for analyzing 
 #  spatial configurations.
 
-#  Student Name: Alexander Romero-Barrionuevo
+#  Student Name: Dylan Lam
 
-#  Student UT EID: ANR 3784
+#  Student UT EID: DXL85
 
-#  Partner Name: Dylan Lam
+#  Partner Name: Alexander Romero-Barrionuevo
 
-#  Partner UT EID: DXL85
+#  Partner UT EID: ANR 3784
 
 #  Course Name: CS 313E
 
@@ -112,22 +112,14 @@ class Sphere(object):
             return False
 
     def does_intersect_cube(self, a_cube):
-        # Check if the sphere's center is within the cube
-        if (a_cube.center.x - a_cube.side / 2 <= self.center.x <= a_cube.center.x + a_cube.side / 2 and
-            a_cube.center.y - a_cube.side / 2 <= self.center.y <= a_cube.center.y + a_cube.side / 2 and
-            a_cube.center.z - a_cube.side / 2 <= self.center.z <= a_cube.center.z + a_cube.side / 2):
-            return True
-
-        # Calculate the closest point on the cube to the sphere's center
         closest_x = max(a_cube.center.x - a_cube.side / 2, min(self.center.x, a_cube.center.x + a_cube.side / 2))
         closest_y = max(a_cube.center.y - a_cube.side / 2, min(self.center.y, a_cube.center.y + a_cube.side / 2))
         closest_z = max(a_cube.center.z - a_cube.side / 2, min(self.center.z, a_cube.center.z + a_cube.side / 2))
 
-        # Calculate the distance between the sphere's center and the closest point on the cube
         distance_squared = (self.center.x - closest_x) ** 2 + (self.center.y - closest_y) ** 2 + (self.center.z - closest_z) ** 2
 
-        # Check if the squared distance is less than or equal to the squared radius
         return distance_squared <= self.radius ** 2
+
 
     def circumscribe_cube(self):
         # Calculate the side length of the circumscribing cube
