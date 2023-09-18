@@ -97,9 +97,9 @@ class Sphere(object):
         # Check if the sphere intersects the cube
         return distance <= self.radius
         
-        def circumscribe_cube(self):
-            side_length = 2 * self.radius
-            return Cube(self.center.x, self.center.y, self.center.z, side_length)
+    def circumscribe_cube(self):
+        side_length = 2 * self.radius
+        return Cube(self.center.x, self.center.y, self.center.z, side_length)
 
 
 
