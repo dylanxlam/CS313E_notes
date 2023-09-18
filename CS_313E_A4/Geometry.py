@@ -98,7 +98,7 @@ class Sphere(object):
         return distance_squared <= self.radius ** 2
     def circumscribe_cube(self):
         # Calculate the side length of the circumscribed cube
-        side_length = 2 * self.radius * math.sqrt(3)  # Diagonal of the inscribed cube
+        side_length = 2 * self.radius
 
         # Calculate the coordinates of the cube's center
         cube_center = Point(self.center.x, self.center.y, self.center.z)
