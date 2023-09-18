@@ -84,9 +84,8 @@ class Sphere(object):
 
         # Check if the spheres intersect
         return distance < (self.radius + other.radius)
-    
 
-    
+
     def does_intersect_cube(self, a_cube):
         # Check if the sphere intersects the cube
         cube_min = a_cube.get_min_corner()
@@ -120,6 +119,20 @@ class Cube(object):
 
     def volume(self):
         return self.side ** 3
+    
+    def get_min_corner(self):
+        return Point(
+            self.center.x - self.side / 2,
+            self.center.y - self.side / 2,
+            self.center.z - self.side / 2
+        )
+
+    def get_max_corner(self):
+        return Point(
+            self.center.x + self.side / 2,
+            self.center.y + self.side / 2,
+            self.center.z + self.side / 2
+        )
     
     def get_corners(self):
         half_side = self.side / 2
