@@ -63,8 +63,9 @@ class Sphere(object):
         return self.center.distance(p) < self.radius
 
     def is_inside_sphere(self, other):
-        distance_between_centers = math.sqrt((self.x - other.x)**2 + (self.y - other.y)**2 + (self.z - other.z)**2)
-        return distance_between_centers + other.radius < self.radius
+        distance = self.center.distance(other.center)
+        return distance + self.radius < other.radius
+    
     
     def is_inside_cube(self, a_cube):
         corners = a_cube.get_corners()
