@@ -121,7 +121,7 @@ class Sphere(object):
         closest_point = Point(closest_x, closest_y, closest_z)
 
         # Check if the closest point is inside the sphere
-        return self.is_inside_point(closest_point)
+        return self.center.distance(closest_point) <= self.radius
 
     def circumscribe_cube(self):
         # Calculate the side length of the circumscribing cube
