@@ -79,29 +79,30 @@ class Sphere(object):
         return True 
 
     def does_intersect_sphere(self, other):
+        # Calculate the distance between the centers of the two spheres
         distance = self.center.distance(other.center)
+
+        # Check if the spheres intersect by comparing the distance to the sum of their radii
         return distance <= (self.radius + other.radius)
 
     def does_intersect_cube(self, a_cube):
-        # Check if the sphere's center is within the cube
-        if (
-            a_cube.center.x - a_cube.side / 2 <= self.center.x <= a_cube.center.x + a_cube.side / 2 and
-            a_cube.center.y - a_cube.side / 2 <= self.center.y <= a_cube.center.y + a_cube.side / 2 and
-            a_cube.center.z - a_cube.side / 2 <= self.center.z <= a_cube.center.z + a_cube.side / 2
-        ):
-            return True
+        # Calculate the closest point on the cube to the sphere's center
+        closest_x = max(a_cube.center.x - a_cube.side / 2, min(self.center.x, a_cube.center.x + a_cube.side / 2))
+        closest_y = max(a_cube.center.y - a_cube.side / 2, min(self.center.y, a_cube.center.y + a_cube.side / 2))
+        closest_z = max(a_cube.center.z - a_cube.side / 2, min(self.center.z, a_cube.center.z + a_cube.side / 2))
 
-        # Check if any cube corner is within the sphere
-        corners = a_cube.get_corners()
-        for corner in corners:
-            if self.center.distance(corner) <= self.radius:
-                return True
+        # Calculate the distance between the sphere's center and the closest point on the cube
+        distance = math.sqrt((self.center.x - closest_x) ** 2 + (self.center.y - closest_y) ** 2 + (self.center.z - closest_z) ** 2)
 
-        return False
-        
-    def circumscribe_cube(self):
-        return Cube(self.center.x, self.center.y, self.center.z, side=2 * self.radius)
+        # Check if the distance is less than or equal to the sphere's radius
+        return distance <= self.radius
+            
+        def circumscribe_cube(self):
+            # Calculate the side length of the circumscribed cube
+            side_length = 2 * self.radius
 
+            # Create the circumscribed cube with the sphere's center as its center
+            return Cube(self.center.x, self.center.y, self.center.z, side_length)
 
 
 class Cube(object):
