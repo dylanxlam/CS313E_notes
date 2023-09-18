@@ -63,12 +63,12 @@ class Sphere(object):
         return self.center.distance(p) < self.radius
 
     def is_inside_sphere(self, other):
-         # Calculate the distance between the centers of the two spheres
+        # Calculate the distance between the centers of the two spheres
         distance = self.center.distance(other.center)
 
-        # Check if the current sphere is strictly inside the other sphere (if the distance is less than the difference of their radii)
+        # Check if the current sphere is strictly inside the other sphere
         return distance + self.radius < other.radius
-
+    
     def is_inside_cube(self, a_cube):
         corners = a_cube.get_corners()
         for corner in corners:
@@ -80,9 +80,9 @@ class Sphere(object):
         # Calculate the distance between the centers of the two spheres
         distance = self.center.distance(other.center)
 
-        # Check if the spheres intersect (if the distance between centers is less than the sum of their radii)
+        # Check if the spheres intersect (they intersect if the distance between centers is less than the sum of their radii)
         return distance <= self.radius + other.radius
-
+    
     def does_intersect_cube(self, a_cube):
         # Calculate the closest point to the sphere's center within the cube
         closest_x = max(a_cube.center.x - a_cube.side / 2, min(self.center.x, a_cube.center.x + a_cube.side / 2))
