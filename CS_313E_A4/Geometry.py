@@ -180,7 +180,6 @@ class Cylinder(object):
             )
         else:
             return False  # Input is not a Point object
-
     
     def is_inside_sphere (self, a_sphere):
         return (a_sphere.center.distance(Point(a_sphere.center.x, a_sphere.center.y, self.center.z)) + a_sphere.radius <= self.radius and
