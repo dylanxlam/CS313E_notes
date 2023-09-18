@@ -77,25 +77,35 @@ class Sphere(object):
         return True 
 
     def does_intersect_sphere(self, other):
-        # Calculate the distance between the centers of the two spheres
-        distance = self.center.distance(other.center)
+        # Calculate the squared distance between the centers of the two spheres
+        distance_squared = (
+            (self.center.x - other.center.x) ** 2 +
+            (self.center.y - other.center.y) ** 2 +
+            (self.center.z - other.center.z) ** 2
+        )
 
-        # Check if the spheres intersect by comparing the distance to the sum of their radii
-        return distance < (self.radius + other.radius)
-        
+        # Calculate the sum of the squared radii
+        sum_radii_squared = (self.radius + other.radius) ** 2
+
+        # Check if the spheres intersect by comparing the squared distance to the squared sum of radii
+        return distance_squared <= sum_radii_squared
+
 
     def does_intersect_cube(self, a_cube):
-        # Calculate the closest point on the cube to the sphere's center
         closest_x = max(a_cube.center.x - a_cube.side / 2, min(self.center.x, a_cube.center.x + a_cube.side / 2))
         closest_y = max(a_cube.center.y - a_cube.side / 2, min(self.center.y, a_cube.center.y + a_cube.side / 2))
         closest_z = max(a_cube.center.z - a_cube.side / 2, min(self.center.z, a_cube.center.z + a_cube.side / 2))
 
         # Calculate the distance between the sphere's center and the closest point on the cube
-        distance = math.sqrt((self.center.x - closest_x) ** 2 + (self.center.y - closest_y) ** 2 + (self.center.z - closest_z) ** 2)
+        distance_squared = (
+            (self.center.x - closest_x) ** 2 +
+            (self.center.y - closest_y) ** 2 +
+            (self.center.z - closest_z) ** 2
+        )
 
-        # Check if the distance is less than or equal to the sphere's radius
-        return distance < self.radius
-    
+        # Check if the squared distance is less than or equal to the squared radius
+        return distance_squared <= self.radius ** 2
+        
 
     def circumscribe_cube(self):
         # Calculate the side length of the circumscribing cube
