@@ -176,7 +176,7 @@ class Cylinder(object):
         distance_squared = (p.x - self.center.x) ** 2 + (p.y - self.center.y) ** 2
         return (
             distance_squared <= self.radius ** 2 and
-            z_range[0] <= p.z <= z_range[1]
+            z_range[0] < p.z < z_range[1]
         )
     
 
@@ -219,18 +219,25 @@ class Cylinder(object):
             return False  # Input is not a Cube object
     
     def is_inside_cylinder(self, other):
-        # Calculate the z-range of points inside the cylinder
+        # Calculate the range of z-values that would be inside the cylinder
         z_range = (
             self.center.z - self.height / 2,
             self.center.z + self.height / 2
         )
-
-        # Check if the point is inside the cylinder
-        distance_squared = (other.x - self.center.x) ** 2 + (other.y - self.center.y) ** 2
-        return (
-            distance_squared <= self.radius ** 2 and
-            z_range[0] < other.z < z_range[1]
+        
+        other_z_range = (
+            other.center.z - other.height / 2,
+            other.center.z + other.height / 2
         )
+
+        # Check if the other Cylinder is strictly inside this Cylinder
+        return (
+            abs(self.center.x - other.center.x) + other.radius <= self.radius and
+            abs(self.center.y - other.center.y) + other.radius <= self.radius and
+            z_range[0] <= other_z_range[0] and
+            z_range[1] >= other_z_range[1]
+        )
+
 
 def main():
     # Read input data from standard input
