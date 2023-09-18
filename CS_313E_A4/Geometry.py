@@ -197,7 +197,7 @@ class Cylinder(object):
         return (
             abs(self.center.x - a_cube.center.x) + self.radius <= half_side and
             abs(self.center.y - a_cube.center.y) + self.radius <= half_side and
-            z_range[0] <= a_cube.center.z <= z_range[1]
+            z_range[0] <= a_cube.center.z - half_side <= z_range[1]
         )
     
 
@@ -210,7 +210,7 @@ class Cylinder(object):
             self.center.z + self.height / 2 >= other.center.z + other.height / 2
         )
     
-    
+
 def main():
     # Read input data from standard input
     input_data = sys.stdin.readlines()
