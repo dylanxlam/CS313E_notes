@@ -81,7 +81,7 @@ class Sphere(object):
         distance = self.center.distance(other.center)
 
         # Check if the spheres intersect by comparing the distance to the sum of their radii
-        return distance <= (self.radius + other.radius)
+        return distance < (self.radius + other.radius)
         
 
     def does_intersect_cube(self, a_cube):
@@ -94,7 +94,7 @@ class Sphere(object):
         distance = math.sqrt((self.center.x - closest_x) ** 2 + (self.center.y - closest_y) ** 2 + (self.center.z - closest_z) ** 2)
 
         # Check if the distance is less than or equal to the sphere's radius
-        return distance <= self.radius
+        return distance < self.radius
     
 
     def circumscribe_cube(self):
