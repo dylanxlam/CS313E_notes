@@ -178,6 +178,18 @@ class Cylinder(object):
             abs(self.center.y - p.y) <= self.radius and
             z_range[0] <= p.z <= z_range[1]
         )
+    
+    def is_inside_sphere (self, a_sphere):
+        if isinstance(a_sphere, Sphere):
+        # Calculate the distance between the center of the Sphere and the base of the Cylinder
+            distance = self.center.distance(a_sphere.center)
+            # Check if the Sphere is strictly inside the Cylinder
+            return (
+                distance + a_sphere.radius <= self.radius and
+                self.center.z - self.height / 2 + a_sphere.radius >= a_sphere.center.z - a_sphere.radius
+            )
+        else:
+            return False  # Input is not a Sphere object
 
     def is_inside_cube(self, a_cube):
         # Calculate the half side length of the cube
