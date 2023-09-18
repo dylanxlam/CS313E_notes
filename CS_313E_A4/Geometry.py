@@ -166,58 +166,44 @@ class Cylinder(object):
         return math.pi * (self.radius ** 2) * self.height
 
     def is_inside_point(self, p):
-            # Calculate the z-range of points inside the cylinder
-        if isinstance(p, Point):
-            # Check if the point p is strictly inside the Cylinder
-            return (
-                abs(self.center.z - p.z) <= self.height / 2 and
-                p.distance(self.center) <= self.radius
-            )
-        else:
-            return False  # Input is not a Point object
-    
+        # Calculate the z-range of points inside the cylinder
+        z_range = (
+            self.center.z - self.height / 2,
+            self.center.z + self.height / 2
+        )
+
+        # Check if the point is inside the cylinder
+        return (
+            abs(self.center.x - p.x) <= self.radius and
+            abs(self.center.y - p.y) <= self.radius and
+            z_range[0] <= p.z <= z_range[1]
+        )
 
     def is_inside_cube(self, a_cube):
-        if isinstance(a_cube, Cube):
-            half_side = a_cube.side / 2
-            # Calculate the range for each dimension (x, y, z) of the cube
-            x_range = (
-                a_cube.center.x - half_side,
-                a_cube.center.x + half_side
-            )
-            y_range = (
-                a_cube.center.y - half_side,
-                a_cube.center.y + half_side
-            )
-            z_range = (
-                a_cube.center.z - half_side,
-                a_cube.center.z + half_side
-            )
+        # Calculate the half side length of the cube
+        half_side = a_cube.side / 2
 
-            # Check if all eight corners of the Cube are inside the Cylinder
-            for corner in a_cube.get_corners():
-                if (
-                    x_range[0] <= corner.x <= x_range[1] and
-                    y_range[0] <= corner.y <= y_range[1] and
-                    self.center.z - self.height / 2 <= corner.z <= self.center.z + self.height / 2
-                ):
-                    return False  # Cube corner is inside the Cylinder
+        # Calculate the range of z-values that would be inside the cylinder
+        z_range = (
+            self.center.z - self.height / 2,
+            self.center.z + self.height / 2
+        )
 
-            return True  # Cube is strictly outside the Cylinder
-        else:
-            return False  # Input is not a Cube object
+        # Check if the cube is inside the cylinder
+        return (
+            abs(self.center.x - a_cube.center.x) + self.radius <= half_side and
+            abs(self.center.y - a_cube.center.y) + self.radius <= half_side and
+            z_range[0] <= a_cube.center.z <= z_range[1]
+        )
 
     def is_inside_cylinder(self, other):
-        if isinstance(other, Cylinder):
-            # Check if the other Cylinder is strictly inside this Cylinder
-            return (
-                self.radius >= other.radius and
-                self.height >= other.height and
-                self.center.distance(other.center) + other.radius <= self.radius
-            )
-        else:
-            return False  # Input is not a Cylinder object
-        
+        # Check if the other Cylinder is strictly inside this Cylinder
+        return (
+            abs(self.center.x - other.center.x) + other.radius <= self.radius and
+            abs(self.center.y - other.center.y) + other.radius <= self.radius and
+            self.center.z - self.height / 2 <= other.center.z - other.height / 2 and
+            self.center.z + self.height / 2 >= other.center.z + other.height / 2
+        )
 
 def main():
     # Read input data from standard input
