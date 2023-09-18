@@ -178,7 +178,7 @@ class Cylinder(object):
             z_range[0] <= p.z <= z_range[1]
         )
     
-    
+
     def is_inside_sphere (self, a_sphere):
         return (a_sphere.center.distance(Point(a_sphere.center.x, a_sphere.center.y, self.center.z)) + a_sphere.radius <= self.radius and
                 a_sphere.center.z >= self.center.z and
@@ -220,7 +220,7 @@ class Cylinder(object):
     def is_inside_cylinder(self, other):
         # Check if the other Cylinder is strictly inside this Cylinder
         return (
-            (other.center.x - self.center.x) ** 2 + (other.center.y - self.center.y) ** 2 + (other.height / 2) ** 2 <= (self.radius ** 2) and
+            (other.center.x - self.center.x) ** 2 + (other.center.y - self.center.y) ** 2 <= (self.radius ** 2) and
             self.center.z - self.height / 2 <= other.center.z - other.height / 2 and
             self.center.z + self.height / 2 >= other.center.z + other.height / 2
         )
