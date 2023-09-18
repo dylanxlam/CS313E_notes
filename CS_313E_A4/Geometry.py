@@ -51,7 +51,7 @@ class Sphere(object):
         self.radius = radius
 
     def __str__(self):
-        return f"Center: {self.center}, Radius: {self.radius:.1f}"
+        return f"Center: ({self.center.x:.1f}, {self.center.y:.1f}, {self.center.z:.1f}), Radius: {self.radius:.1f}"
 
     def area(self):
         return 4 * math.pi * (self.radius ** 2)
@@ -63,27 +63,33 @@ class Sphere(object):
         return self.center.distance(p) < self.radius
 
     def is_inside_sphere(self, other):
-        return self.center.distance(other.center) + other.radius <= self.radius
+        distance = self.center.distance(other.center)
+        return distance + self.radius < other.radius
 
     def is_inside_cube(self, a_cube):
-        return all(self.center.x + self.radius <= a_cube.center.x + a_cube.side / 2,
-                   self.center.x - self.radius >= a_cube.center.x - a_cube.side / 2,
-                   self.center.y + self.radius <= a_cube.center.y + a_cube.side / 2,
-                   self.center.y - self.radius >= a_cube.center.y - a_cube.side / 2,
-                   self.center.z + self.radius <= a_cube.center.z + a_cube.side / 2,
-                   self.center.z - self.radius >= a_cube.center.z - a_cube.side / 2)
+        corners = a_cube.get_corners()
+        for corner in corners:
+            if not self.is_inside_point(corner):
+                return False
+        return True 
 
     def does_intersect_sphere(self, other):
-        return self.center.distance(other.center) <= self.radius + other.radius
+        distance = self.center.distance(other.center)
+        return distance <= self.radius + other.radius
+    
 
     def does_intersect_cube(self, a_cube):
         closest_x = max(a_cube.center.x - a_cube.side / 2, min(self.center.x, a_cube.center.x + a_cube.side / 2))
         closest_y = max(a_cube.center.y - a_cube.side / 2, min(self.center.y, a_cube.center.y + a_cube.side / 2))
         closest_z = max(a_cube.center.z - a_cube.side / 2, min(self.center.z, a_cube.center.z + a_cube.side / 2))
-        return self.center.distance(Point(closest_x, closest_y, closest_z)) <= self.radius
 
+        distance = math.sqrt((self.center.x - closest_x) ** 2 +
+                            (self.center.y - closest_y) ** 2 +
+                            (self.center.z - closest_z) ** 2)
+        return distance <= self.radius
+    
     def circumscribe_cube(self):
-        side_length = self.radius * math.sqrt(3)
+        side_length = 2 * self.radius
         return Cube(self.center.x, self.center.y, self.center.z, side_length)
 
 class Cube(object):
