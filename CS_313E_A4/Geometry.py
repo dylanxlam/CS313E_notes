@@ -77,12 +77,39 @@ class Sphere(object):
         return True 
 
     def does_intersect_sphere(self, other):
-        # Calculate the distance between the centers of the two spheres
-        distance = self.center.distance(other.center)
+            # Calculate the distance between the centers of the two spheres
+            distance_between_centers = self.center.distance(other.center)
 
-        # Check if the given sphere is strictly inside the current sphere
-        return distance <= (self.radius + other.radius)
+            if distance_between_centers + min(self.radius, other.radius) < max(self.radius, other.radius):
+                return False
 
+            # Check if the spheres have exactly the same center and radius
+            if self.center == other.center and self.radius == other.radius:
+                return True
+
+            # Check if the distance is less than or equal to the sum of their radii
+            if distance_between_centers <= (self.radius + other.radius):
+                # If the centers are too close, they may be considered intersecting,
+                # even if the distance is very close to the sum of radii, we'll return True
+                return True
+
+            # Check if the spheres are completely separate (no intersection)
+            if distance_between_centers > (self.radius + other.radius):
+                return False
+
+            # Check if one sphere is fully contained within the other
+            if self.radius >= (distance_between_centers + other.radius):
+                return True
+
+            if other.radius >= (distance_between_centers + self.radius):
+                return True
+
+            # Check if the spheres touch each other from outside (tangential intersection)
+            if distance_between_centers == (self.radius + other.radius):
+                return True
+
+            # If none of the above conditions are met, the spheres partially intersect
+            return False
 
     def does_intersect_cube(self, a_cube):
         closest_x = max(a_cube.center.x - a_cube.side / 2, min(self.center.x, a_cube.center.x + a_cube.side / 2))
