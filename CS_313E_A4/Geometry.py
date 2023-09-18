@@ -85,18 +85,18 @@ class Sphere(object):
         # Check if the spheres intersect
         return distance < (self.radius + other.radius)
 
-
     def does_intersect_cube(self, a_cube):
-        # Check if the sphere intersects the cube
-        cube_min = a_cube.get_min_corner()
-        cube_max = a_cube.get_max_corner()
+        # Check if the sphere intersects with the cube
+        min_corner = a_cube.get_min_corner()
+        max_corner = a_cube.get_max_corner()
 
-        closest_x = max(cube_min.x, min(self.center.x, cube_max.x))
-        closest_y = max(cube_min.y, min(self.center.y, cube_max.y))
-        closest_z = max(cube_min.z, min(self.center.z, cube_max.z))
+        closest_point = Point(
+            max(min_corner.x, min(max_corner.x, self.center.x)),
+            max(min_corner.y, min(max_corner.y, self.center.y)),
+            max(min_corner.z, min(max_corner.z, self.center.z))
+        )
 
-        distance = self.center.distance(Point(closest_x, closest_y, closest_z))
-
+        distance = self.center.distance(closest_point)
         return distance <= self.radius
 
     
