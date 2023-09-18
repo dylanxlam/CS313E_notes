@@ -1,390 +1,322 @@
-#  File: Geometry.py
-
-#  Description: This program serves as a versatile 
-#  geometry utility. It reads input data from a text file, 
-#  detailing properties of geometric shapes like points, spheres, 
-#  cubes, and cylinders. The program then conducts various 
-#  evaluations on these shapes. It determines relationships such 
-#  as proximity of points to origins, containment of points within 
-#  shapes, inclusion of one shape within another, and intersection 
-#  between shapes. The program provides clear and informative responses 
-#  to these geometric inquiries, making it a valuable tool for analyzing 
-#  spatial configurations.
-
-#  Student Name: Alexander Romero-Barrionuevo
-
-#  Student UT EID: ANR 3784
-
-#  Partner Name: Dylan Lam
-
-#  Partner UT EID: DXL85
-
-#  Course Name: CS 313E
-
-#  Unique Number: 52605
-
-#  Date Created: 9/17/2023
-
-#  Date Last Modified: 9/17/2023
-
+from __future__ import division
 import math
-import sys
 
-class Point(object):
-    def __init__(self, x=0, y=0, z=0):
-        self.x = x
-        self.y = y
-        self.z = z
+class Point (object):
+  # constructor with default values
+  def __init__ (self, x = 0, y = 0, z = 0):
+      self.x = x
+      self.y = y
+      self.z = z
+  # create a string representation of a Point (x, y, z)
+  def __str__ (self):
+      return str('(' + str(self.x) + ', ' + str(self.y) + ', ' + str(self.z) + ')')
+  # get distance to another Point object
+  def distance (self, other):
+      x2 = (self.x - other.x) * (self.x - other.x)
+      y2 = (self.y - other.y) * (self.y - other.y)
+      z2 = (self.z - other.z) * (self.z - other.z)
+      return ((x2 + y2 + z2) ** 0.5)
+  # test for equality between two points
+  def __eq__ (self, other):
+      return (self.x == other.x) and (self.y == other.y) and (self.z == other.z)
 
-    def __str__(self):
-        return f"({self.x:.1f}, {self.y:.1f}, {self.z:.1f})"
-
-    def distance(self, other):
-        return math.sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2 + (self.z - other.z) ** 2)
-
-    def __eq__(self, other):
-        return self.x == other.x and self.y == other.y and self.z == other.z
-
-class Sphere(object):
-    def __init__(self, x=0, y=0, z=0, radius=1):
-        self.center = Point(x, y, z)
-        self.radius = radius
-
-    def __str__(self):
-        return f"Center: ({self.center.x:.1f}, {self.center.y:.1f}, {self.center.z:.1f}), Radius: {self.radius:.1f}"
-
-    def area(self):
-        return 4 * math.pi * (self.radius ** 2)
-
-    def volume(self):
-        return (4/3) * math.pi * (self.radius ** 3)
-
-    def is_inside_point(self, p):
-        return self.center.distance(p) < self.radius
-
-    def is_inside_sphere(self, other):
-        # Calculate the distance between the centers of the two spheres
-        distance = self.center.distance(other.center)
-
-        # Check if the given sphere is strictly inside the current sphere
-        return (distance + other.radius) < self.radius
-
-    def is_inside_cube(self, a_cube):
-        corners = a_cube.get_corners()
-        for corner in corners:
-            if not self.is_inside_point(corner):
-                return False
-        return True 
-
-    def does_intersect_sphere(self, other):
-        # Calculate the distance between the centers of the two spheres
-        distance = self.center.distance(other.center)
-
-        # Check if the spheres intersect by comparing the distance to the sum of their radii
-        return distance <= (self.radius + other.radius)
-    
-
-    def does_intersect_cube(self, a_cube):
-        # Calculate the closest point on the cube to the sphere's center
-        closest_x = max(a_cube.center.x - a_cube.side / 2, min(self.center.x, a_cube.center.x + a_cube.side / 2))
-        closest_y = max(a_cube.center.y - a_cube.side / 2, min(self.center.y, a_cube.center.y + a_cube.side / 2))
-        closest_z = max(a_cube.center.z - a_cube.side / 2, min(self.center.z, a_cube.center.z + a_cube.side / 2))
-
-        # Calculate the distance between the sphere's center and the closest point on the cube
-        distance = math.sqrt((self.center.x - closest_x) ** 2 + (self.center.y - closest_y) ** 2 + (self.center.z - closest_z) ** 2)
-
-        # Check if the distance is less than or equal to the sphere's radius
-        return distance <= self.radius
-    
-
-    def circumscribe_cube(self):
-        # Calculate the side length of the circumscribing cube
-        side_length = 2 * self.radius / math.sqrt(3)
-        # Create and return a cube with the same center as the sphere and calculated side length
-        return Cube(self.center.x, self.center.y, self.center.z, side_length)
-
-class Cube(object):
-    def __init__(self, x=0, y=0, z=0, side=1):
-        self.center = Point(x, y, z)
-        self.side = side
-
-    def __str__(self):
-        return f"Center: ({self.center.x:.1f}, {self.center.y:.1f}, {self.center.z:.1f}), Side: {self.side:.1f}"
-
-    def area(self):
-        return 6 * (self.side ** 2)
-
-    def volume(self):
-        return self.side ** 3
-    
-    def get_min_corner(self):
-        return Point(
-            self.center.x - self.side / 2,
-            self.center.y - self.side / 2,
-            self.center.z - self.side / 2
-        )
-
-    def get_max_corner(self):
-        return Point(
-            self.center.x + self.side / 2,
-            self.center.y + self.side / 2,
-            self.center.z + self.side / 2
-        )
-    
-    def get_corners(self):
-        half_side = self.side / 2
-        corners = [
-            Point(self.center.x + half_side, self.center.y + half_side, self.center.z + half_side),
-            Point(self.center.x + half_side, self.center.y + half_side, self.center.z - half_side),
-            Point(self.center.x + half_side, self.center.y - half_side, self.center.z + half_side),
-            Point(self.center.x + half_side, self.center.y - half_side, self.center.z - half_side),
-            Point(self.center.x - half_side, self.center.y + half_side, self.center.z + half_side),
-            Point(self.center.x - half_side, self.center.y + half_side, self.center.z - half_side),
-            Point(self.center.x - half_side, self.center.y - half_side, self.center.z + half_side),
-            Point(self.center.x - half_side, self.center.y - half_side, self.center.z - half_side),
-        ]
-        return corners
-
-    def is_inside_point(self, p):
-        return (abs(self.center.x - p.x) <= self.side / 2 and
-                abs(self.center.y - p.y) <= self.side / 2 and
-                abs(self.center.z - p.z) <= self.side / 2)
-
-    def is_inside_sphere(self, a_sphere):
-        return a_sphere.center.distance(self.center) + a_sphere.radius <= self.side / 2
-
-    def is_inside_cube(self, a_cube):
-        if isinstance(a_cube, Point):
-            p = a_cube
-            # Check if the point p is strictly inside the Cube.
-            half_side = self.side / 2
-            return (
-                self.center.x - half_side < p.x < self.center.x + half_side and
-                self.center.y - half_side < p.y < self.center.y + half_side and
-                self.center.z - half_side < p.z < self.center.z + half_side
-            )
-        elif isinstance(a_cube, Cube):
-            other = a_cube
-            half_side = self.side / 2
-            other_half_side = other.side / 2
-
-            # Check if all eight corners of the other Cube are strictly inside this Cube.
-            return (
-                self.center.x - half_side < other.center.x - other_half_side and
-                self.center.x + half_side > other.center.x + other_half_side and
-                self.center.y - half_side < other.center.y - other_half_side and
-                self.center.y + half_side > other.center.y + other_half_side and
-                self.center.z - half_side < other.center.z - other_half_side and
-                self.center.z + half_side > other.center.z + other_half_side
-            )
-
-
-    def does_intersect_cube(self, other):
-        return not (abs(self.center.x - other.center.x) > (self.side / 2 + other.side / 2) or
-                    abs(self.center.y - other.center.y) > (self.side / 2 + other.side / 2) or
-                    abs(self.center.z - other.center.z) > (self.side / 2 + other.side / 2))
-
-    def intersection_volume(self, other):
-        if not self.does_intersect_cube(other):
-            return 0
-
-        half_side = min(self.side / 2, other.side / 2)
-        return half_side ** 3
-
-    def inscribe_sphere(self):
-        radius = self.side / 2
-        return Sphere(self.center.x, self.center.y, self.center.z, radius)
-
-class Cylinder(object):
-    def __init__(self, x=0, y=0, z=0, radius=1, height=1):
-        self.center = Point(x, y, z)
-        self.radius = radius
-        self.height = height
-
-    def __str__(self):
-        return f"Center: ({self.center.x:.1f}, {self.center.y:.1f}, {self.center.z:.1f}), Radius: {self.radius:.1f}, Height: {self.height:.1f}"
-
-    def area(self):
-        return 2 * math.pi * self.radius * (self.radius + self.height)
-
-    def volume(self):
-        return math.pi * (self.radius ** 2) * self.height
-
-    def is_inside_point(self, p):
-        # Calculate the z-range of points inside the cylinder
-        z_range = (
-            self.center.z - self.height / 2,
-            self.center.z + self.height / 2
-        )
-
-        # Check if the point is inside the cylinder
-        distance_squared = (p.x - self.center.x) ** 2 + (p.y - self.center.y) ** 2
-        return (
-            distance_squared <= self.radius ** 2 and
-            z_range[0] < p.z < z_range[1]
-        )
-    
-
-    def is_inside_sphere (self, a_sphere):
-        return (a_sphere.center.distance(Point(a_sphere.center.x, a_sphere.center.y, self.center.z)) + a_sphere.radius <= self.radius and
-                a_sphere.center.z >= self.center.z and
-                a_sphere.center.z <= self.center.z + self.height)
-
-    def is_inside_cube(self, a_cube):
-        if isinstance(a_cube, Cube):
-            half_side = a_cube.side / 2
-            # Calculate the corners of the cube
-            corners = [
-                Point(a_cube.center.x - half_side, a_cube.center.y - half_side, a_cube.center.z - half_side),
-                Point(a_cube.center.x + half_side, a_cube.center.y - half_side, a_cube.center.z - half_side),
-                Point(a_cube.center.x - half_side, a_cube.center.y + half_side, a_cube.center.z - half_side),
-                Point(a_cube.center.x + half_side, a_cube.center.y + half_side, a_cube.center.z - half_side),
-                Point(a_cube.center.x - half_side, a_cube.center.y - half_side, a_cube.center.z + half_side),
-                Point(a_cube.center.x + half_side, a_cube.center.y - half_side, a_cube.center.z + half_side),
-                Point(a_cube.center.x - half_side, a_cube.center.y + half_side, a_cube.center.z + half_side),
-                Point(a_cube.center.x + half_side, a_cube.center.y + half_side, a_cube.center.z + half_side)
-            ]
-
-            # Calculate the range of z-values that would be inside the cylinder
-            z_range = (
-                self.center.z - self.height / 2,
-                self.center.z + self.height / 2
-            )
-
-            # Check if all eight corners of the cube are inside the cylinder
-            for corner in corners:
-                if not (
-                    (corner.x - self.center.x) ** 2 + (corner.y - self.center.y) ** 2 <= self.radius ** 2 and
-                    z_range[0] <= corner.z <= z_range[1]
-                ):
-                    return False  # One of the corners is not inside, so return False
-            return True  # All corners are inside
-
-        else:
-            return False  # Input is not a Cube object
-    
-    def is_inside_cylinder(self, other):
-        # Calculate the range of z-values that would be inside this cylinder
-        z_range = (
-            self.center.z - self.height / 2,
-            self.center.z + self.height / 2
-        )
-
-        # Calculate the range of z-values for the other cylinder
-        other_z_range = (
-            other.center.z - other.height / 2,
-            other.center.z + other.height / 2
-        )
-
-        # Check if the other Cylinder is strictly inside this Cylinder
-        return (
-            abs(self.center.x - other.center.x) + other.radius < self.radius and
-            abs(self.center.y - other.center.y) + other.radius < self.radius and
-            z_range[0] < other_z_range[0] and
-            z_range[1] > other_z_range[1]
-        )
-
+class Sphere (object):
+  # constructor with default values
+  def __init__ (self, x = 0, y = 0, z = 0, radius = 1):
+      self.center = Point(x,y,z)
+      self.radius = radius
+  # string representation of a Sphere: Center: (x, y, z), Radius: value
+  def __str__ (self):
+      return str('Center: '+ '(' + str(self.center.x) + ','+ str(self.center.y)+ ',' + str(self.center.z)+'), Radius: ' +str(self.radius))
+  # compute surface area of Sphere
+  def area (self):
+      return 4 * math.pi * ((self.radius) ** 2)
+  # compute volume of a Sphere
+  def volume (self):
+      return (4/3) * math.pi * ((self.radius) ** 3)
+   # determines if a Point is strictly inside the Sphere
+  def is_inside_point (self, p):
+    dist = p.distance (self.center)
+    if (dist < self.radius):
+        return 'is'
+    return 'is not'
+  # determine if another Sphere is strictly inside this Sphere
+  def is_inside_sphere (self, other):
+    dist = self.center.distance (other.center)
+    if (self.radius > (dist + other.radius)):
+        return 'is'
+    return 'is not'
+  # determine if a Cube is strictly inside this Sphere
+  # determine if the eight corners of the Cube are inside
+  # the Sphere
+  def is_inside_cube (self, a_cube):
+    dist = self.center.distance(a_cube.center)
+    if dist + math.sqrt(2)*a_cube.side*.5 > self.radius:
+        return 'is not'
+    else:
+        return 'is'
+  #  (optional) determine if a Cylinder is strictly inside this Sphere
+  def is_inside_cyl (self, a_cyl):
+    if abs(self.radius) > abs(self.center.x - a_cyl.center.x - a_cyl.radius) and abs(self.radius) > abs(self.center.y - a_cyl.center.y - a_cyl.radius) and abs(self.radius) > abs(self.center.z - a_cyl.center.z - .5*a_cyl.height):
+        return 'is'
+    return 'is not'
+  # determine if another Sphere intersects this Sphere
+  # there is a non-zero volume of intersection
+  def does_intersect (self, other):
+    dist = self.center.distance (other.center)
+    if (dist < (self.radius + other.radius)):
+        return 'does'
+    return 'does not'
+  # there is at least one corner of the Cube in
+  # the Sphere
+  def does_intersect_cube (self, a_cube):
+      if ((math.sqrt(2)*a_cube.side*.5) + self.radius)  > self.center.distance(a_cube.center):
+          return 'does'
+      return 'does not'
+  # return the largest Cube object that is circumscribed
+  # by this Sphere
+  # all eight corners of the Cube are on the Sphere
+  def circumscribe_cube (self):
+      CircumscribedCube = Cube(self.center.x,self.center.y,self.center.z,(self.radius/(math.sqrt(3)*.5)))
+      return CircumscribedCube
+class Cube (object):
+  # Cube is defined by its center (which is a Point object)
+  # and side. The faces of the Cube are parallel to x-y, y-z,
+  # and x-z planes.
+  def __init__ (self, x = 0, y = 0, z = 0, side = 1):
+      self.center = Point (x,y,z)
+      self.side = side
+  # string representation of a Cube: Center: (x, y, z), Side: value
+  def __str__ (self):
+      return str('Center: (' + str(self.center.x)+', ' +str(self.center.y) +', ' +str(self.center.z)+ '), Side: ' +str(self.side))
+  # compute surface area of Cube
+  def area (self):
+      return 6*self.side*self.side
+  # compute volume of a Cube
+  def volume (self):
+      return self.side ** 3
+  # determines if a Point is strictly inside this Cube
+  def is_inside_point (self, p):
+      if p.distance(self.center) < (self.side*.5):
+          return 'is'
+      return 'is not'
+  # determine if a Sphere is strictly inside this Cube or
+  # determine if the smallest cube that contains the Sphere
+  # is within the Cube
+  def is_inside_sphere (self, a_sphere):
+    dist = self.center.distance (a_sphere.center)
+    if (self.side*.5 > (dist + (a_sphere.radius*.5))):
+        return 'is'
+    return 'is not'
+  # determine if another Cube is strictly inside this Cube
+  def is_inside_cube (self, other):
+      dist = self.center.distance (other.center)
+      if (self.side*.5 > (dist + (other.side*.5))):
+          return 'is'
+      return 'is not'
+  # determine if a Cylinder is strictly inside this Cube
+  def is_inside_cylinder (self, a_cyl):
+      if abs(self.center.x - a_cyl.center.x - a_cyl.radius) >= self.side*.5:
+          return 'is not'
+      if abs(self.center.y - a_cyl.center.y - a_cyl.radius) >= self.side*.5:
+          return 'is not'
+      if abs(self.center.z - a_cyl.center.z - a_cyl.height*.5) >= self.side*.5:
+          return 'is not'
+      return 'is'
+  # determine if another Cube intersects this Cube
+  # there is a non-zero volume of intersection
+  # there is at least one vertex of the other Cube
+  # in this Cube
+  def does_intersect_cube (self, other):
+      dist = self.center.distance(other.center)
+      if dist < (self.side*.5+other.side*.5):
+          return 'does'
+      return 'does not'
+  # determine the volume of intersection if this Cube
+  # intersects with another Cube
+  def intersection_volume (self, other):
+      p1 = abs(((self.side*.5 + other.side*.5) - abs(self.center.y - other.center.y)) * ((self.side*.5 + other.side*.5) - abs(self.center.x - other.center.x)))
+      p2 = (p1 * ((self.side*.5 + other.side*.5) - abs(self.center.z - other.center.z)))
+      return p2
+  # return the largest Sphere object that is inscribed
+  # by this Cube
+  def inscribe_sphere (self):
+      InscribedSphere = Sphere(self.center.x,self.center.y,self.center.z,(self.side*.5))
+      return InscribedSphere
+class Cylinder (object):
+  # Cylinder is defined by its center (which is a Point object),
+  # radius and height. The main axis of the Cylinder is along the
+  # z-axis and height is measured along this axis
+  def __init__ (self, x = 0, y = 0, z = 0, radius = 1, height = 1):
+      self.center = Point (x,y,z)
+      self.radius = radius
+      self.height = height
+  # string representation of a Cylinder: Center: (x, y, z), Radius: value, Height: value
+  def __str__ (self):
+      return str('Center: (' + str(self.center.x)+', ' +str(self.center.y)+', ' +str(self.center.z)+ '), Radius: ' +str(self.radius) + ', Height: ' + str(self.height))
+  # compute surface area of Cylinder
+  def area (self):
+      return 2 * math.pi*self.radius*self.height + 2*math.pi*self.radius*self.radius
+  # compute volume of a Cylinder
+  def volume (self):
+      return math.pi*self.radius*self.radius*self.height
+  # determine if a Point is strictly inside this Cylinder
+  def is_inside_point (self, p):
+      if abs(p.x - self.center.x) >= self.radius:
+          return 'is not'
+      if abs(p.y - self.center.y) >= self.radius:
+          return 'is not'
+      if abs(p.z - self.center.z) >= self.height*.5:
+          return 'is not'
+      return 'is'
+  # determine if a Sphere is strictly inside this Cylinder
+  def is_inside_sphere (self, a_sphere):
+      if abs(self.center.x - a_sphere.center.x - a_sphere.radius) >= self.radius:
+          return 'is not'
+      if abs((self.center.y - a_sphere.center.y - a_sphere.radius)) >= self.radius:
+          return 'is not'
+      if abs(self.center.z - a_sphere.center.z - a_sphere.radius) >= self.height*.5:
+          return 'is not'
+      return 'is'
+  # determine if a Cube is strictly inside this Cylinder
+  # determine if all eight corners of the Cube are in
+  # the Cylinder
+  def is_inside_cube (self, a_cube):
+      if abs(self.center.x - a_cube.center.x - a_cube.side*.5) >= self.radius:
+          return 'is not'
+      if abs((self.center.y - a_cube.center.y - a_cube.side*.5)) >= self.radius:
+          return 'is not'
+      if abs(self.center.z - a_cube.center.z - a_cube.side*.5) >= self.height*.5:
+          return 'is not'
+      return 'is'
+  # determine if another Cylinder is strictly inside this Cylinder
+  def is_inside_cylinder (self, other):
+      if abs(self.center.x - other.center.x - other.radius) >= self.radius:
+          return 'is not'
+      if abs((self.center.y - other.center.y - other.radius)) >= self.radius:
+          return 'is not'
+      if abs(self.center.z - other.center.z - other.height*.5) >= self.height*.5:
+          return 'is not'
+      return 'is'
+  # (optional) determine if another Cylinder intersects this Cylinder
+  # there is a non-zero volume of intersection
+  def does_intersect_cylinder (self, other):
+      x2 = (self.center.x - other.center.x) * (self.center.x - other.center.x)
+      y2 = (self.center.y - other.center.y) * (self.center.y - other.center.y)
+      if((x2 + y2) ** 0.5) < (self.radius + other.radius):
+          if abs(self.center.z - other.center.z) <= (self.height*.5+other.height*.5):
+              return 'does'
+      return 'does not'
 def main():
-    # Read input data from standard input
-    input_data = sys.stdin.readlines()
-
-    # Initialize a list to store extracted numbers
-    numbers = []
-
-    # Iterate through each line of input
-    for line in input_data:
-        # Split the line by spaces to separate numbers and other characters
-        parts = line.split()
-
-        # Extract and convert the numbers to floats
-        for part in parts:
-            try:
-                num = float(part)
-                numbers.append(num)
-            except ValueError:
-                # If conversion to float fails, ignore the part (possibly a comment)
-                pass
-    
-    # read the coordinates of the first Point p and create a Point object 
-    point_p = Point(numbers[0], numbers[1], numbers[2])
-
-    # # read the coordinates of the second Point q and create a Point object
-    point_q = Point(numbers[3], numbers[4], numbers[5])
-
-    # read the coordinates of the center and radius of sphereA and create a Sphere object
-    sphereA = Sphere(numbers[6], numbers[7], numbers[8], numbers[9])
-
-    # read the coordinates of the center and radius of sphereB and create a Sphere object
-    sphereB = Sphere(numbers[10], numbers[11], numbers[12], numbers[13])
-
-    # read the coordinates of the center and side of cubeA and create a Cube object 
-    cubeA = Cube(numbers[14], numbers[15], numbers[16], numbers[17])
-
-    # read the coordinates of the center and side of cubeB and create a Cube object 
-    cubeB = Cube(numbers[18], numbers[19], numbers[20], numbers[21])
-
-    # read the coordinates of the center, radius and height of cylA and create a Cylinder object 
-    cylA = Cylinder(numbers[22], numbers[23], numbers[24], numbers[25], numbers[26])
-
-    # read the coordinates of the center, radius and height of cylB and create a Cylinder object
-    cylB = Cylinder(numbers[27], numbers[28], numbers[29], numbers[30], numbers[31])
-    
-    # print if the distance of p from the origin (is / is not) greater than the distance of q from the origin
-    distance_p = point_p.distance(Point(0, 0, 0))
-    distance_q = point_q.distance(Point(0, 0, 0))
-    print(f"Distance of Point p from the origin {'is' if distance_p > distance_q else 'is not'} greater than the distance of Point q from the origin")
-
-    # print if Point p (is / is not) inside sphereA
-    print(f"Point p {'is' if sphereA.is_inside_point(point_p) else 'is not'} inside sphereA")
-
-    # print if sphereB (is / is not) inside sphereA
-    print(f"sphereB {'is' if sphereA.is_inside_sphere(sphereB) else 'is not'} inside sphereA")
-
-    # print if cubeA (is / is not) inside sphereA
-    print(f"cubeA {'is' if sphereA.is_inside_cube(cubeA) else 'is not'} inside sphereA")
-
-    # print if sphereA (does / does not) intersect sphereB
-    print(f"sphereA {'does' if sphereA.does_intersect_sphere(sphereB) else 'does not'} intersect sphereB")
-
-    # print if cubeB (does / does not) intersect sphereB
-    print(f"cubeB {'does' if sphereB.does_intersect_cube(cubeB) else 'does not'} intersect sphereB")
-
-    # print if the volume of the largest Cube that is circumscribed by sphereA (is / is not) greater than the volume of cylA
-    circumscribed_cube_volume = sphereA.circumscribe_cube().volume()
-    cylA_volume = cylA.volume()
-    print(f"Volume of the largest Cube that is circumscribed by sphereA {'is' if circumscribed_cube_volume > cylA_volume else 'is not'} greater than the volume of cylA")
-
-    # print if Point p (is / is not) inside cubeA
-    print(f"Point p {'is' if cubeA.is_inside_point(point_p) else 'is not'} inside cubeA")
-
-    # print if sphereA (is / is not) inside cubeA
-    print(f"sphereA {'is' if cubeA.is_inside_sphere(sphereA) else 'is not'} inside cubeA")
-
-    # print if cubeB (is / is not) inside cubeA
-    print(f"cubeB {'is' if cubeA.is_inside_cube(cubeB) else 'is not'} inside cubeA")
-
-    # print if cubeA (does / does not) intersect cubeB
-    print(f"cubeA {'does' if cubeA.does_intersect_cube(cubeB) else 'does not'} intersect cubeB")
-
-    # print if the intersection volume of cubeA and cubeB (is / is not) greater than the volume of sphereA
-    intersection_vol = cubeA.intersection_volume(cubeB)
-    sphereA_vol = sphereA.volume()
-    print(f"Intersection volume of cubeA and cubeB {'is' if intersection_vol > sphereA_vol else 'is not'} greater than the volume of sphereA")
-
-    # print if the surface area of the largest Sphere object inscribed by cubeA (is / is not) greater than the surface area of cylA
-    inscribed_sphere_area = cubeA.inscribe_sphere().area()
-    cylA_area = cylA.area()
-    print(f"Surface area of the largest Sphere object inscribed by cubeA {'is' if inscribed_sphere_area > cylA_area else 'is not'} greater than the surface area of cylA")
-
-    # print if Point p (is / is not) inside cylA
-    print(f"Point p {'is' if cylA.is_inside_point(point_p) else 'is not'} inside cylA")
-
-    # print if sphereA (is / is not) inside cylA
-    print(f"sphereA {'is' if cylA.is_inside_sphere(sphereA) else 'is not'} inside cylA")
-        
-    # print if cubeA (is / is not) inside cylA
-    print(f"cubeA {'is' if cylA.is_inside_cube(cubeA) else 'is not'} inside cylA")
-
-
-if __name__ == '__main__':
-    main()
+  with open('geometry.txt') as GeomFile: #We need to read from the nim.txt file. No error handling.
+      Inputtext = GeomFile.read().splitlines()
+  # read the coordinates of the first Point p
+      pCenter = Inputtext[0].split()
+      pCenter = map(float, pCenter)
+  # create a Point object and print its coordinates
+      p = Point(pCenter[0], pCenter[1], pCenter[2])
+      print('Point p: ' + str(p))
+  # read the coordinates of the second Point q
+      qCenter = Inputtext[1].split()
+      qCenter = map(float, qCenter)
+  # create a Point object and print its coordinates
+      q = Point(qCenter[0], qCenter[1], qCenter[2])
+      print('Point q: ' + str(q))
+  # read the coordinates of the center and radius of sphereA
+      aCenter = Inputtext[2].split()
+      aCenter = map(float, aCenter)
+  # create a Sphere object and print it
+      sphereA = Sphere(aCenter[0], aCenter[1], aCenter[2], aCenter[3])
+      print('sphereA: ' + str(sphereA))
+  # read the coordinates of the center and radius of sphereB
+      bCenter = Inputtext[3].split()
+      bCenter = map(float, bCenter)
+  # create a Sphere object and print it
+      sphereB = Sphere(bCenter[0], bCenter[1], bCenter[2], bCenter[3])
+      print('sphereB: ' + str(sphereB))
+  # read the coordinates of the center and side of cubeA
+      A1Center = Inputtext[4].split()
+      A1Center = map(float, A1Center)
+  # create a Cube object and print it
+      cubeA = Cube(A1Center[0], A1Center[1], A1Center[2], A1Center[3])
+      print('cubeA: ' + str(cubeA))
+  # read the coordinates of the center and side of cubeB
+      B1Center = Inputtext[5].split()
+      B1Center = map(float, B1Center)
+  # create a Cube object and print it
+      cubeB = Cube(B1Center[0], B1Center[1], B1Center[2], B1Center[3])
+      print('cubeB: ' + str(cubeB))
+  # read the coordinates of the center, radius and height of cylA
+      CCenter = Inputtext[6].split()
+      CCenter = map(float, CCenter)
+  # create a Cylinder object and print it
+      CylinderA = Cylinder(CCenter[0], CCenter[1], CCenter[2], CCenter[3], CCenter[4])
+      print('cylA: ' + str(CylinderA))
+  # read the coordinates of the center, radius and height of cylB
+      C2Center = Inputtext[7].split()
+      C2Center = map(float, C2Center)
+  # create a Cylinder object and print it
+      CylinderB = Cylinder(C2Center[0], C2Center[1], C2Center[2], C2Center[3], C2Center[4])
+      print('cylB: ' + str(CylinderB))
+      print('\n')
+  # close file geometry.txt
+  #done
+  # print distance between p and q
+  dist = p.distance(q)
+  print('Distance between p and q: ' + str(dist))
+  print('\n')
+  # print area of sphereA
+  area = sphereA.area()
+  print('Area of sphereA: ' + str(area))
+  # print volume of sphereA
+  volume = sphereA.volume()
+  print('Volume of sphereA: ' + str(volume))
+  # print if Point p is inside sphereA
+  print('Point p '+sphereA.is_inside_point(p)+' inside sphereA')
+  # print if sphereB is inside sphereA
+  print('sphereB '+sphereA.is_inside_sphere(sphereB)+' inside sphereA')
+  # print if cubeA is inside sphereA
+  print('cubeA '+sphereA.is_inside_cube(cubeA)+' inside sphereA')
+  #  (optional) print if cylA is inside sphereA
+  print('cylA '+sphereA.is_inside_cyl(CylinderA)+' inside sphereA')
+  # print if sphereA intersects with sphereB
+  print('sphereA '+sphereA.does_intersect(sphereB)+' intersect sphereB')
+  # print if cubeB intersects with sphereB
+  print('cubeB '+sphereB.does_intersect_cube(cubeB)+' intersect sphereB')
+  # print the largest Cube that is circumscribed by sphereA
+  print('Largest Cube circumscribed by sphereA: ' + str(sphereA.circumscribe_cube()))
+  # print area of cubeA
+  print('\n')
+  print('Area of cubeA: ' + str(cubeA.area()))
+  # print volume of cubeA
+  print('Volume of cubeA: ' + str(cubeA.volume()))
+  # print if Point p is inside cubeA
+  print('Point p '+cubeA.is_inside_point(p)+' inside cubeA')
+  # print if sphereA is inside cubeA
+  print('sphereA '+cubeA.is_inside_sphere(sphereA)+' inside cubeA')
+  # print if cubeB is inside cubeA
+  print('cubeB '+cubeA.is_inside_cube(cubeB)+' inside cubeA')
+  # print if cylA is inside cubeA
+  print('cylA '+cubeA.is_inside_cylinder(CylinderA)+' inside cubeA')
+  # print if cubeA intersects with cubeB
+  print('cubeA ' +cubeB.does_intersect_cube(cubeA)+' intersect cubeB')
+  # print the intersection volume of cubeA and cubeB
+  print('Intersection volume of cubeA and cubeB: ' +str(cubeB.intersection_volume(cubeA)))
+  # print the largest Sphere object inscribed by cubeA
+  print('Largest Sphere inscribed by cubeA: ' + str(cubeA.inscribe_sphere()))
+  print('\n')
+  # print area of cylA
+  print('Area of cylA: ' + str(CylinderA.area()))
+  # print volume of cylA
+  print('Volume of cylA: ' + str(CylinderA.volume()))
+  # print if Point p is inside cylA
+  print('Point p '+CylinderA.is_inside_point(p)+' inside cylA')
+  # print if sphereA is inside cylA
+  print('sphereA '+CylinderA.is_inside_sphere(sphereA)+' inside cylA')
+  # print if cubeA is inside cylA
+  print('cubeA '+CylinderA.is_inside_cube(cubeA)+' inside cylA')
+  # print if cylB is inside cylA
+  print('cylB '+CylinderA.is_inside_cylinder(CylinderB)+' inside cylA')
+  # (optional) print if cylB intersects with cylA
+  print('cylA '+CylinderA.does_intersect_cylinder(CylinderB)+' intersect with cylB')
+main()
