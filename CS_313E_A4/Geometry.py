@@ -113,30 +113,30 @@ class Sphere(object):
 
     def does_intersect_cube(self, a_cube):
         # Calculate the distance between the centers of the two spheres
-        distance_between_centers = self.center.distance(other.center)
+        distance_between_centers = self.center.distance(a_cube.center)
 
-        if distance_between_centers + min(self.radius, other.radius) < max(self.radius, other.radius):
+        if distance_between_centers + min(self.radius, a_cube.radius) < max(self.radius, a_cube.radius):
             return False
 
         # Check if the spheres have exactly the same center and radius
-        if self.center == other.center and self.radius == other.radius:
+        if self.center == a_cube.center and self.radius == a_cube.radius:
             return True
 
         # Check if the distance is less than or equal to the sum of their radii
-        if distance_between_centers <= (self.radius + other.radius):
+        if distance_between_centers <= (self.radius + a_cube.radius):
             # If the centers are too close, they may be considered intersecting,
             # even if the distance is very close to the sum of radii, we'll return True
             return True
 
         # Check if one sphere is fully contained within the other
-        if self.radius >= (distance_between_centers + other.radius):
+        if self.radius >= (distance_between_centers + a_cube.radius):
             return True
 
-        if other.radius >= (distance_between_centers + self.radius):
+        if a_cube.radius >= (distance_between_centers + self.radius):
             return True
 
         # Check if the spheres touch each other from outside (tangential intersection)
-        if distance_between_centers == (self.radius + other.radius):
+        if distance_between_centers == (self.radius + a_cube.radius):
             return True
 
         # If none of the above conditions are met, the spheres partially intersect
