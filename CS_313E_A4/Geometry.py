@@ -92,7 +92,7 @@ class Cube(object):
         self.side = side
 
     def __str__(self):
-        return f"Center: {self.center}, Side: {self.side:.1f}"
+        return f"Center: {self.center}, Side: {self.side}"
 
     def area(self):
         return 6 * (self.side ** 2)
@@ -109,9 +109,26 @@ class Cube(object):
         return a_sphere.center.distance(self.center) + a_sphere.radius <= self.side / 2
 
     def is_inside_cube(self, other):
-        return all(abs(self.center.x - other.center.x) + self.side / 2 <= other.side / 2,
-                   abs(self.center.y - other.center.y) + self.side / 2 <= other.side / 2,
-                   abs(self.center.z - other.center.z) + self.side / 2 <= other.side / 2)
+        corner1 = Point(other.center.x + other.side / 2, other.center.y + other.side / 2, other.center.z + other.side / 2)
+        corner2 = Point(other.center.x + other.side / 2, other.center.y + other.side / 2, other.center.z - other.side / 2)
+        corner3 = Point(other.center.x + other.side / 2, other.center.y - other.side / 2, other.center.z + other.side / 2)
+        corner4 = Point(other.center.x + other.side / 2, other.center.y - other.side / 2, other.center.z - other.side / 2)
+        corner5 = Point(other.center.x - other.side / 2, other.center.y + other.side / 2, other.center.z + other.side / 2)
+        corner6 = Point(other.center.x - other.side / 2, other.center.y + other.side / 2, other.center.z - other.side / 2)
+        corner7 = Point(other.center.x - other.side / 2, other.center.y - other.side / 2, other.center.z + other.side / 2)
+        corner8 = Point(other.center.x - other.side / 2, other.center.y - other.side / 2, other.center.z - other.side / 2)
+
+        return (
+            self.is_inside_point(corner1) and
+            self.is_inside_point(corner2) and
+            self.is_inside_point(corner3) and
+            self.is_inside_point(corner4) and
+            self.is_inside_point(corner5) and
+            self.is_inside_point(corner6) and
+            self.is_inside_point(corner7) and
+            self.is_inside_point(corner8)
+        )
+    
 
     def does_intersect_cube(self, other):
         return not (abs(self.center.x - other.center.x) > (self.side / 2 + other.side / 2) or
