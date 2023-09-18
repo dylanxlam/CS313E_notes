@@ -109,25 +109,12 @@ class Cube(object):
         return a_sphere.center.distance(self.center) + a_sphere.radius <= self.side / 2
 
     def is_inside_cube(self, other):
-        corner1 = Point(self.center.x + self.side / 2, self.center.y + self.side / 2, self.center.z + self.side / 2)
-        corner2 = Point(self.center.x + self.side / 2, self.center.y + self.side / 2, self.center.z - self.side / 2)
-        corner3 = Point(self.center.x + self.side / 2, self.center.y - self.side / 2, self.center.z + self.side / 2)
-        corner4 = Point(self.center.x + self.side / 2, self.center.y - self.side / 2, self.center.z - self.side / 2)
-        corner5 = Point(self.center.x - self.side / 2, self.center.y + self.side / 2, self.center.z + self.side / 2)
-        corner6 = Point(self.center.x - self.side / 2, self.center.y + self.side / 2, self.center.z - self.side / 2)
-        corner7 = Point(self.center.x - self.side / 2, self.center.y - self.side / 2, self.center.z + self.side / 2)
-        corner8 = Point(self.center.x - self.side / 2, self.center.y - self.side / 2, self.center.z - self.side / 2)
-
+        half_side = self.side / 2
         return (
-            other.is_inside_point(corner1) and
-            other.is_inside_point(corner2) and
-            other.is_inside_point(corner3) and
-            other.is_inside_point(corner4) and
-            other.is_inside_point(corner5) and
-            other.is_inside_point(corner6) and
-            other.is_inside_point(corner7) and
-            other.is_inside_point(corner8)
-    )
+            self.center.x - half_side < other.x < self.center.x + half_side and
+            self.center.y - half_side < other.y < self.center.y + half_side and
+            self.center.z - half_side < other.z < self.center.z + half_side
+        )
     
 
     def does_intersect_cube(self, other):
