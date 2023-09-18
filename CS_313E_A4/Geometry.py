@@ -86,8 +86,12 @@ class Sphere (object):
     # p is Point object
     # returns a Boolean
     def is_inside_point (self, p):
-        distance_squared = (p.x - self.x)**2 + (p.y - self.y)**2 + (p.z - self.z)**2
-        return distance_squared < self.radius**2
+        distance = math.sqrt((self.x - p.x) ** 2 + (self.y - p.y) ** 2)
+        return (
+            distance <= self.radius and
+            p.z >= self.z - self.height / 2 and
+            p.z <= self.z + self.height / 2
+        )
     
     # determine if another Sphere is strictly inside this Sphere
     # other is a Sphere object
@@ -102,10 +106,12 @@ class Sphere (object):
     # a_cube is a Cube object
     # returns a Boolean
     def is_inside_cube (self, a_cube):
-        for corner in a_cube.corners():
-            if not self.is_inside_point(corner):
-                return False
-        return True
+        half_side = self.side / 2
+        return (
+            abs(a_cube.x - self.x) <= half_side and
+            abs(a_cube.y - self.y) <= half_side and
+            abs(a_cube.z - self.z) <= half_side
+        )
     
     # determine if another Sphere intersects this Sphere
     # other is a Sphere object
@@ -151,7 +157,7 @@ class Cube (object):
     # string representation of a Cube of the form: 
     # Center: (x, y, z), Side: value
     def __str__ (self):
-        return f"Center: ({float(self.x)}, {float(self.y)}, {float(self.z)}), Side: {float(self.side)}"
+        return f'Center: ({self.x:.1f}, {self.y:.1f}, {self.z:.1f}), Radius: {self.radius:.1f}, Height: {self.height:.1f}'
 
     # compute the total surface area of Cube (all 6 sides)
     # returns a floating point number
