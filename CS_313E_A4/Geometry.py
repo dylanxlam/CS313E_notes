@@ -166,6 +166,7 @@ class Cylinder(object):
         return math.pi * (self.radius ** 2) * self.height
 
     def is_inside_point(self, p):
+        # Calculate the z-range of points inside the cylinder
         z_range = (
             self.center.z - self.height / 2,
             self.center.z + self.height / 2
@@ -184,7 +185,6 @@ class Cylinder(object):
                 a_sphere.center.z <= self.center.z + self.height)
 
     def is_inside_cube(self, a_cube):
-    # Calculate the half side length of the cube
         half_side = a_cube.side / 2
 
         # Calculate the range of z-values that would be inside the cylinder
@@ -193,16 +193,21 @@ class Cylinder(object):
             self.center.z + self.height / 2
         )
 
+        # Calculate the minimum distance from the cylinder's center to the cube's center
+        min_distance = max(
+            abs(self.center.x - a_cube.center.x) - half_side,
+            abs(self.center.y - a_cube.center.y) - half_side
+        )
+
         # Check if the cube is inside the cylinder
         return (
-            abs(self.center.x - a_cube.center.x) + self.radius <= half_side and
-            abs(self.center.y - a_cube.center.y) + self.radius <= half_side and
+            min_distance <= self.radius and
             z_range[0] <= a_cube.center.z - half_side <= z_range[1]
         )
     
 
     def is_inside_cylinder(self, other):
-    # Check if the other Cylinder is strictly inside this Cylinder
+        # Check if the other Cylinder is strictly inside this Cylinder
         return (
             abs(self.center.x - other.center.x) + other.radius <= self.radius and
             abs(self.center.y - other.center.y) + other.radius <= self.radius and
