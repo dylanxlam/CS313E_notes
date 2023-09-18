@@ -37,7 +37,7 @@ class Point(object):
         self.z = z
 
     def __str__(self):
-        return f"({self.x}, {self.y}, {self.z})"
+        return f"({self.x:.1f}, {self.y:.1f}, {self.z:.1f})"
 
     def distance(self, other):
         return math.sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2 + (self.z - other.z) ** 2)
@@ -70,7 +70,7 @@ class Sphere(object):
         return (distance + other.radius) < self.radius
     
 
-    
+
     def is_inside_cube(self, a_cube):
         corners = a_cube.get_corners()
         for corner in corners:
