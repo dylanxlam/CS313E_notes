@@ -89,11 +89,12 @@ class Sphere(object):
         return distance <= self.radius
     
     def circumscribe_cube(self):
+        # Calculate the side length of the circumscribing cube
         side_length = 2 * self.radius * math.sqrt(3)
-        # Calculate the center of the circumscribing cube (same as the sphere's center)
-        cube_center = self.center
-        return Cube(cube_center.x, cube_center.y, cube_center.z, side_length)
-
+        
+        # Create and return a Cube with the same center as the Sphere and calculated side length
+        return Cube(self.center.x, self.center.y, self.center.z, side_length)
+    
 class Cube(object):
     def __init__(self, x=0, y=0, z=0, side=1):
         self.center = Point(x, y, z)
