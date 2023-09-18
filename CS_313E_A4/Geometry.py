@@ -63,10 +63,12 @@ class Sphere(object):
         return self.center.distance(p) < self.radius
 
     def is_inside_sphere(self, other):
+         # Calculate the distance between the centers of the two spheres
         distance = self.center.distance(other.center)
+
+        # Check if the current sphere is strictly inside the other sphere (if the distance is less than the difference of their radii)
         return distance + self.radius < other.radius
-    
-    
+
     def is_inside_cube(self, a_cube):
         corners = a_cube.get_corners()
         for corner in corners:
@@ -75,27 +77,33 @@ class Sphere(object):
         return True 
 
     def does_intersect_sphere(self, other):
+        # Calculate the distance between the centers of the two spheres
         distance = self.center.distance(other.center)
+
+        # Check if the spheres intersect (if the distance between centers is less than the sum of their radii)
         return distance <= self.radius + other.radius
-    
 
     def does_intersect_cube(self, a_cube):
+        # Calculate the closest point to the sphere's center within the cube
         closest_x = max(a_cube.center.x - a_cube.side / 2, min(self.center.x, a_cube.center.x + a_cube.side / 2))
         closest_y = max(a_cube.center.y - a_cube.side / 2, min(self.center.y, a_cube.center.y + a_cube.side / 2))
         closest_z = max(a_cube.center.z - a_cube.side / 2, min(self.center.z, a_cube.center.z + a_cube.side / 2))
 
-        distance = math.sqrt((self.center.x - closest_x) ** 2 +
-                            (self.center.y - closest_y) ** 2 +
-                            (self.center.z - closest_z) ** 2)
+        # Calculate the distance between the sphere's center and the closest point
+        distance = self.center.distance(Point(closest_x, closest_y, closest_z))
+
+        # Check if the distance is less than or equal to the sphere's radius
         return distance <= self.radius
+
     
     def circumscribe_cube(self):
         # Calculate the side length of the circumscribing cube
         side_length = 2 * self.radius * math.sqrt(3)
-        
+
         # Create and return a Cube with the same center as the Sphere and calculated side length
         return Cube(self.center.x, self.center.y, self.center.z, side_length)
-    
+
+
 class Cube(object):
     def __init__(self, x=0, y=0, z=0, side=1):
         self.center = Point(x, y, z)
