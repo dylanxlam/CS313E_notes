@@ -189,7 +189,17 @@ class Cylinder(object):
     def is_inside_cube(self, a_cube):
         if isinstance(a_cube, Cube):
             half_side = a_cube.side / 2
-            corners = a_cube.get_corners()  # Get the cube's corners
+            # Calculate the corners of the cube
+            corners = [
+                Point(a_cube.center.x - half_side, a_cube.center.y - half_side, a_cube.center.z - half_side),
+                Point(a_cube.center.x + half_side, a_cube.center.y - half_side, a_cube.center.z - half_side),
+                Point(a_cube.center.x - half_side, a_cube.center.y + half_side, a_cube.center.z - half_side),
+                Point(a_cube.center.x + half_side, a_cube.center.y + half_side, a_cube.center.z - half_side),
+                Point(a_cube.center.x - half_side, a_cube.center.y - half_side, a_cube.center.z + half_side),
+                Point(a_cube.center.x + half_side, a_cube.center.y - half_side, a_cube.center.z + half_side),
+                Point(a_cube.center.x - half_side, a_cube.center.y + half_side, a_cube.center.z + half_side),
+                Point(a_cube.center.x + half_side, a_cube.center.y + half_side, a_cube.center.z + half_side)
+            ]
 
             # Calculate the range of z-values that would be inside the cylinder
             z_range = (
@@ -208,7 +218,7 @@ class Cylinder(object):
 
         else:
             return False  # Input is not a Cube object
-
+    
     def is_inside_cylinder(self, other):
         if isinstance(other, Cylinder):
             # Check if the other Cylinder is strictly inside this Cylinder
