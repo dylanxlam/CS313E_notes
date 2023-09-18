@@ -177,6 +177,7 @@ class Cylinder(object):
             abs(self.center.y - p.y) <= self.radius and
             z_range[0] <= p.z <= z_range[1]
         )
+    
     def is_inside_sphere(self, a_sphere):
         return (a_sphere.center.distance(Point(a_sphere.center.x, a_sphere.center.y, self.center.z)) + a_sphere.radius <= self.radius and
                 a_sphere.center.z >= self.center.z and
@@ -192,18 +193,24 @@ class Cylinder(object):
             self.center.z + self.height / 2
         )
 
+        # Check if the cube is inside the cylinder
         return (
-            abs(self.center.x - a_cube.center.x) <= half_side and
-            abs(self.center.y - a_cube.center.y) <= half_side and
+            abs(self.center.x - a_cube.center.x) + self.radius <= half_side and
+            abs(self.center.y - a_cube.center.y) + self.radius <= half_side and
             z_range[0] <= a_cube.center.z <= z_range[1]
         )
     
 
     def is_inside_cylinder(self, other):
-        return (self.center.distance(Point(other.center.x, other.center.y, self.center.z)) + other.radius <= self.radius and
-                self.center.z <= other.center.z and
-                self.center.z + self.height >= other.center.z + other.height)
-
+    # Check if the other Cylinder is strictly inside this Cylinder
+        return (
+            abs(self.center.x - other.center.x) + other.radius <= self.radius and
+            abs(self.center.y - other.center.y) + other.radius <= self.radius and
+            self.center.z - self.height / 2 <= other.center.z - other.height / 2 and
+            self.center.z + self.height / 2 >= other.center.z + other.height / 2
+        )
+    
+    
 def main():
     # Read input data from standard input
     input_data = sys.stdin.readlines()
