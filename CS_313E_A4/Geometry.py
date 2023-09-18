@@ -376,19 +376,17 @@ def main():
     # print if the surface area of the largest Sphere object inscribed by cubeA (is / is not) greater than the surface area of cylA
     inscribed_sphere_area = cubeA.inscribe_sphere().area()
     cylA_area = cylA.area()
-    print(f"Surface area of the largest Sphere inscribed by cubeA {'is' if inscribed_sphere_area > cylA_area else 'is not'} greater than the surface area of cylA")
+    print(f"Surface area of the largest Sphere object inscribed by cubeA {'is' if inscribed_sphere_area > cylA_area else 'is not'} greater than the surface area of cylA")
 
     # print if Point p (is / is not) inside cylA
     print(f"Point p {'is' if cylA.is_inside_point(point_p) else 'is not'} inside cylA")
 
     # print if sphereA (is / is not) inside cylA
     print(f"sphereA {'is' if cylA.is_inside_sphere(sphereA) else 'is not'} inside cylA")
-
+        
     # print if cubeA (is / is not) inside cylA
     print(f"cubeA {'is' if cylA.is_inside_cube(cubeA) else 'is not'} inside cylA")
 
-    # print if cylB (is / is not) inside cylA
-    print(f"cylB {'is' if cylA.is_inside_cylinder(cylB) else 'is not'} inside cylA")
-        
-if __name__ == "__main__":
-  main()
+
+if __name__ == '__main__':
+    main()
