@@ -92,7 +92,7 @@ class Cube(object):
         self.side = side
 
     def __str__(self):
-        return f"Center: ({self.center.x}, {self.center.y}, {self.center.z}), Side: {self.side}"
+        return f"Center: ({self.center.x:.1f}, {self.center.y:.1f}, {self.center.z:.1f}), Side: {self.side:.1f}"
 
     def area(self):
         return 6 * (self.side ** 2)
