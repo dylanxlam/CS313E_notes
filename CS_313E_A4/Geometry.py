@@ -84,18 +84,28 @@ class Sphere(object):
 
         # Check if the spheres intersect
         return distance < (self.radius + other.radius)
+    
 
+    
+    def does_intersect_cube(self, a_cube):
+        # Check if the sphere intersects the cube
+        cube_min = a_cube.get_min_corner()
+        cube_max = a_cube.get_max_corner()
+
+        closest_x = max(cube_min.x, min(self.center.x, cube_max.x))
+        closest_y = max(cube_min.y, min(self.center.y, cube_max.y))
+        closest_z = max(cube_min.z, min(self.center.z, cube_max.z))
+
+        distance = self.center.distance(Point(closest_x, closest_y, closest_z))
+
+        return distance <= self.radius
 
     
     def circumscribe_cube(self):
-        # Calculate the side length of the circumscribed cube
-        side_length = 2 * self.radius * math.sqrt(3)
+        side_length = 2 * self.radius
+        cube = Cube(self.center.x, self.center.y, self.center.z, side_length)
+        return cube
 
-        # Calculate the coordinates of the cube's center
-        cube_center = self.center
-
-        # Create and return the circumscribed Cube object
-        return Cube(cube_center.x, cube_center.y, cube_center.z, side_length)
 
 class Cube(object):
     def __init__(self, x=0, y=0, z=0, side=1):
