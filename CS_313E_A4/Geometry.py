@@ -112,11 +112,11 @@ class Sphere(object):
             return False
 
     def does_intersect_cube(self, a_cube):
-        corners = a_cube.get_corners()
-        for corner in corners:
-            if self.is_inside_point(corner):
-                return True
-        return False
+        return not (
+            abs(self.center.x - a_cube.center.x) > (self.side / 2 + a_cube.side / 2) or
+            abs(self.center.y - a_cube.center.y) > (self.side / 2 + a_cube.side / 2) or
+            abs(self.center.z - a_cube.center.z) > (self.side / 2 + a_cube.side / 2)
+        )
 
     def circumscribe_cube(self):
         # Calculate the side length of the circumscribing cube
