@@ -178,12 +178,9 @@ class Cylinder(object):
 
     
     def is_inside_sphere (self, a_sphere):
-        distance = math.sqrt((self.x - a_sphere.x) ** 2 + (self.y - a_sphere.y) ** 2)
-        return (
-            distance + a_sphere.radius <= self.radius and
-            a_sphere.z >= self.z and
-            a_sphere.z <= self.z + self.height
-        )
+        return (a_sphere.center.distance(Point(a_sphere.center.x, a_sphere.center.y, self.center.z)) + a_sphere.radius <= self.radius and
+                a_sphere.center.z >= self.center.z and
+                a_sphere.center.z <= self.center.z + self.height)
 
     def is_inside_cube(self, a_cube):
        if isinstance(a_cube, Cube):
