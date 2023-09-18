@@ -116,12 +116,12 @@ class Sphere(object):
         closest_x = max(a_cube.center.x - a_cube.side / 2, min(self.center.x, a_cube.center.x + a_cube.side / 2))
         closest_y = max(a_cube.center.y - a_cube.side / 2, min(self.center.y, a_cube.center.y + a_cube.side / 2))
         closest_z = max(a_cube.center.z - a_cube.side / 2, min(self.center.z, a_cube.center.z + a_cube.side / 2))
-        
+
         # Calculate the distance between the sphere's center and the closest point on the cube
         distance = math.sqrt((self.center.x - closest_x) ** 2 + (self.center.y - closest_y) ** 2 + (self.center.z - closest_z) ** 2)
 
         # Check if the distance is less than or equal to the sphere's radius
-        return distance <= self.radius
+        return distance <= self.radius or a_cube.is_inside_sphere(self)
 
 
     def circumscribe_cube(self):
