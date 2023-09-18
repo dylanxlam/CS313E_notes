@@ -219,12 +219,13 @@ class Cylinder(object):
             return False  # Input is not a Cube object
     
     def is_inside_cylinder(self, other):
-        # Calculate the range of z-values that would be inside the cylinder
+        # Calculate the range of z-values that would be inside this cylinder
         z_range = (
             self.center.z - self.height / 2,
             self.center.z + self.height / 2
         )
-        
+
+        # Calculate the range of z-values for the other cylinder
         other_z_range = (
             other.center.z - other.height / 2,
             other.center.z + other.height / 2
@@ -232,12 +233,11 @@ class Cylinder(object):
 
         # Check if the other Cylinder is strictly inside this Cylinder
         return (
-            abs(self.center.x - other.center.x) + other.radius <= self.radius and
-            abs(self.center.y - other.center.y) + other.radius <= self.radius and
-            z_range[0] <= other_z_range[0] and
-            z_range[1] >= other_z_range[1]
+            abs(self.center.x - other.center.x) + other.radius < self.radius and
+            abs(self.center.y - other.center.y) + other.radius < self.radius and
+            z_range[0] < other_z_range[0] and
+            z_range[1] > other_z_range[1]
         )
-
 
 def main():
     # Read input data from standard input
