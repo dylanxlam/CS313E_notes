@@ -14,6 +14,8 @@ class Point(object):
         self.x = x
         self.y = y
     
+    def __str__(self):
+        return "(" + str(self.x) + ", " + str(self.y) + ")"
 
     # get the distance to another Point object
     def dist(self, other):
