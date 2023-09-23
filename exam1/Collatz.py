@@ -11,15 +11,14 @@ import sys
 step_dictionary = {}
 
 def step_dist(start):
-    s = 0  # Step distance
-    w = 0  # Work
+    s = 0  
+    w = 0  
 
     n = start
     encountered_numbers = []
 
     while n != 1:
         if n in step_dictionary:
-            # If n has been encountered before, update work and step distance
             for num in encountered_numbers:
                 step_dictionary[num] = (s, w)
                 s -= 1
@@ -36,7 +35,6 @@ def step_dist(start):
         s += 1
         w += 1
 
-    # Update step distances and work for encountered numbers
     for num in encountered_numbers:
         step_dictionary[num] = (s, w)
         s -= 1
