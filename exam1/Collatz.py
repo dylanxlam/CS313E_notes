@@ -27,11 +27,11 @@ def step_dist(start):
         s += 1
         w += 1
         
-        # Check if the step distance for n is already known
         if n in step_dictionary:
+            s += step_dictionary[n][0]  
             w += step_dictionary[n][1]
+            break
     
-    # Store the computed step distance in the dictionary
     step_dictionary[start] = (s, w)
     
     return (s, w)
