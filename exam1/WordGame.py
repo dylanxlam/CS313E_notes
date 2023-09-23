@@ -10,27 +10,21 @@ import sys
 from typing import List, Tuple
 
 def wordgame(guesses: List[List[Tuple[str, str]]], dictionary: List[str]) -> List[str]:
-    # Create a list to store possible words
     possible_words = dictionary.copy()
 
-    # Go through each guess
     for guess in guesses:
         for i, (letter, color) in enumerate(guess):
-            # Handle green letters first
             if color == 'G':
                 possible_words = [word for word in possible_words if word[i] == letter]
 
-            # Handle yellow letters
             elif color == 'Y':
                 possible_words = [word for word in possible_words if letter in word and word[i] != letter]
 
-            # Handle black letters
             elif color == 'B':
                 possible_words = [word for word in possible_words if letter not in word]
 
     return possible_words
 
-# BELOW THIS LINE, MODIFY AT YOUR OWN RISK.
 
 def main():
     # Helper functions for reading in input.
