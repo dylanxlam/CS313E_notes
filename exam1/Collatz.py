@@ -24,10 +24,11 @@ def step_dist(start):
         else:
             n = 3 * n + 1
         s += 1
-        w += 1
 
         if n in step_dictionary:
             w += step_dictionary[n][1]
+
+    w += s  # Add the current step distance as work
 
     step_dictionary[start] = (s, w)
     return (s, w)
