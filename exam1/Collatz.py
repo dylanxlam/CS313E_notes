@@ -25,13 +25,14 @@ def step_dist(start):
         else:
             n = 3 * n + 1
         s += 1
-        w += 1
         
         if n in step_dictionary:
             s += step_dictionary[n][0]  
             w += step_dictionary[n][1]
             break
-    
+        else:
+            w +=1
+
     step_dictionary[start] = (s, w)
     
     return (s, w)
