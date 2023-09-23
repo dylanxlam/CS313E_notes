@@ -1,13 +1,14 @@
 # File: Collatz.py
-# Description: A basic 2D Triangle class
+# Description: Calculate step distances of Collatz sequence starting points and
+#    the work required to calculate these step distances successively
 # Student Name: Dylan Lam
 # Student UT EID: DXL85
 # Course Name: CS 313E
 # Unique Number: 52605
 
 
-
 import sys
+step_dictionary = {}
 
 # Input: an integer start point for a Collatz sequence
 # Output: a tuple (s, w) where s is the step distance from start to 1,
@@ -26,13 +27,15 @@ def step_dist(start):
         s += 1
         w += 1
         
-        for key in step_dist:
-            if key == n:
-                w += step_dist[key][1]
+        # Check if the step distance for n is already known
+        if n in step_dictionary:
+            w += step_dictionary[n][1]
     
-    step_dist[start] = (s, w)
+    # Store the computed step distance in the dictionary
+    step_dictionary[start] = (s, w)
     
     return (s, w)
+
 
 def main():
     # You shouldn't have to change anything below this line

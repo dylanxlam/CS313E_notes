@@ -1,6 +1,5 @@
 # File: Labyrinth.py
-# Description: Calculate step distances of Collatz sequence starting points and
-# the work required to calculate these step distances successively
+# Description: Utilizes labyrinth exit instructions to check if they work
 # Student Name: Dylan Lam
 # Student UT EID: DXL85
 # Course Name: CS 313E
