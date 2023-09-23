@@ -10,20 +10,20 @@ import sys
 from typing import List, Tuple
 
 def wordgame(guesses: List[List[Tuple[str, str]]], dictionary: List[str]) -> List[str]:
-    possible_words = dictionary.copy()
+    words = dictionary.copy()
 
     for guess in guesses:
         for i, (letter, color) in enumerate(guess):
             if color == 'G':
-                possible_words = [word for word in possible_words if word[i] == letter]
+                words = [word for word in words if word[i] == letter]
 
             elif color == 'Y':
-                possible_words = [word for word in possible_words if letter in word and word[i] != letter]
+                words = [word for word in words if letter in word and word[i] != letter]
 
             elif color == 'B':
-                possible_words = [word for word in possible_words if letter not in word]
+                words = [word for word in words if letter not in word]
 
-    return possible_words
+    return words
 
 
 def main():
