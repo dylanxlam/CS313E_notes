@@ -38,8 +38,11 @@ def step_dist(start):
             s -= 1
 
     step_dictionary[start] = (s, w)
-    return (s, w)
+    
+    if n == 1:
+        step_dictionary[1] = (0, 0)
 
+    return (s, w)
 
 def main():
     # You shouldn't have to change anything below this line
