@@ -15,6 +15,7 @@ def step_dist(start):
         return step_dictionary[start]
 
     s = 0
+    w = 0
     n = start
 
     while n != 1:
