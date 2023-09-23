@@ -10,14 +10,10 @@
 import sys
 step_dictionary = {}
 
-# Input: an integer start point for a Collatz sequence
-# Output: a tuple (s, w) where s is the step distance from start to 1,
-# and w is the amount of work required to calculate this step distance
-# given previous calculations
 def step_dist(start):
     if start in step_dictionary:
         return step_dictionary[start]
-    
+
     s = 0
     w = 0
     n = start
@@ -28,16 +24,13 @@ def step_dist(start):
         else:
             n = 3 * n + 1
         s += 1
+        w += 1
 
         if n in step_dictionary:
             w += step_dictionary[n][1]
-            break
-    
+
     step_dictionary[start] = (s, w)
-    return step_dictionary[start]
-
-    return (-1, -1)  # Return (-1, -1) if the start point is not found in the dictionary
-
+    return (s, w)
 
 def main():
     # You shouldn't have to change anything below this line
