@@ -1,5 +1,5 @@
 # File: ApproximateAnagram.py
-# Description: A basic 2D Triangle class
+# Description: Determine if two words are k-approximate anagrams of each other
 # Student Name: Dylan Lam
 # Student UT EID: DXL85
 # Course Name: CS 313E
@@ -24,11 +24,12 @@ def is_approximate_anagram(word1, word2, k):
         if character in character_count and character_count[character] > 0:
             character_count[character] -= 1
         else:
+            k -= 1
             if k < 0:
                 return False
-            k -= 1
-          
+
     return k >= 0
+
 
 def main():
     # read the number of test cases
