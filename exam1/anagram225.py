@@ -5,11 +5,16 @@
 # Course Name: CS 313E
 # Unique Number: 52605
 
-
 import sys
 
+
+# Input: word1, word2 are 2 strings of the two words to check
+# k is the number of "off" characters allowed
+# Output: True if word1 and word2 are k-approximate anagrams of each other,
+# False otherwise
 def is_approximate_anagram(word1, word2, k):
-    char_count_diff = abs(len(word1) - len(word2))  # Added this line to keep track of character count difference
+    if abs(len(word1) - len(word2)) > k:
+        return False
     
     character_count = {}
     for character in word1:
@@ -19,11 +24,11 @@ def is_approximate_anagram(word1, word2, k):
         if character in character_count and character_count[character] > 0:
             character_count[character] -= 1
         else:
+            if k < 0:
+                return False
             k -= 1
-            char_count_diff += 1  # Incremented char_count_diff when a character is different
-    
-    return char_count_diff <= k  # Changed the condition for returning True/False
-
+          
+    return k >= 0
 
 def main():
     # read the number of test cases
@@ -41,3 +46,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
