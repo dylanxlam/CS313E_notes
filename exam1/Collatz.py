@@ -21,26 +21,19 @@ def step_dist(start):
     s = 0
     w = 0
     n = start
-    sequence = []
 
     while n != 1:
-        sequence.append(n)
         if n % 2 == 0:
             n //= 2
         else:
             n = 3 * n + 1
         s += 1
 
-    for num in sequence[::-1]:
-        if num in step_dictionary:
+        if n in step_dictionary:
+            w += step_dictionary[n][1]
             break
-        w += 1
-
-    for num in sequence[::-1]:
-        step_dictionary[num] = (s, w)
-        s -= 1
-        w -= 1
-
+    
+    step_dictionary[start] = (s, w)
     return step_dictionary[start]
 
     return (-1, -1)  # Return (-1, -1) if the start point is not found in the dictionary
