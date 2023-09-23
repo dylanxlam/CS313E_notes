@@ -14,7 +14,7 @@ class Point(object):
         self.x = x
         self.y = y
     
- 
+
     # get the distance to another Point object
     def dist(self, other):
         return math.hypot(self.x - other.x, self.y - other.y)
@@ -22,20 +22,20 @@ class Point(object):
 class Triangle(object): 
     # constructor
     def __init__(self, point_a = Point(), point_b = Point(), point_c = Point()):
-        self.point_a = point_a
-        self.point_b = point_b
-        self.point_c = point_c
+        self.a = point_a
+        self.b = point_b
+        self.c = point_c
 
     # print a string representation of Triangle
     def __str__(self):
-        return f"Point1: ({self.point_a.x:.1f}, {self.point_a.y:.1f}), Point2: ({self.point_b.x:.1f}, {self.point_b.y:.1f}), Point3: ({self.point_c.x:.1f}, {self.point_c.y:.1f})"
+        return f"Triangle with points: A{self.point_a}, B{self.point_b}, C{self.point_c}"
     
     # check if the triangle is similar to another triangle
     def __eq__(self, other):
-        self_sides = sorted([self.point_a.dist(self.point_b), self.point_b.dist(self.point_c), self.point_c.dist(self.point_a)])
-        other_sides = sorted([other.point_a.dist(other.point_b), other.point_b.dist(other.point_c), other.point_c.dist(other.point_a)])
+        self_sides = sorted([self.a.dist(self.b), self.b.dist(self.c), self.c.dist(self.a)])
+        other_sides = sorted([other.a.dist(other.b), other.b.dist(other.c), other.c.dist(other.a)])
         return self_sides[0] / other_sides[0] == self_sides[1] / other_sides[1] == self_sides[2] / other_sides[2]
-
+    
     # check if triangle is obtuse or not
     def is_obtuse(self):
         sorted_sides = sorted([self.point_a.dist(self.point_b), self.point_b.dist(self.point_c), self.point_c.dist(self.point_a)])
