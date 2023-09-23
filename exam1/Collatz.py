@@ -17,24 +17,29 @@ def step_dist(start):
     s = 0
     w = 0
     n = start
+    encountered_numbers = set()
 
     while n != 1:
+        if n in step_dictionary:
+            w += step_dictionary[n][1]
+            break
+
+        encountered_numbers.add(n)
+
         if n % 2 == 0:
             n //= 2
         else:
             n = 3 * n + 1
         s += 1
 
-        if n in step_dictionary:
-            break
-
-    w = s
-    if n != 1:
-        _, w_n = step_dist(n)
-        w += w_n
+    for num in encountered_numbers:
+        if num not in step_dictionary:
+            step_dictionary[num] = (s, w)
+            s -= 1
 
     step_dictionary[start] = (s, w)
     return (s, w)
+
 
 def main():
     # You shouldn't have to change anything below this line
