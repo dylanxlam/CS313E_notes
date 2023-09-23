@@ -24,11 +24,10 @@ def is_approximate_anagram(word1, word2, k):
         if character in character_count and character_count[character] > 0:
             character_count[character] -= 1
         else:
-            k -= 1
             if k < 0:
                 return False
-            character_count[character] -= 1
-    
+            k -= 1
+          
     return k >= 0
 
 def main():
