@@ -29,7 +29,7 @@ def step_dist(start):
         if n in step_dictionary:
             s += step_dictionary[n][0]  
             w += step_dictionary[n][1]
-            break
+            n = 1
         else:
             w +=1
 
