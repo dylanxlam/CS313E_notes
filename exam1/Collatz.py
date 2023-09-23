@@ -11,36 +11,35 @@ import sys
 step_dictionary = {}
 
 def step_dist(start):
-    if start in step_dictionary:
-        return step_dictionary[start]
+    s = 0  # Step distance
+    w = 0  # Work
 
-    s = 0
-    w = 0
     n = start
-    encountered_numbers = set()
+    encountered_numbers = []
 
     while n != 1:
         if n in step_dictionary:
+            # If n has been encountered before, update work and step distance
+            for num in encountered_numbers:
+                step_dictionary[num] = (s, w)
+                s -= 1
+            s += step_dictionary[n][0]
             w += step_dictionary[n][1]
             break
 
-        encountered_numbers.add(n)
+        encountered_numbers.append(n)
 
         if n % 2 == 0:
             n //= 2
         else:
             n = 3 * n + 1
         s += 1
+        w += 1
 
+    # Update step distances and work for encountered numbers
     for num in encountered_numbers:
-        if num not in step_dictionary:
-            step_dictionary[num] = (s, w)
-            s -= 1
-
-    step_dictionary[start] = (s, w)
-    
-    if n == 1:
-        step_dictionary[1] = (0, 0)
+        step_dictionary[num] = (s, w)
+        s -= 1
 
     return (s, w)
 
