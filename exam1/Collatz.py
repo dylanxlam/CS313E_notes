@@ -15,7 +15,6 @@ def step_dist(start):
         return step_dictionary[start]
 
     s = 0
-    w = 0
     n = start
 
     while n != 1:
@@ -26,9 +25,12 @@ def step_dist(start):
         s += 1
 
         if n in step_dictionary:
-            w += step_dictionary[n][1]
+            break
 
-    w += s  # Add the current step distance as work
+    w = s
+    if n != 1:
+        _, w_n = step_dist(n)
+        w += w_n
 
     step_dictionary[start] = (s, w)
     return (s, w)
