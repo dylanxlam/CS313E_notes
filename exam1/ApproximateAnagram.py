@@ -27,6 +27,7 @@ def is_approximate_anagram(word1, word2, k):
             k -= 1
             if k < 0:
                 return False
+            character_count[character] -= 1
     
     return k >= 0
 
