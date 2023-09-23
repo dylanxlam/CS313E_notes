@@ -1,4 +1,4 @@
-# File: Triangle.py
+# File: ApproximateAnagram.py
 # Description: A basic 2D Triangle class
 # Student Name: Dylan Lam
 # Student UT EID: DXL85
