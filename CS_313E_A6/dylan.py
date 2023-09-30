@@ -1,3 +1,24 @@
+#  File: OfficeSpace.py
+
+#  Description:
+
+#  Student Name: Dylan Lam
+
+#  Student UT EID: DXL85
+
+#  Partner Name: Alexander Romero-Barrionuevo
+
+#  Student's UT EID: ANR3784    
+
+#  Course Name: CS 313E
+
+#  Unique Number: 52605
+
+#  Date Created:
+
+#  Date Last Modified:
+
+
 # Input: a rectangle which is a tuple of 4 integers (x1, y1, x2, y2)
 # Output: an integer giving the area of the rectangle
 def area(rect):
@@ -33,12 +54,9 @@ def contested_space(bldg):
     contested = 0
     for row in bldg:
         for cell in row:
-            if cell > 1:
+            if cell < 0:
                 contested += 1
     return contested
-
-
-
 
 # Input: bldg is a 2-D array representing the whole office space
 #        rect is a rectangle in the form of a tuple of 4 integers
@@ -50,9 +68,10 @@ def uncontested_space(bldg, rect):
     overlapping_area = 0
     for i in range(rect[0], rect[2]):
         for j in range(rect[1], rect[3]):
-            if bldg[j][i] != 0:
+            if bldg[j][i] == -1:
                 overlapping_area += 1
     return area_requested - overlapping_area
+
 
 # Input: office is a rectangle in the form of a tuple of 4 integers
 #        representing the whole office space
@@ -76,7 +95,6 @@ def request_space(office, cubicles):
 
     return bldg
 
-
 def main():
     # Read office space size
     w, h = map(int, input().split())
@@ -92,43 +110,26 @@ def main():
     allocated_areas = {}
 
     # Read employee requests and process them
+    cubicles = []
     for _ in range(n):
         employee, x1, y1, x2, y2 = input().split()
         x1, y1, x2, y2 = map(int, [x1, y1, x2, y2])
-        total_area = (x2 - x1) * (y2 - y1)
+        cubicles.append((employee, (x1, y1, x2, y2)))
 
-        # Check for overlap and allocate uncontested space
-        uncontested_area = total_area
-        for i in range(y1, y2):
-            for j in range(x1, x2):
-                if office[i][j] > 0:
-                    uncontested_area -= 1
-                office[i][j] = -1
-
-        # Update dictionaries
-        if employee in total_areas:
-            total_areas[employee] += total_area
-            allocated_areas[employee] += uncontested_area
-        else:
-            total_areas[employee] = total_area
-            allocated_areas[employee] = uncontested_area
-
-    # Calculate contested space
-    contested = 0
-    for row in office:
-        for cell in row:
-            if cell == -1:
-                contested += 1
+    # Create office building and allocate spaces
+    bldg = request_space((0, 0, w, h), cubicles)
 
     # Calculate and print results
     total_space = w * h
-    unallocated = sum(row.count(0) for row in office)
+    unallocated = unallocated_space(bldg)
+    contested = contested_space(bldg)
     print(f"Total {total_space}")
     print(f"Unallocated {unallocated}")
     print(f"Contested {contested}")
 
-    for employee in total_areas:
-        print(f"{employee} {allocated_areas[employee]}")
+    for employee, rect in cubicles:
+        area_allocated = uncontested_space(bldg, rect)
+        print(f"{employee} {area_allocated}")
 
 if __name__ == "__main__":
     main()
