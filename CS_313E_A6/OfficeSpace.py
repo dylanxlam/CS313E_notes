@@ -1,3 +1,24 @@
+#  File: OfficeSpace.py
+
+#  Description:
+
+#  Student Name: Dylan Lam
+
+#  Student UT EID: DXL85
+
+#  Partner Name: Alexander Romero-Barrionuevo
+
+#  Student's UT EID: ANR3784    
+
+#  Course Name: CS 313E
+
+#  Unique Number: 52605
+
+#  Date Created:
+
+#  Date Last Modified:
+
+
 # Input: a rectangle which is a tuple of 4 integers (x1, y1, x2, y2)
 # Output: an integer giving the area of the rectangle
 def area(rect):
@@ -32,7 +53,9 @@ def unallocated_space(bldg):
 def contested_space(bldg):
     contested = 0
     for row in bldg:
-        contested += row.count(-1)
+        for cell in row:
+            if cell < 0:
+                contested += 1
     return contested
 
 # Input: bldg is a 2-D array representing the whole office space
@@ -45,9 +68,10 @@ def uncontested_space(bldg, rect):
     overlapping_area = 0
     for i in range(rect[0], rect[2]):
         for j in range(rect[1], rect[3]):
-            if bldg[j][i] != 0:
+            if bldg[j][i] == -1:
                 overlapping_area += 1
     return area_requested - overlapping_area
+
 
 # Input: office is a rectangle in the form of a tuple of 4 integers
 #        representing the whole office space
@@ -60,7 +84,7 @@ def request_space(office, cubicles):
     h = office[3]
     bldg = [[0] * w for _ in range(h)]
 
-    for i, rect in enumerate(cubicles):
+    for i, (employee, rect) in enumerate(cubicles):
         for x in range(rect[0], rect[2]):
             for y in range(rect[1], rect[3]):
                 if bldg[y][x] == 0:
@@ -78,18 +102,22 @@ def main():
     # Read number of employees
     n = int(input())
 
-    # Read employee requests
+    # Create office building as a 2D array initialized with 0
+    office = [[0] * w for _ in range(h)]
+
+    # Initialize dictionaries to store the total and allocated areas for each employee
+    total_areas = {}
+    allocated_areas = {}
+
+    # Read employee requests and process them
     cubicles = []
-    employees = []  # Store employee names
     for _ in range(n):
         employee, x1, y1, x2, y2 = input().split()
-        rect = (int(x1), int(y1), int(x2), int(y2))
-        cubicles.append((employee, rect))
-        employees.append(employee)
+        x1, y1, x2, y2 = map(int, [x1, y1, x2, y2])
+        cubicles.append((employee, (x1, y1, x2, y2)))
 
     # Create office building and allocate spaces
-    office = (0, 0, w, h)
-    bldg = request_space(office, [rect for _, rect in cubicles])
+    bldg = request_space((0, 0, w, h), cubicles)
 
     # Calculate and print results
     total_space = w * h
@@ -105,4 +133,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
