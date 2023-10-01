@@ -18,6 +18,19 @@
 #  Date Created:
 
 #  Date Last Modified:
+# Input: two rectangles in the form of tuples of 4 integers
+# Output: a tuple of 4 integers denoting the overlapping rectangle.
+#         return (0, 0, 0, 0) if there is no overlap
+def overlap(rect1, rect2):
+    x1 = max(rect1[0], rect2[0])
+    y1 = max(rect1[1], rect2[1])
+    x2 = min(rect1[2], rect2[2])
+    y2 = min(rect1[3], rect2[3])
+
+    if x1 < x2 and y1 < y2:
+        return (x1, y1, x2, y2)
+    else:
+        return (0, 0, 0, 0)
 
 # Input: a rectangle which is a tuple of 4 integers (x1, y1, x2, y2)
 # Output: an integer giving the area of the rectangle
@@ -66,6 +79,11 @@ def calculate_area(bldg, rect, test_case):
                 if bldg[j][i] < 0:
                     overlapping_area += 1
         return overlapping_area
+
+    elif test_case == "overlap":
+        rect1 = rect[0]
+        rect2 = rect[1]
+        return area(overlap(rect1, rect2))
 
 # Input: office is a rectangle in the form of a tuple of 4 integers
 #        representing the whole office space
@@ -123,6 +141,9 @@ def main():
 
         area_contested = calculate_area(bldg, rect, "contested")
         print(f"{employee} {area_contested}")
+
+        area_overlap = calculate_area(bldg, rect, "overlap")
+        print(f"{employee} {area_overlap}")
 
 if __name__ == "__main__":
     main()
