@@ -18,6 +18,12 @@
 #  Date Created:
 
 #  Date Last Modified:
+
+# Input: a rectangle which is a tuple of 4 integers (x1, y1, x2, y2)
+# Output: an integer giving the area of the rectangle
+def area(rect):
+    return (rect[2] - rect[0]) * (rect[3] - rect[1])
+
 # Input: two rectangles in the form of tuples of 4 integers
 # Output: a tuple of 4 integers denoting the overlapping rectangle.
 #         return (0, 0, 0, 0) if there is no overlap
@@ -31,11 +37,6 @@ def overlap(rect1, rect2):
         return (x1, y1, x2, y2)
     else:
         return (0, 0, 0, 0)
-
-# Input: a rectangle which is a tuple of 4 integers (x1, y1, x2, y2)
-# Output: an integer giving the area of the rectangle
-def area(rect):
-    return (rect[2] - rect[0]) * (rect[3] - rect[1])
 
 # Input: bldg is a 2-D array representing the whole office space
 # Output: a single integer denoting the area of the unallocated 
@@ -83,7 +84,8 @@ def calculate_area(bldg, rect, test_case):
     elif test_case == "overlap":
         rect1 = rect[0]
         rect2 = rect[1]
-        return area(overlap(rect1, rect2))
+        overlapping_rect = overlap(rect1, rect2)
+        return area(overlapping_rect)
 
 # Input: office is a rectangle in the form of a tuple of 4 integers
 #        representing the whole office space
