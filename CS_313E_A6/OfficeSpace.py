@@ -54,38 +54,23 @@ def contested_space(bldg):
     contested = 0
     for row in bldg:
         for cell in row:
-            if cell == -1:
+            if cell < 0:
                 contested += 1
     return contested
 
 # Input: bldg is a 2-D array representing the whole office space
 #        rect is a rectangle in the form of a tuple of 4 integers
 #        representing the cubicle requested by an employee
-#        test_case is a string indicating the test case type
-# Output: an integer denoting the area based on the test case
-def calculate_area(bldg, rect, test_case):
+# Output: a single integer denoting the area of the uncontested 
+#         space in the office that the employee gets
+def uncontested_space(bldg, rect):
     area_requested = area(rect)
     overlapping_area = 0
-
-    if test_case == "uncontested":
-        for i in range(rect[0], rect[2]):
-            for j in range(rect[1], rect[3]):
-                if bldg[j][i] == -1:
-                    overlapping_area += 1
-        return area_requested - overlapping_area
-
-    elif test_case == "contested":
-        for i in range(rect[0], rect[2]):
-            for j in range(rect[1], rect[3]):
-                if bldg[j][i] < 0:
-                    overlapping_area += 1
-        return overlapping_area
-
-    elif test_case == "overlap":
-        rect1 = rect[0]
-        rect2 = rect[1]
-        overlapping_rect = overlap(rect1, rect2)
-        return area(overlapping_rect)
+    for i in range(rect[0], rect[2]):
+        for j in range(rect[1], rect[3]):
+            if bldg[j][i] == -1:
+                overlapping_area += 1
+    return area_requested - overlapping_area
 
 # Input: office is a rectangle in the form of a tuple of 4 integers
 #        representing the whole office space
@@ -119,6 +104,10 @@ def main():
     # Create office building as a 2D array initialized with 0
     office = [[0] * w for _ in range(h)]
 
+    # Initialize dictionaries to store the total and allocated areas for each employee
+    total_areas = {}
+    allocated_areas = {}
+
     # Read employee requests and process them
     cubicles = []
     for _ in range(n):
@@ -138,14 +127,8 @@ def main():
     print(f"Contested {contested}")
 
     for employee, rect in cubicles:
-        area_allocated = calculate_area(bldg, rect, "uncontested")
+        area_allocated = uncontested_space(bldg, rect)
         print(f"{employee} {area_allocated}")
-
-        area_contested = calculate_area(bldg, rect, "contested")
-        print(f"{employee} {area_contested}")
-
-        area_overlap = calculate_area(bldg, rect, "overlap")
-        print(f"{employee} {area_overlap}")
 
 if __name__ == "__main__":
     main()
