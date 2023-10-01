@@ -52,9 +52,10 @@ def uncontested_space(bldg, rect):
     overlapping_area = 0
     for i in range(x1, x2):
         for j in range(y1, y2):
-            if bldg[j][i] != 0 and bldg[j][i] != -1:
+            if bldg[j][i] < 0:
                 overlapping_area += 1
     return area_requested - overlapping_area
+
 
 
 
