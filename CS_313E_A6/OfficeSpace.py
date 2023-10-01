@@ -42,19 +42,19 @@ def contested_space(bldg):
     contested = 0
     for i in range(len(bldg)):
         for j in range(len(bldg[0])):
-            if bldg[i][j] < 0:
+            if bldg[i][j] > 1:
                 contested += 1
     return contested
 
 def uncontested_space(bldg, rect):
     x1, y1, x2, y2 = rect
-    area_requested = area(rect)
     overlapping_area = 0
     for i in range(x1, x2):
         for j in range(y1, y2):
-            if bldg[j][i] < 0:
+            if bldg[j][i] > 1:
                 overlapping_area += 1
-    return area_requested - overlapping_area
+    return area(rect) - overlapping_area
+
 
 
 
