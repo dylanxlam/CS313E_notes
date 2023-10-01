@@ -76,55 +76,40 @@ def request_space(office, cubicles):
     return bldg
 
 def main():
-    # Read the office space dimensions
+    # Read office space size
     w, h = map(int, input().split())
-    
-    # Create a 2D list to represent the office space
-    office_space = [[0] * w for _ in range(h)]
-    
-    # Read the number of employees
+
+    # Read number of employees
     n = int(input())
-    
-    # Create a dictionary to store the requested cubicles for each employee
-    cubicles = {}
-    
+
+    # Create office building as a 2D array initialized with 0
+    office = [[0] * w for _ in range(h)]
+
+    # Initialize dictionaries to store the total and allocated areas for each employee
+    total_areas = {}
+    allocated_areas = {}
+
+    # Read employee requests and process them
+    cubicles = []
     for _ in range(n):
-        line = input().split()
-        employee = line[0]
-        x1, y1, x2, y2 = map(int, line[1:])
-        cubicles[employee] = (x1, y1, x2, y2)
-    
-    # Initialize variables to keep track of the office space statistics
+        employee, x1, y1, x2, y2 = input().split()
+        x1, y1, x2, y2 = map(int, [x1, y1, x2, y2])
+        cubicles.append((employee, (x1, y1, x2, y2)))
+
+    # Create office building and allocate spaces
+    bldg = request_space((0, 0, w, h), cubicles)
+
+    # Calculate and print results
     total_space = w * h
-    unallocated_space = total_space
-    contested_space = 0
-    
-    # Process each employee's cubicle request
-    for employee, cubicle in cubicles.items():
-        x1, y1, x2, y2 = cubicle
-        
-        # Update unallocated space
-        unallocated_space -= (x2 - x1 + 1) * (y2 - y1 + 1)
-        
-        # Update contested space
-        for x in range(x1, x2 + 1):
-            for y in range(y1, y2 + 1):
-                if office_space[y][x] == 1:
-                    contested_space += 1
-                else:
-                    office_space[y][x] = 1
-    
-    # Print the results
+    unallocated = unallocated_space(bldg)
+    contested = contested_space(bldg)
     print(f"Total {total_space}")
-    print(f"Unallocated {unallocated_space}")
-    print(f"Contested {contested_space}")
-    
-    # Print the uncontested space for each employee
-    for employee, cubicle in cubicles.items():
-        x1, y1, x2, y2 = cubicle
-        uncontested_area = (x2 - x1 + 1) * (y2 - y1 + 1) - contested_space
-        print(f"{employee} {uncontested_area}")
+    print(f"Unallocated {unallocated}")
+    print(f"Contested {contested}")
+
+    for employee, rect in cubicles:
+        area_allocated = uncontested_space(bldg, rect)
+        print(f"{employee} {area_allocated}")
 
 if __name__ == "__main__":
     main()
-
