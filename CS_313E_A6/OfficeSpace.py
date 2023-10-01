@@ -85,16 +85,59 @@ def request_space(office, cubicles):
     h = office[3]
     bldg = [[0] * w for _ in range(h)]
 
+    # Create a dictionary to track the total area requested by each employee
+    total_requested = {}
+
     for i, (employee, rect) in enumerate(cubicles):
+        area_requested = area(rect)
+        total_requested[employee] = total_requested.get(employee, 0) + area_requested
+
         for x in range(rect[0], rect[2]):
             for y in range(rect[1], rect[3]):
                 if bldg[y][x] == 0:
-                    bldg[y][x] = i + 1
-                else:
-                    # Mark as contested if already assigned
+                    bldg[y][x] = employee
+                elif bldg[y][x] != employee:
+                    # Mark as contested if already assigned to another employee
+                    total_requested[bldg[y][x]] -= 1
                     bldg[y][x] = -1
 
-    return bldg
+    return bldg, total_requested
+
+def main():
+    # Read office space size
+    w, h = map(int, input().split())
+
+    # Read number of employees
+    n = int(input())
+
+    # Create office building as a 2D array initialized with 0
+    office = [[0] * w for _ in range(h)]
+
+    # Read employee requests and process them
+    cubicles = []
+    for _ in range(n):
+        employee, x1, y1, x2, y2 = input().split()
+        x1, y1, x2, y2 = map(int, [x1, y1, x2, y2])
+        cubicles.append((employee, (x1, y1, x2, y2)))
+
+    # Create office building and allocate spaces
+    bldg, total_requested = request_space((0, 0, w, h), cubicles)
+
+    # Calculate and print results
+    total_space = w * h
+    unallocated = sum(row.count(0) for row in bldg)
+    contested = sum(row.count(-1) for row in bldg)
+
+    print(f"Total {total_space}")
+    print(f"Unallocated {unallocated}")
+    print(f"Contested {contested}")
+
+    for employee, area_requested in total_requested.items():
+        print(f"{employee} {area_requested}")
+
+if __name__ == "__main__":
+    main()
+
 
 
 def main():
