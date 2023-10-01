@@ -96,6 +96,7 @@ def request_space(office, cubicles):
 
     return bldg
 
+
 def main():
     # Read office space size
     w, h = map(int, input().split())
