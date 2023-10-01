@@ -73,6 +73,7 @@ def uncontested_space(bldg, rect):
     return area_requested - overlapping_area
 
 
+
 # Input: office is a rectangle in the form of a tuple of 4 integers
 #        representing the whole office space
 #        cubicles is a list of tuples of 4 integers representing all
