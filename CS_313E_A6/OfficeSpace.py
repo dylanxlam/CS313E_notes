@@ -19,25 +19,10 @@
 
 #  Date Last Modified:
 
-
 # Input: a rectangle which is a tuple of 4 integers (x1, y1, x2, y2)
 # Output: an integer giving the area of the rectangle
 def area(rect):
     return (rect[2] - rect[0]) * (rect[3] - rect[1])
-
-# Input: two rectangles in the form of tuples of 4 integers
-# Output: a tuple of 4 integers denoting the overlapping rectangle.
-#         return (0, 0, 0, 0) if there is no overlap
-def overlap(rect1, rect2):
-    x1 = max(rect1[0], rect2[0])
-    y1 = max(rect1[1], rect2[1])
-    x2 = min(rect1[2], rect2[2])
-    y2 = min(rect1[3], rect2[3])
-
-    if x1 < x2 and y1 < y2:
-        return (x1, y1, x2, y2)
-    else:
-        return (0, 0, 0, 0)
 
 # Input: bldg is a 2-D array representing the whole office space
 # Output: a single integer denoting the area of the unallocated 
@@ -55,24 +40,32 @@ def contested_space(bldg):
     contested = 0
     for row in bldg:
         for cell in row:
-            if cell < 0:
+            if cell == -1:
                 contested += 1
     return contested
 
 # Input: bldg is a 2-D array representing the whole office space
 #        rect is a rectangle in the form of a tuple of 4 integers
 #        representing the cubicle requested by an employee
-# Output: a single integer denoting the area of the uncontested 
-#         space in the office that the employee gets
-def uncontested_space(bldg, rect):
+#        test_case is a string indicating the test case type
+# Output: an integer denoting the area based on the test case
+def calculate_area(bldg, rect, test_case):
     area_requested = area(rect)
     overlapping_area = 0
-    for i in range(rect[0], rect[2]):
-        for j in range(rect[1], rect[3]):
-            if bldg[j][i] == -1:
-                overlapping_area += 1
-    return area_requested - overlapping_area
 
+    if test_case == "uncontested":
+        for i in range(rect[0], rect[2]):
+            for j in range(rect[1], rect[3]):
+                if bldg[j][i] == -1:
+                    overlapping_area += 1
+        return area_requested - overlapping_area
+
+    elif test_case == "contested":
+        for i in range(rect[0], rect[2]):
+            for j in range(rect[1], rect[3]):
+                if bldg[j][i] < 0:
+                    overlapping_area += 1
+        return overlapping_area
 
 # Input: office is a rectangle in the form of a tuple of 4 integers
 #        representing the whole office space
@@ -106,10 +99,6 @@ def main():
     # Create office building as a 2D array initialized with 0
     office = [[0] * w for _ in range(h)]
 
-    # Initialize dictionaries to store the total and allocated areas for each employee
-    total_areas = {}
-    allocated_areas = {}
-
     # Read employee requests and process them
     cubicles = []
     for _ in range(n):
@@ -129,8 +118,11 @@ def main():
     print(f"Contested {contested}")
 
     for employee, rect in cubicles:
-        area_allocated = uncontested_space(bldg, rect)
+        area_allocated = calculate_area(bldg, rect, "uncontested")
         print(f"{employee} {area_allocated}")
+
+        area_contested = calculate_area(bldg, rect, "contested")
+        print(f"{employee} {area_contested}")
 
 if __name__ == "__main__":
     main()
