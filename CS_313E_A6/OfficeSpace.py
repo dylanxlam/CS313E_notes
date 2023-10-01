@@ -54,7 +54,7 @@ def contested_space(bldg):
     contested = 0
     for row in bldg:
         for cell in row:
-            if cell < 0:
+            if cell == -1:
                 contested += 1
     return contested
 
@@ -71,6 +71,7 @@ def uncontested_space(bldg, rect):
             if bldg[j][i] == -1:
                 overlapping_area += 1
     return area_requested - overlapping_area
+
 
 # Input: office is a rectangle in the form of a tuple of 4 integers
 #        representing the whole office space
