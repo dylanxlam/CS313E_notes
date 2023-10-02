@@ -18,6 +18,8 @@
 #  Date Created:
 
 #  Date Last Modified:
+
+
 def area(rect):
     return (rect[2] - rect[0]) * (rect[3] - rect[1])
 
@@ -48,12 +50,12 @@ def contested_space(bldg):
 
 def uncontested_space(bldg, rect):
     x1, y1, x2, y2 = rect
-    overlapping_area = 0
-    for i in range(x1, x2):
-        for j in range(y1, y2):
-            if bldg[j][i] > 1:
-                overlapping_area += 1
-    return area(rect) - overlapping_area
+    uncontested_area = 0
+    for x in range(x1, x2):
+        for y in range(y1, y2):
+            if bldg[y][x] == 0:
+                uncontested_area += 1
+    return uncontested_area
 
 
 
