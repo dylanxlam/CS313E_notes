@@ -18,7 +18,11 @@
 # Given n of 1 or more, return the factorial of n, 
 # which is n * (n-1) * (n-2) ... 1.
 # Compute the result recursively (without loops). 
-# def factorial(n):
+def factorial(n):
+   if n ==0:
+      return 1
+   else:
+      return n * factorial(n - 1)
 
 
 # We have a number of bunnies and each bunny has two big floppy ears.
@@ -52,7 +56,14 @@ def fibonacci(n):
 # The even bunnies (2, 4, ..) we'll say have 3 ears, because they each 
 # have a raised foot. Recursively return the number of "ears" in the 
 # bunny line 1, 2, ... n (without loops or multiplication).
-# def bunnyEars2(bunnies):
+def bunnyEars2(bunnies):
+    if bunnies == 0:
+       return 0
+    elif bunnies % 2 == 0:
+       return 3 + bunnyEars2(bunnies - 1)
+    else:
+       return 2 + bunnyEars2(bunnies - 1)
+
 
 
 # We have triangle made of blocks. The topmost row has 1 block, the 
