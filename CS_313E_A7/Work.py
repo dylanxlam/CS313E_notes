@@ -1,3 +1,22 @@
+#  File: Work.py 
+
+#  Description:  This program assists Vyasa in optimizing his coding productivity 
+#       by determining the minimum number of lines he should write before taking coffee breaks, 
+#       given his productivity factor. It offers two methods: linear and binary search, 
+#       to find the ideal value efficiently.
+
+#  Student Name:  Dylan Lam
+
+#  Student UT EID:  DXL85
+
+#  Course Name: CS 313E
+
+#  Unique Number: 52605
+
+#  Date Created: 10/1/2023
+
+#  Date Last Modified: 10/2/2023
+
 import sys, time
 
 # Helper function to calculate the number of lines Vyasa can write before falling asleep
