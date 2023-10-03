@@ -1,16 +1,28 @@
 import sys, time
 
+# Helper function to calculate the number of lines Vyasa can write before falling asleep
+def lines_before_sleep(n: int, k: int, v: int) -> int:
+    lines_written = 0
+    productivity = 1
+
+    while v > 0:
+        lines_written += v
+        v = v // k
+        productivity *= k
+
+    return lines_written
+
 # Input: int n, the number of lines of code to write
 #        int k, the productivity factor
 # Output: the number of lines of code that must be 
 #         written before the first cup of coffee
 def linear_search(n: int, k: int) -> int:
     v = 0
-    while n > 0:
-        n -= v
+    while True:
+        lines_written = lines_before_sleep(n, k, v)
+        if lines_written >= n:
+            return v
         v += 1
-        n = n // k
-    return v
 
 # Input: int n, the number of lines of code to write
 #        int k, the productivity factor
@@ -21,18 +33,12 @@ def binary_search(n: int, k: int) -> int:
 
     while low < high:
         v = (low + high) // 2
-        lines_written = 0
-        productivity = 1
-
-        while v > 0:
-            lines_written += v
-            v = v // k
-            productivity *= k
+        lines_written = lines_before_sleep(n, k, v)
 
         if lines_written >= n:
-            high = (low + high) // 2
+            high = v
         else:
-            low = (low + high) // 2 + 1
+            low = v + 1
 
     return low
 
@@ -47,17 +53,19 @@ def main():
         k = int(inp[1])
 
         start = time.time()
-        print("Binary Search: " + str(binary_search(n, k)))
+        result = binary_search(n, k)
         finish = time.time()
-        print("Time: " + str(finish - start))
 
+        print("Binary Search: " + str(result))
+        print("Time: " + str(finish - start))
         print()
 
         start = time.time()
-        print("Linear Search: " + str(linear_search(n, k)))
+        result = linear_search(n, k)
         finish = time.time()
-        print("Time: " + str(finish - start))
 
+        print("Linear Search: " + str(result))
+        print("Time: " + str(finish - start))
         print()
         print()
 
