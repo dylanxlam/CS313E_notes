@@ -2,15 +2,15 @@ import sys, time
 
 # Helper function to calculate the number of lines Vyasa can write before falling asleep
 def lines_before_sleep(n: int, k: int, v: int) -> int:
-    lines_written = 0
+    total_lines = 0
     productivity = 1
 
     while v > 0:
-        lines_written += v
+        total_lines += v
         v = v // k
         productivity *= k
 
-    return lines_written
+    return total_lines
 
 # Input: int n, the number of lines of code to write
 #        int k, the productivity factor
