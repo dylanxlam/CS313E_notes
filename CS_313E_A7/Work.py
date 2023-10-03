@@ -1,49 +1,40 @@
-#  File: Work.py 
-
-#  Description:  
-
-#  Student Name:  
-
-#  Student UT EID:  
-
-#  Course Name: CS 313E
-
-#  Unique Number: 
-
-#  Date Created:
-
-#  Date Last Modified:
-
 import sys, time
 
-# FINDING V
-# 
-
+# Input: int n, the number of lines of code to write
+#        int k, the productivity factor
+# Output: the number of lines of code that must be 
+#         written before the first cup of coffee
+def linear_search(n: int, k: int) -> int:
+    v = 0
+    while n > 0:
+        n -= v
+        v += 1
+        n = n // k
+    return v
 
 # Input: int n, the number of lines of code to write
 #        int k, the productivity factor
 # Output: the number of lines of code that must be 
 #         written before the first cup of coffee
+def binary_search(n: int, k: int) -> int:
+    low, high = 0, n
 
-def min_v(n: int, k: int):
-    for i in k:
+    while low < high:
+        v = (low + high) // 2
+        lines_written = 0
+        productivity = 1
 
+        while v > 0:
+            lines_written += v
+            v = v // k
+            productivity *= k
 
-def linear_search(n: int, k: int) -> int:   
-    # use linear search here
-    for i in range(n):
+        if lines_written >= n:
+            high = (low + high) // 2
+        else:
+            low = (low + high) // 2 + 1
 
-
-    return 0 # placeholder
-
-# Input: int n, the number of lines of code to write
-#        int k, the productivity factor
-# Output: the number of lines of code that must be 
-#         written before the first cup of coffee
-def binary_search (n: int, k: int) -> int:
-    # use binary search here
-
-    return 0 # placeholder
+    return low
 
 # main has been completed for you
 # do NOT change anything below this line
@@ -73,4 +64,4 @@ def main():
 # The line above main is for grading purposes only.
 # DO NOT REMOVE THE LINE ABOVE MAIN
 if __name__ == "__main__":
-  main()
+    main()
