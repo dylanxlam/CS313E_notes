@@ -25,7 +25,7 @@ def main():
     '''
 
     memo = [0,1]
-    for i in range(50):
+    for i in range(10):
         print(i,' ', fib_memo(i, memo))
 
 
