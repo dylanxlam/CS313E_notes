@@ -158,24 +158,26 @@ def area_poly(convex_poly):
 
 def main():
     points_list = []
-    
+
     num_points = int(sys.stdin.readline().strip())
-    
+
     for i in range(num_points):
         line = sys.stdin.readline().strip().split()
         x, y = int(line[0]), int(line[1])
         points_list.append(Point(x, y))
-    
+
     sorted_points = sorted(points_list)
-    
+
     convex_hull_points = convex_hull(sorted_points)
-    
-    # Print the vertices of the convex hull
+
+    # Print the vertices of the convex hull first
+    print("Convex Hull")
     for point in convex_hull_points:
         print(point)
-    
+
     area = area_poly(convex_hull_points)
     print("\nArea of Convex Hull =", area)
 
-if __name__ == "__main__":
+
+if __name__ == '__main__':
     main()
