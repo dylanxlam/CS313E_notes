@@ -24,7 +24,7 @@
 import sys
 import math
 
-class Point (object):
+class Point(object):
     '''
     Represents a point in 2D space.
 
@@ -120,14 +120,14 @@ def convex_hull(sorted_points):
     
     for i in range(2, len(sorted_points)):
         upper_hull.append(sorted_points[i])
-        while len(upper_hull) >= 3 and det(upper_hull[-3], upper_hull[-2], upper_hull[-1]) <= 0:
+        while len(upper_hull) >= 3 and det(upper_hull[-3], upper_hull[-2], upper_hull[-1]) < 0:
             del upper_hull[-2]
     
     lower_hull = [sorted_points[-1], sorted_points[-2]]
     
     for i in range(len(sorted_points) - 3, -1, -1):
         lower_hull.append(sorted_points[i])
-        while len(lower_hull) >= 3 and det(lower_hull[-3], lower_hull[-2], lower_hull[-1]) <= 0:
+        while len(lower_hull) >= 3 and det(lower_hull[-3], lower_hull[-2], lower_hull[-1]) < 0:
             del lower_hull[-2]
     
     # Remove first and last points from lower hull to avoid duplication
