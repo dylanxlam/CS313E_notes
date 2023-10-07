@@ -134,6 +134,7 @@ def convex_hull(sorted_points):
     lower_hull.pop(0)
     lower_hull.pop(-1)
     
+    # Combine upper and lower hulls to get the convex hull in the correct order
     convex_hull = upper_hull + lower_hull
     return convex_hull
 
