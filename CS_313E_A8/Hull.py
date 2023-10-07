@@ -22,69 +22,158 @@
 #  Date Last Modified: 10/6/2023
 
 import sys
+import math
 
+class Point (object):
+    '''
+    Represents a point in 2D space.
 
-class Point:
-    def __init__(self, x, y):
+    Attributes:
+        x (int): The x-coordinate of the point.
+        y (int): The y-coordinate of the point.
+    '''
+
+    def __init__(self, x=0, y=0):
+        '''
+        Initializes a Point object with optional x and y coordinates.
+
+        Args:
+            x (int, optional): The x-coordinate of the point. Defaults to 0.
+            y (int, optional): The y-coordinate of the point. Defaults to 0.
+        '''
         self.x = x
         self.y = y
 
+    def dist(self, other):
+        '''
+        Calculate the Euclidean distance between two points.
+
+        Args:
+            other (Point): The other point to calculate the distance to.
+
+        Returns:
+            float: The Euclidean distance between the two points.
+        '''
+        return math.hypot(self.x - other.x, self.y - other.y)
+
+    def __str__(self):
+        '''
+        Returns a string representation of the Point object.
+
+        Returns:
+            str: A string in the format "(x, y)" representing the point's coordinates.
+        '''
+        return '(' + str(self.x) + ', ' + str(self.y) + ')'
+
+    def __eq__(self, other):
+        '''
+        Checks if two Point objects are equal.
+
+        Args:
+            other (Point): The other Point object for comparison.
+
+        Returns:
+            bool: True if the two points are equal within a tolerance, False otherwise.
+        '''
+        tol = 1.0e-8
+        return ((abs(self.x - other.x) < tol) and (abs(self.y - other.y) < tol))
+
     def __lt__(self, other):
-        if self.x != other.x:
-            return self.x < other.x
-        return self.y < other.y
+        '''
+        Compares two Point objects for sorting purposes (based on x-coordinates).
 
-def cross(o, a, b):
-    return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x)
+        Args:
+            other (Point): The other Point object for comparison.
 
-def convex_hull(points):
-    points.sort(key=lambda p: (p.x, p.y))  # Sort points lexicographically
-    lower = []
-    upper = []
+        Returns:
+            bool: True if self is less than other based on x-coordinates, or False otherwise.
+        '''
+        if self.x == other.x:
+            return self.y < other.y
+        return self.x < other.x
 
-    for point in points:
-        while len(lower) >= 2 and cross(lower[-2], lower[-1], point) <= 0:
-            lower.pop()
-        lower.append(point)
+def det(p, q, r):
+    '''
+    Calculate the determinant of three points p, q, and r.
 
-    for point in reversed(points):
-        while len(upper) >= 2 and cross(upper[-2], upper[-1], point) <= 0:
-            upper.pop()
-        upper.append(point)
+    Args:
+        p (Point): The first point.
+        q (Point): The second point.
+        r (Point): The third point.
 
-    return lower[:-1] + upper[:-1]  # Combine lower and upper hulls (exclude duplicates)
+    Returns:
+        float: The determinant value.
+    '''
+    return (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x)
 
-def area_of_polygon(polygon):
-    n = len(polygon)
-    if n < 3:
-        return 0.0
+def convex_hull(sorted_points):
+    '''
+    Computes the convex hull of a list of sorted Point objects.
 
-    area = 0.0
+    Args:
+        sorted_points (list): A list of Point objects sorted by x-coordinates.
+
+    Returns:
+        list: A list of Point objects representing the vertices of the convex hull.
+    '''
+    upper_hull = [sorted_points[0], sorted_points[1]]
+    
+    for i in range(2, len(sorted_points)):
+        upper_hull.append(sorted_points[i])
+        while len(upper_hull) >= 3 and det(upper_hull[-3], upper_hull[-2], upper_hull[-1]) < 0:
+            del upper_hull[-2]
+    
+    lower_hull = [sorted_points[-1], sorted_points[-2]]
+    
+    for i in range(len(sorted_points) - 3, -1, -1):
+        lower_hull.append(sorted_points[i])
+        while len(lower_hull) >= 3 and det(lower_hull[-3], lower_hull[-2], lower_hull[-1]) < 0:
+            del lower_hull[-2]
+    
+    # Reverse the order of the lower hull to maintain correct order
+    lower_hull.reverse()
+    
+    convex_hull = upper_hull + lower_hull
+    return convex_hull
+
+def area_poly(convex_poly):
+    '''
+    Computes the area of a convex polygon defined by a list of Point objects.
+
+    Args:
+        convex_poly (list): A list of Point objects representing the convex polygon.
+
+    Returns:
+        float: The area of the convex polygon.
+    '''
+    det_sum = 0
+    n = len(convex_poly)
     for i in range(n):
-        j = (i + 1) % n
-        area += polygon[i].x * polygon[j].y
-        area -= polygon[i].y * polygon[j].x
-
-    area = abs(area) / 2.0
+        det_sum += convex_poly[i].x * convex_poly[(i+1) % n].y
+        det_sum -= convex_poly[i].y * convex_poly[(i+1) % n].x
+    area = 0.5 * abs(det_sum)
     return area
 
 def main():
-    n = int(sys.stdin.readline())
     points_list = []
-
-    for _ in range(n):
-        x, y = map(int, sys.stdin.readline().split())
+    
+    num_points = int(sys.stdin.readline().strip())
+    
+    for i in range(num_points):
+        line = sys.stdin.readline().strip().split()
+        x, y = int(line[0]), int(line[1])
         points_list.append(Point(x, y))
-
-    hull = convex_hull(points_list)
-    hull.sort(key=lambda p: (p.x, p.y))  # Sort points in convex hull lexicographically
-
-    print("Convex Hull")
-    for point in hull:
-        print(f"({point.x}, {point.y})")
-
-    hull_area = area_of_polygon(hull)
-    print(f"\nArea of Convex Hull = {hull_area:.1f}")
+    
+    sorted_points = sorted(points_list)
+    
+    convex_hull_points = convex_hull(sorted_points)
+    
+    # Print the vertices of the convex hull
+    for point in convex_hull_points:
+        print(point)
+    
+    area = area_poly(convex_hull_points)
+    print("\nArea of Convex Hull =", area)
 
 if __name__ == "__main__":
     main()
