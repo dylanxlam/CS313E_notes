@@ -24,7 +24,7 @@
 import sys
 import math
 
-class Point(object):
+class Point (object):
     '''
     Represents a point in 2D space.
 
@@ -116,30 +116,31 @@ def convex_hull(sorted_points):
     Returns:
         list: A list of Point objects representing the vertices of the convex hull.
     '''
-    upper_hull = [sorted_points[0], sorted_points[1]]
-    
+    # Initialize upper and lower hulls with the first two points.
+    sorted_points.sort()
+    upper_hull = []
+    upper_hull.append(sorted_points[0])
+    upper_hull.append(sorted_points[1])
+
+    # Compute the upper hull.
     for i in range(2, len(sorted_points)):
         upper_hull.append(sorted_points[i])
-        while len(upper_hull) >= 3 and det(upper_hull[-3], upper_hull[-2], upper_hull[-1]) < 0:
-            del upper_hull[-2]
-    
-    lower_hull = [sorted_points[-1], sorted_points[-2]]
-    
+        while len(upper_hull) >= 3 and det(upper_hull[-3], upper_hull[-2], upper_hull[-1]) > 0:
+            upper_hull.pop(-2)
+
+    lower_hull = []
+    lower_hull.append(sorted_points[-1])
+    lower_hull.append(sorted_points[-2])
+
+    # Compute the lower hull.
     for i in range(len(sorted_points) - 3, -1, -1):
         lower_hull.append(sorted_points[i])
-        while len(lower_hull) >= 3 and det(lower_hull[-3], lower_hull[-2], lower_hull[-1]) < 0:
-            del lower_hull[-2]
-    
-    # Remove first and last points from lower hull to avoid duplication
-    lower_hull.pop(0)
-    lower_hull.pop(-1)
-    
-    # Combine upper and lower hulls to get the convex hull in the correct order
-    convex_hull = upper_hull + lower_hull
-    
+        while len(lower_hull) >= 3 and det(lower_hull[-3], lower_hull[-2], lower_hull[-1]) > 0:
+            lower_hull.pop(-2)
+
+    # Combine upper and lower hulls to get the convex hull.
+    convex_hull = upper_hull + lower_hull[1:-1]
     return convex_hull
-
-
 
 def area_poly(convex_poly):
     '''
@@ -151,34 +152,46 @@ def area_poly(convex_poly):
     Returns:
         float: The area of the convex polygon.
     '''
+    # Initialize the determinant sum.
     det_sum = 0
     n = len(convex_poly)
+    
+    # Iterate through the vertices of the convex polygon.
     for i in range(n):
-        det_sum += convex_poly[i].x * convex_poly[(i+1) % n].y
-        det_sum -= convex_poly[i].y * convex_poly[(i+1) % n].x
+        # Add the cross-product of consecutive vertices to the determinant sum.
+        det_sum += convex_poly[i].x * convex_poly[(i + 1) % n].y
+        det_sum -= convex_poly[i].y * convex_poly[(i + 1) % n].x
+    
+    # Compute the area as half of the absolute value of the determinant sum.
     area = 0.5 * abs(det_sum)
     return area
 
 def main():
+    # create an empty list of Point objects
     points_list = []
     
+    # read number of points
     num_points = int(sys.stdin.readline().strip())
     
+    # read data from standard input
     for i in range(num_points):
         line = sys.stdin.readline().strip().split()
         x, y = int(line[0]), int(line[1])
         points_list.append(Point(x, y))
     
+    # sort the list according to x-coordinates
     sorted_points = sorted(points_list)
-    
     convex_hull_points = convex_hull(sorted_points)
     
-    # Print the vertices of the convex hull
-    print("Convex Hull")
+    # print the convex hull
+    print('Convex Hull')
     for point in convex_hull_points:
         print(point)
     
+    # get the area of the convex hull
     area = area_poly(convex_hull_points)
+
+    # print the area of the convex hull
     print("\nArea of Convex Hull =", area)
 
 if __name__ == "__main__":
