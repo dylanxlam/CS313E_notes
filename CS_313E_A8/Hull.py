@@ -25,6 +25,7 @@
 import sys
 import math
 
+
 class Point(object):
     def __init__(self, x=0, y=0):
         self.x = x
@@ -39,6 +40,21 @@ class Point(object):
     def __eq__(self, other):
         tol = 1.0e-8
         return ((abs(self.x - other.x) < tol) and (abs(self.y - other.y) < tol))
+
+    def __lt__(self, other):
+        if self.x == other.x:
+            return self.y < other.y
+        return self.x < other.x
+
+    def __le__(self, other):
+        if self.x == other.x:
+            return self.y <= other.y
+        return self.x <= other.x
+
+    # Add other comparison methods (__ne__, __gt__, __ge__) here.
+
+# Rest of the code remains the same...
+
 
 def det(p, q, r):
     return (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x)
