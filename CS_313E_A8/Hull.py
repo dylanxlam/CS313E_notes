@@ -110,12 +110,12 @@ def main():
     convex_hull_points.sort(key=lambda p: (p.x, p.y))
     
     # Print the vertices of the convex hull in the correct order
+    print("Convex Hull")
     for point in convex_hull_points:
         print(point)
     
     area = area_poly(convex_hull_points)
     print("\nArea of Convex Hull =", area)
-
 
 
 if __name__ == "__main__":
