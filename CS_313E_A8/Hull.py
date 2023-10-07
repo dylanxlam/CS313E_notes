@@ -25,98 +25,25 @@
 import sys
 import math
 
-class Point (object):
-    '''
-    Represents a point in 2D space.
-
-    Attributes:
-        x (int): The x-coordinate of the point.
-        y (int): The y-coordinate of the point.
-    '''
-
+class Point(object):
     def __init__(self, x=0, y=0):
-        '''
-        Initializes a Point object with optional x and y coordinates.
-
-        Args:
-            x (int, optional): The x-coordinate of the point. Defaults to 0.
-            y (int, optional): The y-coordinate of the point. Defaults to 0.
-        '''
         self.x = x
         self.y = y
 
     def dist(self, other):
-        '''
-        Calculate the Euclidean distance between two points.
-
-        Args:
-            other (Point): The other point to calculate the distance to.
-
-        Returns:
-            float: The Euclidean distance between the two points.
-        '''
         return math.hypot(self.x - other.x, self.y - other.y)
 
     def __str__(self):
-        '''
-        Returns a string representation of the Point object.
-
-        Returns:
-            str: A string in the format "(x, y)" representing the point's coordinates.
-        '''
         return '(' + str(self.x) + ', ' + str(self.y) + ')'
 
     def __eq__(self, other):
-        '''
-        Checks if two Point objects are equal.
-
-        Args:
-            other (Point): The other Point object for comparison.
-
-        Returns:
-            bool: True if the two points are equal within a tolerance, False otherwise.
-        '''
         tol = 1.0e-8
         return ((abs(self.x - other.x) < tol) and (abs(self.y - other.y) < tol))
 
-    def __lt__(self, other):
-        '''
-        Compares two Point objects for sorting purposes (based on x-coordinates).
-
-        Args:
-            other (Point): The other Point object for comparison.
-
-        Returns:
-            bool: True if self is less than other based on x-coordinates, or False otherwise.
-        '''
-        if self.x == other.x:
-            return self.y < other.y
-        return self.x < other.x
-
 def det(p, q, r):
-    '''
-    Calculate the determinant of three points p, q, and r.
-
-    Args:
-        p (Point): The first point.
-        q (Point): The second point.
-        r (Point): The third point.
-
-    Returns:
-        float: The determinant value.
-    '''
     return (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x)
 
 def convex_hull(sorted_points):
-    '''
-    Computes the convex hull of a list of sorted Point objects.
-
-    Args:
-        sorted_points (list): A list of Point objects sorted by x-coordinates.
-
-    Returns:
-        list: A list of Point objects representing the vertices of the convex hull.
-    '''
     upper_hull = [sorted_points[0], sorted_points[1]]
     
     for i in range(2, len(sorted_points)):
@@ -135,24 +62,17 @@ def convex_hull(sorted_points):
     lower_hull.pop(0)
     lower_hull.pop(-1)
     
+    # Combine upper and lower hulls to form the convex hull
     convex_hull = upper_hull + lower_hull
     return convex_hull
 
 def area_poly(convex_poly):
-    '''
-    Computes the area of a convex polygon defined by a list of Point objects.
-
-    Args:
-        convex_poly (list): A list of Point objects representing the convex polygon.
-
-    Returns:
-        float: The area of the convex polygon.
-    '''
+    # Compute and return the area of a convex polygon
     det_sum = 0
     n = len(convex_poly)
     for i in range(n):
-        det_sum += convex_poly[i].x * convex_poly[(i+1) % n].y
-        det_sum -= convex_poly[i].y * convex_poly[(i+1) % n].x
+        det_sum += convex_poly[i].x * convex_poly[(i + 1) % n].y
+        det_sum -= convex_poly[i].y * convex_poly[(i + 1) % n].x
     area = 0.5 * abs(det_sum)
     return area
 
@@ -170,10 +90,8 @@ def main():
     
     convex_hull_points = convex_hull(sorted_points)
     
-    # Print the "Convex Hull" header
+    # Print the convex hull
     print("Convex Hull")
-    
-    # Print the vertices of the convex hull
     for point in convex_hull_points:
         print(point)
     
