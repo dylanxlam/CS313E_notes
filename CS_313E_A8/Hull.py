@@ -116,14 +116,25 @@ def convex_hull(sorted_points):
     Returns:
         list: A list of Point objects representing the vertices of the convex hull.
     '''
-    # Initialize the convex hull with the first two points
-    convex_hull = [sorted_points[0], sorted_points[1]]
+    upper_hull = [sorted_points[0], sorted_points[1]]
     
     for i in range(2, len(sorted_points)):
-        convex_hull.append(sorted_points[i])
-        while len(convex_hull) >= 3 and det(convex_hull[-3], convex_hull[-2], convex_hull[-1]) <= 0:
-            del convex_hull[-2]
+        upper_hull.append(sorted_points[i])
+        while len(upper_hull) >= 3 and det(upper_hull[-3], upper_hull[-2], upper_hull[-1]) <= 0:
+            del upper_hull[-2]
     
+    lower_hull = [sorted_points[-1], sorted_points[-2]]
+    
+    for i in range(len(sorted_points) - 3, -1, -1):
+        lower_hull.append(sorted_points[i])
+        while len(lower_hull) >= 3 and det(lower_hull[-3], lower_hull[-2], lower_hull[-1]) <= 0:
+            del lower_hull[-2]
+    
+    # Remove first and last points from lower hull to avoid duplication
+    lower_hull.pop(0)
+    lower_hull.pop(-1)
+    
+    convex_hull = upper_hull + lower_hull
     return convex_hull
 
 def area_poly(convex_poly):
