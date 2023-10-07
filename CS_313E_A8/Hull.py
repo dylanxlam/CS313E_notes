@@ -135,8 +135,10 @@ def convex_hull(sorted_points):
     lower_hull.pop(-1)
     
     # Combine upper and lower hulls to get the convex hull in the correct order
-    convex_hull = upper_hull + lower_hull[::-1]  # Reverse the lower hull
+    convex_hull = upper_hull + lower_hull
+    
     return convex_hull
+
 
 
 def area_poly(convex_poly):
