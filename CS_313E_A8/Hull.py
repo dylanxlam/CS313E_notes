@@ -106,13 +106,17 @@ def main():
     
     convex_hull_points = convex_hull(sorted_points)
     
-    # Print the convex hull
-    print("Convex Hull")
-    for point in convex_hull_points:
-        print(point)
+    # Find the index of the leftmost and bottommost point (starting point)
+    start_idx = sorted_points.index(convex_hull_points[0])
+    
+    # Print the vertices of the convex hull in the desired order
+    for i in range(len(convex_hull_points)):
+        idx = (start_idx + i) % len(convex_hull_points)
+        print(convex_hull_points[idx])
     
     area = area_poly(convex_hull_points)
     print("\nArea of Convex Hull =", area)
+
 
 if __name__ == "__main__":
     main()
