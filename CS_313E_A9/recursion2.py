@@ -41,10 +41,13 @@ def groupSum(start, nums, target):
 # sums to the given target? However, with the additional constraint 
 # that all 6's must be chosen. (No loops needed.)
 def groupSum6(start, nums, target):
-    if 6 not in nums[start:]:
+    if start >= len(nums):
        return target == 0
+    if nums[start] == 6:
+       return groupSum6(start + 1, nums, target - 6)
     else:
-        return sum(nums[start:]) == target
+        return groupSum6(start + 1, nums, target) \
+        or groupSum6(start + 1, nums, target - start[nums])
 
   
 # Given an array of ints, is it possible to choose a group of some 
@@ -87,10 +90,14 @@ def groupSumClump(start, nums, target):
 # initial call to your recursive helper from splitArray(). 
 # (No loops needed.)
 def splitArray(nums):
-    return 0
+    return splitArrayHelper(0, 0, 0, nums)
 
-#def splitArrayHelper():
-
+def splitArrayHelper(leftSum, rightSum, index, nums):
+    if index >= len(nums):
+       return leftSum == rightSum
+    else:
+       return splitArrayHelper(leftSum + nums[index], rightSum, index + 1, nums) \
+        or splitArrayHelper (leftSum, rightSum + nums[index], index + 1, nums)
 	
 	
 # Given an array of ints, is it possible to divide the 
