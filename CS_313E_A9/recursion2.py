@@ -1,22 +1,26 @@
 #  File: recursion2.py 
 
-#  Description:
+#  Description: The provided Python code includes a collection of recursive functions 
+#  with accompanying test cases. These functions tackle various recursion problems, involving 
+#  tasks like forming specific integer groups from an array while adhering to given conditions. 
+#  Users can uncomment a desired function and execute the script with the function's name as a 
+#  command-line argument to run associated test cases for validation.
 
-#  Student Name:
+#  Student Name: Alexander Romero-Barrionuevo
 
-#  Student UT EID:
+#  Student UT EID: ANR3784
 
-#  Partner's Name:
+#  Partner's Name: Dylan Lam
 
-#  Partner's UT EID:
+#  Partner's UT EID: DXL85
 
 #  Course Name: CS 313E
 
-#  Unique Number: 
+#  Unique Number: 52605
 
-#  Date Created:
+#  Date Created: 10/4/2023
 
-#  Date Last Modified:
+#  Date Last Modified: 10/9/2023
 
 
 # Given an array of ints, is it possible to choose a group of some 
@@ -30,10 +34,12 @@
 # whole array simply by passing start as 0. No loops are needed -- 
 # the recursive calls progress down the array. 
 def groupSum(start, nums, target):
+    # Check for recursion end, check for either case
     if start >= len(nums):
-       return target == 0
-    else: 
-       return groupSum(start + 1, nums, target - nums[start]) or groupSum(start + 1, nums, target)    
+        return (target == 0)
+    else:
+       return groupSum(start + 1, nums, target - nums[start]) or groupSum((start+1), nums, target)
+
 
   
 # Given an array of ints, is it possible to choose a group of some 
@@ -41,13 +47,13 @@ def groupSum(start, nums, target):
 # sums to the given target? However, with the additional constraint 
 # that all 6's must be chosen. (No loops needed.)
 def groupSum6(start, nums, target):
+    # Check for recursion end, check if number equals 6, then check for either case
     if start >= len(nums):
-       return target == 0
+        return target == 0
     if nums[start] == 6:
        return groupSum6(start + 1, nums, target - 6)
     else:
-        return groupSum6(start + 1, nums, target) \
-        or groupSum6(start + 1, nums, target - start[nums])
+        return groupSum6(start + 1, nums, target) or groupSum6(start + 1, nums, target - nums[start])
 
   
 # Given an array of ints, is it possible to choose a group of some 
@@ -56,7 +62,10 @@ def groupSum6(start, nums, target):
 # the group, the value immediately following it in the array must 
 # not be chosen. (No loops needed.) 
 def groupNoAdj(start, nums, target):
-    return 0
+    # Check for recursion end and each case if not
+    if start >= len(nums):
+       return target == 0
+    return groupNoAdj(start + 1, nums, target) or groupNoAdj(start + 2, nums, target - nums[start])
 
 
 # Given an array of ints, is it possible to choose a group 
@@ -66,7 +75,15 @@ def groupNoAdj(start, nums, target):
 # immediately following a multiple of 5 is 1, it must not 
 # be chosen. (No loops needed.)
 def groupSum5(start, nums, target):
- return 0
+    # Check for end of recursion. Check for 1 following 5, 5, and both cases if not
+    if start >= len(nums):
+       return target == 0
+    if nums[start] == 1 and nums[start - 1] == 5:
+       return groupSum5(start + 2, nums, target)
+    if nums[start] % 5 == 0:
+       return groupSum5(start + 1, nums, target - nums[start])
+    return groupSum5(start + 1, nums, target) or groupSum5(start + 1, nums, target - nums[start])
+  
   
   
 # Given an array of ints, is it possible to choose a 
@@ -79,7 +96,20 @@ def groupSum5(start, nums, target):
 # must be chosen or not, all as a group. (one loop can 
 # be used to find the extent of the identical values). 
 def groupSumClump(start, nums, target):
-    return 0
+    if start >= len(nums):
+       return target == 0
+    
+    # Use a while loop to find all consecutive identical values
+    end = start
+    while end < len(nums) and nums[end] == nums[start]:
+       end += 1
+    
+    # Find sum of consecutive values
+    sum_clump = (end - start) * nums[start]
+
+    # Recursively run through both situations of subtracting or not subtracting sum of clump
+    return groupSumClump(end, nums, target - sum_clump) or groupSumClump(end, nums, target)
+    
   
 
 # Given an array of ints, is it possible to divide the 
@@ -93,11 +123,14 @@ def splitArray(nums):
     return splitArrayHelper(0, 0, 0, nums)
 
 def splitArrayHelper(leftSum, rightSum, index, nums):
-    if index >= len(nums):
-       return leftSum == rightSum
+    # Check index for end of recursion. Split path of numer addition to both cases
+    if (index >= len(nums)):
+        return (leftSum == rightSum)
     else:
-       return splitArrayHelper(leftSum + nums[index], rightSum, index + 1, nums) \
-        or splitArrayHelper (leftSum, rightSum + nums[index], index + 1, nums)
+       return (splitArrayHelper(leftSum + nums[index], rightSum, index + 1, nums) or 
+               splitArrayHelper(leftSum, rightSum + nums[index], index + 1, nums))
+   
+
 	
 	
 # Given an array of ints, is it possible to divide the 
@@ -108,10 +141,20 @@ def splitArrayHelper(leftSum, rightSum, index, nums):
 # arguments you like, and make the initial call to your 
 # recursive helper from splitOdd10(). (No loops needed.)
 def splitOdd10(nums):
-    return 0
+    return splitOdd10Helper(0, 0, 0, nums)
   
-def splitOdd10Helper():
-    return 0
+def splitOdd10Helper( multiple10, odd, index, nums):
+    # Check for index ending recursion. Check for multiples of 10, and both 10 and odd group if not
+    if index >= len(nums):
+        return (multiple10 % 10 == 0) and (odd % 2 != 0)
+    if nums[index] % 10 == 0:
+        return splitOdd10Helper(multiple10 + nums[index], odd, index + 1, nums)
+    else:
+        return (
+            splitOdd10Helper(multiple10 + nums[index], odd, index + 1, nums)
+            or splitOdd10Helper(multiple10, odd + nums[index], index + 1, nums)
+        )
+
 
   
 # Given an array of ints, is it possible to divide the ints 
@@ -121,11 +164,19 @@ def splitOdd10Helper():
 # that are a multiple of 3 (and not a multiple of 5) 
 # must be in the other. (No loops needed.) 
 def split53(nums):
-    return 0
-def split53Helper():
-    return 0
+    return split53Helper(0, 0, 0, nums)
 
-
+def split53Helper(sum5, sum3, index, nums):
+    # Check index for end of recursion. Check for multiples of 5, 3, and both cases if not
+    if index >= len(nums):
+        return (sum3 == sum5)
+    if nums[index] % 5 == 0:
+        return split53Helper(sum5 + nums[index], sum3, index + 1, nums)
+    elif nums[index] % 3 == 0:
+        return split53Helper(sum5, sum3 + nums[index], index + 1, nums)
+    else:
+        return (split53Helper(sum5 + nums[index], sum3, index + 1, nums) or 
+                split53Helper(sum5, sum3 + nums[index], index + 1, nums))
 
 
 #######################################################################################################
