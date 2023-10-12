@@ -10,7 +10,7 @@ def sub_sets(a, b, idx):
 
 
 def main():
-    a = ['A', 'B', 'C']
+    a = ['A', 'B','C']
     b = []
     sub_sets (a,b,0)
 
