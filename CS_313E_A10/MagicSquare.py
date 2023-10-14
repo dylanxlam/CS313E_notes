@@ -15,7 +15,7 @@
 
 # Input: 1-D list of integers a
 # Output: returns True if this list is a magic square
-#         or False otherwise
+# or False otherwise
 def is_magic(a):
     # Establish magic constant
     magic_constant = 3 * (((3 ** 2) + 1) / 2)
