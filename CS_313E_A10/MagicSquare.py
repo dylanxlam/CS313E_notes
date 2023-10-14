@@ -1,51 +1,64 @@
-# File: MagicSquare.py
+#  File: MagicSquare.py
 
-# Description: Generates 3x3 magic squares efficiently through permutation
+#  Description:A 3x3 magic square is a square grid of
+    #  numbers in which the sum of each row, column, 
+    #  and diagonal is equal to 15. This program efficiently 
+    #  generates and prints all possible 3x3 magic squares 
+    #  using permutation, ensuring that the magic constant 
+    #  is maintained in each arrangement.
 
-# Student's Name: Alex Romero-Barrionuevo
-# Student's UT EID: 
+#  Student's Name: Alexander Romero-Barrionuevo
+
+#  Student's UT EID: ANR3784
  
-# Partner's Name: [Partner's Name]
-# Partner's UT EID: [Partner's UT EID]
+#  Partner's Name: Dylan Lam
 
-# Course Name: CS 313E 
-# Unique Number: [Your Unique Number]
-# Date Created: [Date Created]
-# Date Last Modified: [Date Last Modified]
+#  Partner's UT EID: DXL85
 
-# Input: 1-D list of integers a
-# Output: returns True if this list is a magic square
-# or False otherwise
-def is_magic(a):
+#  Course Name: CS 313E 
+
+#  Unique Number: 52605
+
+#  Date Created: 10/13/2023
+
+#  Date Last Modified: 10/13/2023
+
+
+#  Input: 1-D list of integers a
+#  Output: returns True if this list is a magic square
+#          or False otherwise
+def is_magic ( a ):
     # Establish magic constant
-    magic_constant = sum(a[:3])
+    magic_constant = 3 * (((3 ** 2) + 1) / 2)
 
-    # Check for each row
-    for i in range(0, 9, 3):
-        if sum(a[i:i+3]) != magic_constant:
+    # Check for each row, column, and diagonals
+    # in which sums are compared to magic constant
+    for row in range(0, 9, 3):
+        if sum(a[row:row + 3]) != magic_constant:
             return False
-
-    # Check for each column
-    for i in range(3):
-        if sum(a[i::3]) != magic_constant:
+    for column in range(3):
+        if sum(a[column::3]) != magic_constant:
             return False
-
-    # Check both main diagonals
     if a[0] + a[4] + a[8] != magic_constant:
         return False
     if a[2] + a[4] + a[6] != magic_constant:
         return False
+    
+    if len(a) == 1:
+        return True
 
+    # return True as all cases pass
     return True
 
 
-# Input: 1-D list of integers a and an index idx
-# Output: prints only those permutations that are magic
-def permute(a, idx):
+#  Input: 1-D list of integers a and an index idx
+#  Output: prints only those permutations that are magic
+def permute ( a, idx ):
     # Check if all permutations are complete
     if idx == 9:
         if is_magic(a):
             print_square(a)
+            print()
         return
 
     for i in range(idx, 9):
@@ -53,21 +66,22 @@ def permute(a, idx):
         permute(a, idx + 1)
         a[idx], a[i] = a[i], a[idx]
 
-# Input: 1-D list of integers a
-# Output: prints this as a 2-D list
+
+#  Input: 1-D list of integers a
+#  Output: prints this as a 2-D list
 def print_square(a):
     square = reshape(a)
-    for i, row in enumerate(square):
+    for row in square:
         print(" ".join(map(str, row)))
+    
+        
 
-    print()  # Add an extra newline at the end
+#  Input: 1-D list of integers a
+#  Output: returns a 2-D list
+def reshape ( a ):
+    size = int(len(a) ** 0.5)  
+    return [a[i:i+size] for i in range(0, len(a), size)]
 
-
-# Input: 1-D list of integers a
-# Output: returns a 2-D list
-def reshape(a):
-    size = int(len(a) ** 0.5)
-    return [a[i:i + size] for i in range(0, len(a), size)]
 
 def main():
     # create a 1-D list of numbers from 1 to 9
@@ -76,13 +90,5 @@ def main():
     # call permute to get all 3x3 magic squares
     permute(nums, 0)
 
-    # Handle flattened 1x1, 2x2, and 3x3 arrays
-    for size in range(1, 4):
-        if len(nums) == size * size:
-            square = reshape(nums)
-            if is_magic(square):
-                print_square(square)
-
-
 if __name__ == "__main__":
-    main()
+  main()
