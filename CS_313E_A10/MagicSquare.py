@@ -57,12 +57,19 @@ def permute(a, idx):
 
 # Input: 1-D list of integers a
 # Output: prints this as a 2-D list
-
 def print_square(a):
     square = reshape(a)
-    for row in square:
-        print(" ".join(map(str, row)))
-    print()  # Add a single print() to separate the squares
+    size = len(square)
+
+    if size == 1:
+        # Flattened square, print numbers separated by spaces
+        for row in square:
+            print(" ".join(map(str, row)))
+    else:
+        # 3x3 square, print each element on a new line with spaces
+        for row in square:
+            print(" ".join(map(str, row)))
+        print()
 
 
 # Input: 1-D list of integers a
