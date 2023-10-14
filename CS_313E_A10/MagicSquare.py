@@ -59,8 +59,6 @@ def print_square(a):
     square = reshape(a)
     for i, row in enumerate(square):
         print(" ".join(map(str, row)))
-        if i < len(square) - 1:
-            print()  # Add a newline if it's not the last row
 
     print()  # Add an extra newline at the end
 
@@ -77,6 +75,14 @@ def main():
 
     # call permute to get all 3x3 magic squares
     permute(nums, 0)
+
+    # Handle flattened 1x1, 2x2, and 3x3 arrays
+    for size in range(1, 4):
+        if len(nums) == size * size:
+            square = reshape(nums)
+            if is_magic(square):
+                print_square(square)
+
 
 if __name__ == "__main__":
     main()
