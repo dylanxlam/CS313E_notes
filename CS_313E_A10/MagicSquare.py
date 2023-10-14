@@ -16,34 +16,24 @@
 # Input: 1-D list of integers a
 # Output: returns True if this list is a magic square
 #         or False otherwise
-
-
-
-# Input: 1-D list of integers a
-# Output: returns True if this list is a magic square
-# or False otherwise
 def is_magic(a):
-    if len(a) == 1:  # Handling flattened 1x1 square
-        return True
-    elif len(a) == 4:  # Handling flattened 2x2 square
-        return sum(a) == 10  # The sum of elements in a 2x2 square is always 10
-    elif len(a) == 9:  # Handling flattened 3x3 square
-        return True  # 3x3 square is always a magic square
+    # Establish magic constant
+    magic_constant = 3 * (((3 ** 2) + 1) / 2)
 
-    # Magic constant for a 3x3 square is 15
-    magic_constant = 15
-
-    # Check for each row, column, and diagonal
-    for i in range(0, 3):
-        if sum(a[i * 3:(i + 1) * 3]) != magic_constant:
+    # Check for each row, column, and diagonals
+    # in which sums are compared to magic constant
+    for row in range(0, 9, 3):
+        if sum(a[row:row + 3]) != magic_constant:
             return False
-        if sum(a[i::3]) != magic_constant:
+    for column in range(3):
+        if sum(a[column::3]) != magic_constant:
             return False
-    if sum(a[0::4]) != magic_constant:
+    if a[0] + a[4] + a[8] != magic_constant:
         return False
-    if sum(a[2:7:2]) != magic_constant:
+    if a[2] + a[4] + a[6] != magic_constant:
         return False
 
+    # return True as all cases pass
     return True
 
 # Input: 1-D list of integers a and an index idx
