@@ -50,16 +50,15 @@ def is_magic(a):
 
 # Input: 1-D list of integers a and an index idx
 # Output: prints only those permutations that are magic
-def permute(a, idx):
-    if idx == 8:
-        if is_magic(a):
-            print_square(a)
-        return
+def permute(a):
+    for i in range(9):
+        for j in range(i + 1, 9):
+            a[i], a[j] = a[j], a[i]  # Swap elements
 
-    for i in range(idx, 9):
-        a[idx], a[i] = a[i], a[idx]
-        permute(a, idx + 1)
-        a[idx], a[i] = a[i], a[idx]
+            if is_magic(a):
+                print_square(a)
+
+            a[i], a[j] = a[j], a[i]  # Swap elements back
 
 
 # Input: 1-D list of integers a
