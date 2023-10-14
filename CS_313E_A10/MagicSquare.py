@@ -57,9 +57,13 @@ def permute(a, idx):
 # Output: prints this as a 2-D list
 def print_square(a):
     square = reshape(a)
-    for row in square:
+    for i, row in enumerate(square):
         print(" ".join(map(str, row)))
-    print()
+        if i < len(square) - 1:
+            print()  # Add a newline if it's not the last row
+
+    print()  # Add an extra newline at the end
+
 
 # Input: 1-D list of integers a
 # Output: returns a 2-D list
