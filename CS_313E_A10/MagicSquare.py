@@ -57,10 +57,11 @@ def permute(a, idx):
 
 # Input: 1-D list of integers a
 # Output: prints this as a 2-D list
+
 def print_square(a):
     square = reshape(a)
     for row in square:
-        print("\t".join(map(str, row)))  # Use "\t" to separate elements, and remove the extra print() line
+        print(" ".join(map(str, row)))
     print()  # Add a single print() to separate the squares
 
 
