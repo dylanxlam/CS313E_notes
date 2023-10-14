@@ -18,23 +18,26 @@
 # or False otherwise
 def is_magic(a):
     # Establish magic constant
-    magic_constant = 3 * (((3 ** 2) + 1) / 2)
+    magic_constant = sum(a[:3])
 
-    # Check for each row, column, and diagonals
-    # in which sums are compared to magic constant
-    for row in range(0, 9, 3):
-        if sum(a[row:row + 3]) != magic_constant:
+    # Check for each row
+    for i in range(0, 9, 3):
+        if sum(a[i:i+3]) != magic_constant:
             return False
-    for column in range(3):
-        if sum(a[column::3]) != magic_constant:
+
+    # Check for each column
+    for i in range(3):
+        if sum(a[i::3]) != magic_constant:
             return False
+
+    # Check both main diagonals
     if a[0] + a[4] + a[8] != magic_constant:
         return False
     if a[2] + a[4] + a[6] != magic_constant:
         return False
 
-    # return True as all cases pass
     return True
+
 
 # Input: 1-D list of integers a and an index idx
 # Output: prints only those permutations that are magic
