@@ -2,21 +2,21 @@
 
 # Description: Program to find the greatest path sum in a triangular grid using different approaches.
 
-# Student's Name:
+#  Student's Name: Alexander Romero-Barrionuevo
 
-# Student's UT EID:
+#  Student's UT EID: ANR3784
+ 
+#  Partner's Name: Dylan Lam
 
-# Partner's Name:
+#  Partner's UT EID: DXL85
 
-# Partner's UT EID:
+#  Course Name: CS 313E 
 
-# Course Name: CS 313E 
+#  Unique Number: 52605
 
-# Unique Number: 
+#  Date Created: 10/13/2023
 
-# Date Created:
-
-# Date Last Modified:
+#  Date Last Modified: 10/16/2023
 
 import sys
 from timeit import timeit
@@ -61,10 +61,7 @@ def divide_conquer(grid):
 # returns the greatest path sum and the new grid using dynamic programming
 def dynamic_prog(grid):
     n = grid[:]
-
     max_columns = len(n) - 1
-
-
 
     # Start from the second-to-last row and work upwards
     for row in range(len(n) -1, 0, -1):
