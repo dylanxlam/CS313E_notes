@@ -90,11 +90,13 @@ def read_file ():
         line = sys.stdin.readline()
         line = line.strip()
         row = line.split()
-        row = list (map (int, row))
-        for j in range (len(row)):
-            grid[i][j] = grid[i][j] + row[j]
+        n = int(row())
+        grid = []
+        for i in range(n):
+            row = list(map(int, input().split()))
+            grid.append(row)
+        return grid
 
-    return grid 
 
 def main():
     # Read triangular grid from file
