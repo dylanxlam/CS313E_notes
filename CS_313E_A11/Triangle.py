@@ -61,30 +61,42 @@ def divide_conquer(grid):
 def dynamic_prog(grid):
     n = len(grid)
 
-    # Create a table to store the maximum path sums for each position in the grid
-    dp = [[0] * n for _ in range(n)]
-
-    # Initialize the table with the values of the last row
-    dp[n - 1] = grid[n - 1]
+    # Create a copy of the grid to store the maximum path sums
+    dp = [row[:] for row in grid]
 
     # Start from the second-to-last row and work upwards
     for row in range(n - 2, -1, -1):
         for col in range(len(grid[row])):
-            dp[row][col] = grid[row][col] + max(dp[row + 1][col], dp[row + 1][col + 1])
+            dp[row][col] += max(dp[row + 1][col], dp[row + 1][col + 1])
 
     return dp[0][0]
 
 
 
 
-# reads the file and returns a 2-D list that represents the triangle
-def read_file():
-    n = int(input())
-    grid = []
-    for i in range(n):
-        row = list(map(int, input().split()))
-        grid.append(row)
+
+def read_file(file_path):
+    with open(file_path, 'r') as f:
+        n = int(f.readline())
+        grid = []
+        for i in range(n):
+            row = list(map(int, f.readline().split()))
+            grid.append(row)
     return grid
+
+    input_file = 'triangle.in'  # Specify the path to your input file
+    grid = read_file(input_file)
+
+    # Rest of your code remains unchanged
+    result = dynamic_prog(grid)
+    print("The greatest path sum through dynamic programming is", result)
+    times = timeit('dynamic_prog({})'.format(grid), 'from __main__ import dynamic_prog', number=10)
+    times = times / 10
+    print("The time taken for dynamic programming in seconds is", times)
+
+if __name__ == '__main__':
+    main()
+
 
 def main():
     # Read triangular grid from file
@@ -111,7 +123,10 @@ def main():
     times = times / 10
     print("The time taken for recursive search in seconds is", times)
 
-    # Output greatest path from dynamic programming 
+    input_file = 'triangle.in'  # Specify the path to your input file
+    grid = read_file(input_file)
+
+    # Rest of your code remains unchanged
     result = dynamic_prog(grid)
     print("The greatest path sum through dynamic programming is", result)
     times = timeit('dynamic_prog({})'.format(grid), 'from __main__ import dynamic_prog', number=10)
