@@ -60,28 +60,17 @@ def divide_conquer(grid):
 # returns the greatest path sum and the new grid using dynamic programming
 def dynamic_prog(grid):
     n = len(grid)
-    dp = [[0] * n for _ in range(n)]
 
-    # Initialize the bottom row of dp with the values of the last row of the grid
-    dp[n - 1] = grid[n - 1]
+    # Create a copy of the grid to store the updated sums
+    dp = [row[:] for row in grid]
 
     # Start from the second-to-last row and work upwards
     for row in range(n - 2, -1, -1):
         for col in range(len(grid[row])):
-            dp[row][col] = grid[row][col] + max(dp[row + 1][col], dp[row + 1][col + 1])
+            dp[row][col] += max(dp[row + 1][col], dp[row + 1][col + 1])
 
-    # Reconstruct the path to find the actual sequence of values
-    path = [grid[0][0]]
-    row, col = 0, 0
-    while row < n - 1:
-        if dp[row + 1][col] > dp[row + 1][col + 1]:
-            row += 1
-        else:
-            row += 1
-            col += 1
-        path.append(grid[row][col])
+    return dp[0][0]
 
-    return dp[0][0], path
 
 
 
