@@ -57,19 +57,6 @@ def divide_conquer(grid):
     
     return find_max_path(0, 0)
 
-# returns the greatest path sum and the new grid using dynamic programming
-def dynamic_prog(grid):
-    n = len(grid)
-
-    # Create a copy of the grid to store the maximum path sums
-    dp = [row[:] for row in grid]
-
-    # Start from the second-to-last row and work upwards
-    for row in range(n - 2, -1, -1):
-        for col in range(len(grid[row])):
-            dp[row][col] += max(dp[row + 1][col], dp[row + 1][col + 1])
-
-    return dp[0][0]
 
 
 
@@ -97,6 +84,20 @@ def read_file ():
             grid.append(row)
         return grid
 
+
+# returns the greatest path sum and the new grid using dynamic programming
+def dynamic_prog(grid):
+    n = len(grid)
+
+    # Create a copy of the grid to store the maximum path sums
+    dp = [row[:] for row in grid]
+
+    # Start from the second-to-last row and work upwards
+    for row in range(n - 2, -1, -1):
+        for col in range(len(grid[row])):
+            dp[row][col] += max(dp[row + 1][col], dp[row + 1][col + 1])
+
+    return dp[0][0]
 
 def main():
     # Read triangular grid from file
