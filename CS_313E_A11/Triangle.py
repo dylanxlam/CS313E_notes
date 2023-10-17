@@ -75,28 +75,14 @@ def dynamic_prog(grid):
 
 
 
-def read_file(file_path):
-    with open(file_path, 'r') as f:
-        n = int(f.readline())
-        grid = []
-        for i in range(n):
-            row = list(map(int, f.readline().split()))
-            grid.append(row)
+# reads the file and returns a 2-D list that represents the triangle
+def read_file():
+    n = int(input())
+    grid = []
+    for i in range(n):
+        row = list(map(int, input().split()))
+        grid.append(row)
     return grid
-
-    input_file = 'triangle.in'  # Specify the path to your input file
-    grid = read_file(input_file)
-
-    # Rest of your code remains unchanged
-    result = dynamic_prog(grid)
-    print("The greatest path sum through dynamic programming is", result)
-    times = timeit('dynamic_prog({})'.format(grid), 'from __main__ import dynamic_prog', number=10)
-    times = times / 10
-    print("The time taken for dynamic programming in seconds is", times)
-
-if __name__ == '__main__':
-    main()
-
 
 def main():
     # Read triangular grid from file
@@ -123,10 +109,7 @@ def main():
     times = times / 10
     print("The time taken for recursive search in seconds is", times)
 
-    input_file = 'triangle.in'  # Specify the path to your input file
-    grid = read_file(input_file)
-
-    # Rest of your code remains unchanged
+    # Output greatest path from dynamic programming 
     result = dynamic_prog(grid)
     print("The greatest path sum through dynamic programming is", result)
     times = timeit('dynamic_prog({})'.format(grid), 'from __main__ import dynamic_prog', number=10)
