@@ -77,10 +77,13 @@ def dynamic_prog(grid):
 
 # reads the file and returns a 2-D list that represents the triangle
 def read_file():
-    # read number of lines
-    line = sys.stdin.readline()
-    line = line.strip()
-    n = int (line)
+    with open("triangle.in", "r") as file:
+        n = int(file.readline().strip())
+        grid = []
+        for i in range(n):
+            row = list(map(int, file.readline().split()))
+            grid.append(row)
+        return grid
 
 def main():
     # Read triangular grid from file
