@@ -64,13 +64,12 @@ def dynamic_prog(grid):
     # Create a copy of the grid to store the updated sums
     dp = [row[:] for row in grid]
 
-    # Start from the second-to-last row and work upwards
+    # Start from the second row from the bottom and work upwards
     for row in range(n - 2, -1, -1):
         for col in range(len(grid[row])):
             dp[row][col] += max(dp[row + 1][col], dp[row + 1][col + 1])
 
     return dp[0][0]
-
 
 
 
