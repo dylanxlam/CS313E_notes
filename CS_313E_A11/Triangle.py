@@ -58,33 +58,6 @@ def divide_conquer(grid):
     return find_max_path(0, 0)
 
 
-
-
-
-
-# reads the file and returns a 2-D list that represents the triangle
-def read_file ():
-    # read number of lines
-    line = sys.stdin.readline()
-    line = line.strip()
-    n = int (line)
-
-    # create an empty grid with 0's
-    grid = [[0 for i in range (n)] for j in range (n)]
-
-    # read each line in the input file and add to the grid
-    for i in range (n):
-        line = sys.stdin.readline()
-        line = line.strip()
-        row = line.split()
-        n = int(row())
-        grid = []
-        for i in range(n):
-            row = list(map(int, input().split()))
-            grid.append(row)
-        return grid
-
-
 # returns the greatest path sum and the new grid using dynamic programming
 def dynamic_prog(grid):
     n = len(grid)
@@ -98,6 +71,21 @@ def dynamic_prog(grid):
             dp[row][col] += max(dp[row + 1][col], dp[row + 1][col + 1])
 
     return dp[0][0]
+
+
+
+# reads the file and returns a 2-D list that represents the triangle
+def read_file ():
+    # read number of lines
+    line = sys.stdin.readline()
+    line = line.strip()
+    n = int (line)
+    grid = []
+    for i in range(n):
+        row = list(map(int, input().split()))
+        grid.append(row)
+    return grid
+
 
 def main():
     # Read triangular grid from file
