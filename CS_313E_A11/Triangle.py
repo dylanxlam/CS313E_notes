@@ -76,14 +76,25 @@ def dynamic_prog(grid):
 
 
 # reads the file and returns a 2-D list that represents the triangle
-def read_file():
-    with open("triangle.in", "r") as file:
-        n = int(file.readline().strip())
-        grid = []
-        for i in range(n):
-            row = list(map(int, file.readline().split()))
-            grid.append(row)
-        return grid
+def read_file ():
+    # read number of lines
+    line = sys.stdin.readline()
+    line = line.strip()
+    n = int (line)
+
+    # create an empty grid with 0's
+    grid = [[0 for i in range (n)] for j in range (n)]
+
+    # read each line in the input file and add to the grid
+    for i in range (n):
+        line = sys.stdin.readline()
+        line = line.strip()
+        row = line.split()
+        row = list (map (int, row))
+        for j in range (len(row)):
+            grid[i][j] = grid[i][j] + row[j]
+
+    return grid 
 
 def main():
     # Read triangular grid from file
@@ -116,6 +127,8 @@ def main():
     times = timeit('dynamic_prog({})'.format(grid), 'from __main__ import dynamic_prog', number=10)
     times = times / 10
     print("The time taken for dynamic programming in seconds is", times)
+
+    
 
 if __name__ == "__main__":
     main()
