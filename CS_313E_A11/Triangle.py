@@ -70,7 +70,20 @@ def dynamic_prog(grid):
         for col in range(len(grid[row])):
             dp[row][col] = grid[row][col] + max(dp[row + 1][col], dp[row + 1][col + 1])
 
-    return dp[0][0]
+    # Reconstruct the path to find the actual sequence of values
+    path = [grid[0][0]]
+    row, col = 0, 0
+    while row < n - 1:
+        if dp[row + 1][col] > dp[row + 1][col + 1]:
+            row += 1
+        else:
+            row += 1
+            col += 1
+        path.append(grid[row][col])
+
+    return dp[0][0], path
+
+
 
 
 
