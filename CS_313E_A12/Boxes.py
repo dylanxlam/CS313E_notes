@@ -1,3 +1,23 @@
+#  File: Boxes.py
+
+#  Description: Boxes.py efficiently determines the largest number of nesting boxes and the count of such nesting sets from a list of boxes with varying dimensions, adhering to nesting rules and dimension permutations, using memoization for optimization.
+
+#  Student's Name: Alexander Romero-Barrionuevo
+
+#  Student's UT EID: ANR3784
+ 
+#  Partner's Name: Dylan Lam
+
+#  Partner's UT EID: DXL85
+
+#  Course Name: CS 313E 
+
+#  Unique Number: 52605
+
+#  Date Created: 10/13/2023
+
+#  Date Last Modified: 10/16/2023
+
 import sys
 
 # Input: 2-D list of boxes. Each box of three dimensions is sorted
@@ -45,7 +65,6 @@ def nesting_boxes (box_list):
             num_sets = sets_here
         elif max_here == max_boxes:
             num_sets += sets_here
-
     return max_boxes, num_sets
 
 # returns True if box1 fits inside box2
