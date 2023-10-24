@@ -50,7 +50,6 @@ class Queens(object):
         if (col == self.n):
             # If all queens are placed, a solution is found
             self.solutions += 1  
-            self.print_board()
         else:
             for i in range(self.n):
                 if (self.is_valid(i, col)):
