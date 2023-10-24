@@ -30,13 +30,7 @@ class Queens(object):
             self.board.append(row)
         self.solutions = 0  # Initialize the solution count
 
-    # Print the board
-    def print_board(self):
-        for i in range(self.n):
-            for j in range(self.n):
-                print(self.board[i][j], end=' ')
-            print()
-        print()
+
 
     # Check if a position on the board is valid
     def is_valid(self, row, col):
@@ -81,7 +75,7 @@ def main():
     game.solve()
 
     # Print the number of solutions
-    print("Total number of solutions:", game.solutions)
+    print(game.solutions)
 
 if __name__ == "__main__":
     main()
