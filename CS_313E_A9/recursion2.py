@@ -39,6 +39,10 @@ def groupSum(start, nums, target):
         return (target == 0)
     else:
        return groupSum(start + 1, nums, target - nums[start]) or groupSum((start+1), nums, target)
+#  The function subtracts nums[start] from the target and backtracks if the recursive call returns False. 
+#  This backtracking process allows the function to systematically explore all possible combinations and 
+    #  determine if there's a way to reach the target sum using a subset of the elements in the array.
+#  When it backtracks, it goes back to recursively subtracting nums[start] from target until it returns false and ultimately backtracks again
 
 
   
@@ -129,9 +133,9 @@ def splitArrayHelper(leftSum, rightSum, index, nums):
     else:
        return (splitArrayHelper(leftSum + nums[index], rightSum, index + 1, nums) or 
                splitArrayHelper(leftSum, rightSum + nums[index], index + 1, nums))
-   
+#  Explores all possible leftSum and rightSum pairs
 
-	
+
 	
 # Given an array of ints, is it possible to divide the 
 # ints into two groups, so that the sum of one group

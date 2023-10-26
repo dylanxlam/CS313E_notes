@@ -1,28 +1,35 @@
-
 #  File: OfficeSpace.py
 
-#  Description:
+#  Description: This program efficiently allocates office cubicles 
+#  to employees based on their placement requests. It calculates key 
+#  metrics such as total office space, unallocated space, contested space, 
+#  and individual allocations for each employee.
 
-#  Student Name: Dylan Lam
+#  Student Name: Alexander Romero
 
-#  Student UT EID: DXL85
+#  Student UT EID: ANR3784
 
-#  Partner Name: Alexander Romero-Barrionuevo
+#  Partner Name: Dylan Lam
 
-#  Student's UT EID: ANR3784    
+#  Partner UT EID: DXL85
 
 #  Course Name: CS 313E
 
 #  Unique Number: 52605
 
-#  Date Created:
+#  Date Created: 9/30/2023
 
-#  Date Last Modified:
+#  Date Last Modified: 9/30/2023
 
 
+# Input: a rectangle which is a tuple of 4 integers (x1, y1, x2, y2)
+# Output: an integer giving the area of the rectangle
 def area(rect):
     return (rect[2] - rect[0]) * (rect[3] - rect[1])
 
+# Input: two rectangles in the form of tuples of 4 integers
+# Output: a tuple of 4 integers denoting the overlapping rectangle.
+#         return (0, 0, 0, 0) if there is no overlap
 def overlap(rect1, rect2):
     x1 = max(rect1[0], rect2[0])
     y1 = max(rect1[1], rect2[1])
@@ -33,47 +40,84 @@ def overlap(rect1, rect2):
         return (x1, y1, x2, y2)
     else:
         return (0, 0, 0, 0)
+    
 
+# Input: bldg is a 2-D array representing the whole office space
+# Output: a single integer denoting the area of the contested 
+#         space in the office
+def contested_space(bldg):
+    contested = 0
+    for row in bldg:
+        for cell in row:
+            if cell > 1:
+                contested += 1
+    return contested
+    
+
+# Input: bldg is a 2-D array representing the whole office space
+# Output: a single integer denoting the area of the unallocated 
+#         space in the office
 def unallocated_space(bldg):
     unallocated = 0
     for row in bldg:
         unallocated += row.count(0)
     return unallocated
 
-def contested_space(bldg):
-    contested = 0
-    for i in range(len(bldg)):
-        for j in range(len(bldg[0])):
-            if bldg[i][j] > 1:
-                contested += 1
-    return contested
 
-def uncontested_space(bldg, rect):
+# Input: bldg is a 2-D array representing the whole office space
+#        rect is a rectangle in the form of a tuple of 4 integers
+#        representing the cubicle requested by an employee
+# Output: a single integer denoting the area of the contested 
+#         space in the office for the specified employee
+def contested_area(bldg, rect):
+    # Get respective coordinates and establish variable of area
     x1, y1, x2, y2 = rect
-    uncontested_area = 0
+    contested = 0
+
+    # Check through the building and see how many spaces are contested
     for x in range(x1, x2):
         for y in range(y1, y2):
-            if bldg[y][x] == 0:
-                uncontested_area += 1
-    return uncontested_area
+            if bldg[y][x] > 1:
+                contested += 1
+
+    return contested
+
+# Input: bldg is a 2-D array representing the whole office space
+#        rect is a rectangle in the form of a tuple of 4 integers
+#        representing the cubicle requested by an employee
+# Output: a single integer denoting the area of the uncontested 
+#         space in the office that the employee gets
+def uncontested_space(bldg, rect):
+    # Get respective coordinates and establish variable of area
+    uncontested = 0
+    x1, y1, x2, y2 = rect
+
+     # Check through the building and see how many spaces are uncontested
+    for i in range(y1, y2):
+        for j in range(x1, x2):
+            if bldg[i][j] == 1:
+                uncontested += 1
+
+    return uncontested
 
 
-
-
-
+# Input: office is a rectangle in the form of a tuple of 4 integers
+#        representing the whole office space
+#        cubicles is a list of tuples of 4 integers representing all
+#        the requested cubicles
+# Output: a 2-D list of integers representing the office building and
+#         showing how many employees want each cell in the 2-D list
 def request_space(office, cubicles):
+    # Find width and height of office, create an empty 2D list by dimensions
     w = office[2]
     h = office[3]
     bldg = [[0] * w for _ in range(h)]
 
+    # Iterate through the 2D list and populate cubicles by number of instances of employees
     for i, (employee, rect) in enumerate(cubicles):
         for x in range(rect[0], rect[2]):
             for y in range(rect[1], rect[3]):
-                if bldg[y][x] == 0:
-                    bldg[y][x] = i + 1
-                else:
-                    # Mark as contested if already assigned
-                    bldg[y][x] = -1
+                bldg[y][x] += 1
 
     return bldg
 

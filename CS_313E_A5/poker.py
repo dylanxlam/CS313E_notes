@@ -52,6 +52,7 @@ class Card (object):
 			rank = 'J'
 		else:
 			rank = str (self.rank)
+			
 		return rank + self.suit
 
 	# equality tests
