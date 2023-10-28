@@ -12,8 +12,9 @@ import sys
 # Output: s with characters removed such that there is only one request per item. The output 
 # should be the alphabetically smallest string meeting these constraints
 def filter_requests(s):
-    stack = []
     last_idx = {character: -1 for character in s}
+
+    stack = []
 
     for i, character in enumerate(s):
         if i < last_idx[character]:
