@@ -31,21 +31,36 @@ def brute_force(grid):
         right = find_max_path(row + 1, col + 1)
         return grid[row][col] + max(left, right)
     
-    return find_max_path(0, 0)
+    return find_max_path(0, 0) #  Initial call to find_max_path function
 
-# returns the greatest path sum using greedy approach
+ #  For the cell in the first row, the algorithm calculates 
+    #  the maximum path sum for the paths that originate from 
+    #  that cell and move downward. It selects the path that offers the maximum sum.
+#  This process is repeated for the second row, and then for subsequent rows, 
+    #  with the algorithm exploring all possible paths from each cell. 
+
+
+# returns the greatest path sum using greedy approach (can lead to incorrect answers)
 def greedy(grid):
-    max_sum = grid[0][0]
-    current_col = 0
-    
+    '''
+    The greedy approach makes choices that seem best at each step 
+    without considering the full picture of the grid. 
+    '''
+    max_sum = grid[0][0]  # Initialize the maximum sum to the value at the top-left corner.
+    current_col = 0  # Initialize the current column to 0 (starting from the left).
+
     for row in range(1, len(grid)):
+        # Compare the values in the current column and the next column.
         if grid[row][current_col] > grid[row][current_col + 1]:
+            # If the value in the current column is greater, choose to move down in the current column.
             max_sum += grid[row][current_col]
         else:
+            # If the value in the next column is greater, choose to move down and to the right.
             max_sum += grid[row][current_col + 1]
-            current_col += 1
-    
-    return max_sum
+            current_col += 1  # Update the current column to move to the right.
+
+    return max_sum  # Return the maximum sum found using the greedy approach.
+
 
 # returns the greatest path sum using divide and conquer (recursive) approach
 def divide_conquer(grid):
