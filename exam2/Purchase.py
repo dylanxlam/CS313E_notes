@@ -1,8 +1,8 @@
 # File: Purchase.py
 # Description: Remove purchase requests to make a list of requests valid
 
-# Student Name: 
-# Student UT EID: 
+# Student Name: Dylan Lam
+# Student UT EID: dxl85
 # Course Name: CS 313E
 # Unique Number: 52605
 
