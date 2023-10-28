@@ -1,14 +1,14 @@
 #  File: Div13.py
 
-#  Description: 
+#  Description: This function return the square of the number of steps to make an inputted number (n) divisible by 13, or -1 if it is impossible
 
-#  Student Name:
+#  Student Name: Dylan Lam
 
-#  Student UT EID:
+#  Student UT EID: dxl85
 
 #  Course Name: CS 313E
 
-#  Unique Number: 
+#  Unique Number: 52605
 
 
 import sys

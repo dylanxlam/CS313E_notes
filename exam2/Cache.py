@@ -1,9 +1,9 @@
 # File: Cache.py
 # Description: Implement a cache with hash table and linked list
-# Student Name:
-# Student UT EID:
+# Student Name: Dylan Lam
+# Student UT EID: dxl 85
 # Course Name: CS 313E
-# Unique Number:
+# Unique Number: 52605
 
 import sys
 

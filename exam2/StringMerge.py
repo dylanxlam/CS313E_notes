@@ -1,8 +1,8 @@
 
 # File: StringMerge.py
 # Description: Determine how many new strings can be formed according to the criteria given using recursion.
-# Student Name:
-# Student UT EID:
+# Student Name: Dylan Lam
+# Student UT EID: dxl85
 # Course Name: CS 313E
 # Unique Number: 52605
 

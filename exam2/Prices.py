@@ -1,5 +1,4 @@
 # File: Prices.py  
-
 # Student Name:
 # Student UT EID:
 # Course Name: CS 313E
