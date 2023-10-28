@@ -3,15 +3,21 @@
 # Student Name:
 # Student UT EID:
 # Course Name: CS 313E
-# Unique Number:
+# Unique Number: 52605
 
 import sys
 
 # Input: 2 strings, s1 and s2, which both have length >= 0
 # Output: the number of possible new strings that can be formed by merging s1 and s2
 def stringMerge(s1, s2):
-    if len(s1) == 0 or len(s2) == 0:
+    if len(s1) == 0 and len(s2) == 0:
         return 1
+
+    if len(s1) == 0 or len(s2) == 0:
+        return 0
+    
+    if s1[0] == s2[0]:
+        return stringMerge(s1[1:], s2[1:]) + stringMerge(s1[1:], s2)
     
     count = 0
 
