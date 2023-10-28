@@ -27,7 +27,7 @@ def filter_requests(s):
 
         if character not in stack:
             stack.append(character)
-            last_idx[character] = s.find(character, i)
+            last_idx[character] = i
 
 
 
