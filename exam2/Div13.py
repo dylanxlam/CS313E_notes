@@ -47,8 +47,10 @@ def div(n):
     return result * result
 
 def main():
-    print(div(int(input())))
-
+    for line in sys.stdin:
+        n = int(line.strip())
+        result = div(n)
+        print(result)
 
 if __name__ == "__main__":
     main()
