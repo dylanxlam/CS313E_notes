@@ -15,11 +15,9 @@ def stringMerge(s1, s2):
     
     count = 0
 
-    if len(s1) > 0:
-        count = count + stringMerge(s1[1:], s2)
+    count = count + stringMerge(s1[1:], s2)
 
-    if len(s2) > 0:
-        count = count + stringMerge(s1, s2[1:])
+    count = count + stringMerge(s1, s2[1:])
 
     return count
 
