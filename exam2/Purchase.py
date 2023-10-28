@@ -13,20 +13,14 @@ import sys
 # Output: s with characters removed such that there is only one request per item. The output 
 # should be the alphabetically smallest string meeting these constraints
 def filter_requests(s):
-    last_idx = {character: -1 for character in s}
+    last_idx = {}
 
     stack = []
 
-    for i, character in enumerate(s):
-        if i < last_idx[character]:
-            continue
-
-        
-        while len(stack) > 0 and stack[-1] > character and s.find(stack[-1], i) != -1:
-            removed = stack.pop()
-
-        if character not in stack:
+    for character in s:
+        if character not in last_idx or character > last_idx[character]:
             stack.append(character)
+            last_idx[character] = len(stack) - 1
 
 
 
