@@ -1,3 +1,4 @@
+
 # File: StringMerge.py
 # Description: Determine how many new strings can be formed according to the criteria given using recursion.
 # Student Name:
@@ -10,15 +11,14 @@ import sys
 # Input: 2 strings, s1 and s2, which both have length >= 0
 # Output: the number of possible new strings that can be formed by merging s1 and s2
 def stringMerge(s1, s2):
-    if len(s1) == 0 and len(s2) == 0:
-        return 1
-
     if len(s1) == 0 or len(s2) == 0:
-        return 0
-    
-
+        return 1
     
     count = 0
+
+    
+    if s1[0] == s2[0]:
+        count += stringMerge(s1[1:], s2[1:])
     
 
     count = count + stringMerge(s1[1:], s2)
