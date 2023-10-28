@@ -44,10 +44,8 @@ def div(n):
         return min_step_count
 
     result = min_steps(n)
-    if result != float('inf'):
-        return result * result
-    else:
-        return -1
+    return result * result if result != float('inf') else -1
+
 
 if __name__ == "__main__":
     print(div(int(sys.stdin.readline())))
