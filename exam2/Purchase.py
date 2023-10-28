@@ -27,6 +27,7 @@ def filter_requests(s):
     output = ''.join(stack)
     return output
 
+
 def main():
     request = sys.stdin.readline().strip()
     print(filter_requests(request))
