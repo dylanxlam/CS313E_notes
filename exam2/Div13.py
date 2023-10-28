@@ -46,6 +46,9 @@ def div(n):
     result = min_steps(n)
     return result * result
 
+def main():
+        print(div(int(sys.stdin.readline())))
+
 
 if __name__ == "__main__":
-    print(div(int(sys.stdin.readline())))
+    main()
