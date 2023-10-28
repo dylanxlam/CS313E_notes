@@ -44,13 +44,12 @@ def div(n):
         return min_step_count
 
     result = min_steps(n)
-    return result * result
+    square = result * result
+    return square
 
 def main():
-    for line in sys.stdin:
-        n = int(line.strip())
-        result = div(n)
-        print(result)
+    print(div(int(sys.stdin.readline())))
+
 
 if __name__ == "__main__":
     main()
