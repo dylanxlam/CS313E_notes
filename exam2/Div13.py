@@ -47,7 +47,7 @@ def div(n):
     return result * result
 
 def main():
-    print(div(int(sys.stdin.readline())))
+    print(div(int(input())))
 
 
 if __name__ == "__main__":
