@@ -23,11 +23,9 @@ def filter_requests(s):
         
         while len(stack) > 0 and stack[-1] > character and s.find(stack[-1], i) != -1:
             removed = stack.pop()
-            last_idx[removed] = s.find(removed, i)
 
         if character not in stack:
             stack.append(character)
-            last_idx[character] = i
 
 
 
