@@ -6,25 +6,32 @@
 # Course Name: CS 313E
 # Unique Number: 52605
 
+
 import sys
 
 # Input: a string s, where each letter represents a request to purchase a particular item
 # Output: s with characters removed such that there is only one request per item. The output 
 # should be the alphabetically smallest string meeting these constraints
 def filter_requests(s):
-    stack = []
     last_idx = {character: -1 for character in s}
 
+    stack = []
+
     for i, character in enumerate(s):
-        while stack and character < stack[-1] and i < last_idx[stack[-1]]:
-            stack.pop()
+        if i < last_idx[character]:
+            continue
 
-        if i > last_idx[character]:
-            last_idx[character] = i
-            if character not in stack:
-                stack.append(character)
+        
+        while len(stack) > 0 and stack[-1] > character and s.find(stack[-1], i) != -1:
+            removed = stack.pop()
 
-    return ''.join(stack)
+        if character not in stack:
+            stack.append(character)
+
+
+
+    output = ''.join(stack)
+    return output
 
 def main():
     request = sys.stdin.readline().strip()
