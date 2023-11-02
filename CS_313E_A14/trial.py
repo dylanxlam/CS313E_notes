@@ -1,3 +1,41 @@
+## Problem: What are some of the longest English words that remain a valid 
+# English words as you remove one letter at a time from those words?
+# The letters can be removed anywhere from the word one at a time but 
+# you may not rearrange the remaining letters to form a valid word. Every time 
+# you remove a letter the remaining letters form a valid English word. 
+# Eventually you will end up with a single letter and that single letter 
+# must also be a valid English word. A valid English word is one that is 
+# found in the Oxford English Dictionary or the Webster's Dictionary.
+
+# For want of a better term we will call such words reducible words. Here are two examples of reducible words:
+
+# 1: sprite. If you remove the r you get spite. 
+# Remove the e and you get spit. Remove the s and you get pit. 
+# Remove the p and you get it. Remove the t and you get i or I 
+# which is a valid English word.
+
+# 2: string. Take away the r and you have sting. 
+# Take away the t and you have sing. Take away the g 
+# and you have sin. Take away the s and you have in. 
+# Take away the n and you have i or I which is a valid 
+# English word.
+
+# So all reducible words will reduce to one of three letters - a, i, and o. 
+# We will not accept any other letter as the final one letter word.
+# There is no official word list in an electronic form that we can use. 
+# We will use a curated word list file called words.txt. All the words are 
+# in lower case and are two letters or more in length. This word list will 
+# do as our input file.
+
+# Your output will be all the words of length 10 that are reducible. 
+# You will print each word in alphabetical order on a line by itself. 
+# Here is your output of reducible words of length 10.
+
+
+
+# # Input: takes as input a positive integer n
+# Output: returns True if n is prime and False otherwise
+
 import sys
 
 def is_prime(n):
@@ -54,13 +92,12 @@ def is_reducible(s, hash_table, hash_memo):
     elif not find_word(s, hash_table):
         return False
     else:
-        for i in range(len(s)):
-            reduced_word = s[:i] + s[i + 1:]
-            if is_reducible(reduced_word, hash_table, hash_memo):
-                hash_memo.add(s)
+        small_words = [s[:i] + s[i + 1:] for i in range(len(s))]
+        for word in small_words:
+            if is_reducible(word, hash_table, hash_memo):
+                hash_memo.add(word)
                 return True
-        return False
-
+    return False
 
 def get_longest_words(string_list):
     if not string_list:
@@ -74,12 +111,14 @@ def find_next_prime(n):
         if is_prime(n):
             return n
 
+
 def main():
     word_list = []
 
     for line in sys.stdin:
         word_list.append(line.strip())
 
+    # Calculate N based on load factor
     load_factor = 0.7
     N = int(len(word_list) / load_factor)
     N = find_next_prime(N)
