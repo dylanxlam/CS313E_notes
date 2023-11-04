@@ -1,22 +1,26 @@
 #  File: Radix.py
 
-#  Description:
+#  Description: This code implements the 
+    #  Radix Sort algorithm to sort a list 
+    #  of strings containing both lowercase 
+    #  letters and digits, producing a list 
+    #  of sorted strings in ascending order.
 
-#  Student Name:
+#  Student Name: Alexander Romero-Barrionuevo
 
-#  Student UT EID:
+#  Student UT EID: ANR3784
 
-#  Partner Name:
+#  Partner Name:  Dylan Lam
 
-#  Partner UT EID:
+#  Partner UT EID: DXL85
 
 #  Course Name: CS 313E
 
-#  Unique Number: 
+#  Unique Number: 52605
 
-#  Date Created:
+#  Date Created: 10/31/23
 
-#  Date Last Modified:
+#  Date Last Modified: 11/3/23
 
 
 import sys
