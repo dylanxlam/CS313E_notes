@@ -1,142 +1,180 @@
+
+#  File: Poly.py
+
+#  Description: This Python code defines a linked list-based representation of polynomials, 
+        #  with functionalities to insert terms in descending order of exponents, 
+        #  perform polynomial addition, multiplication, and output the results.
+
+#  Student Name: Alexander Romero-Barrionuevo
+
+#  Student UT EID: ANR3784
+
+#  Partner Name:  Dylan Lam
+
+#  Partner UT EID: DXL85
+
+#  Course Name: CS 313E
+
+#  Unique Number: 52605
+
+#  Date Created: 11/7/23
+
+#  Date Last Modified: 11/10/23
+
 import sys
 
-class Link(object):
-    def __init__(self, coeff=1, exp=1, next=None):
+class Link (object):
+    def __init__ (self, coeff = 1, exp = 1, next = None):
         self.coeff = coeff
         self.exp = exp
         self.next = next
 
-    def __str__(self):
-        return '(' + str(self.coeff) + ', ' + str(self.exp) + ')'
+    def __str__ (self):
+        return '(' + str (self.coeff) + ', ' + str (self.exp) + ')'
 
-class LinkedList(object):
-    def __init__(self):
+class LinkedList (object):
+    def __init__ (self):
         self.first = None
 
     # keep Links in descending order of exponents
-    def insert_in_order(self, coeff, exp):
+    def insert_in_order (self, coeff, exp):
         new_link = Link(coeff, exp)
-        if self.first is None or exp > self.first.exp:
-            new_link.next = self.first
+        if self.first is None:
             self.first = new_link
         else:
             current = self.first
-            while current.next is not None and current.next.exp > exp:
+            previous = None
+            while current is not None and current.exp > exp:
+                previous = current
                 current = current.next
-            if current.next is not None and current.next.exp == exp:
-                current.next.coeff += coeff
-            else:
-                new_link.next = current.next
-                current.next = new_link
 
+            if current is not None and current.exp == exp:
+                # If a term with the same exponent exists, add coefficients
+                current.coeff += coeff
+                if current.coeff == 0:
+                    # If the sum is zero, remove the term
+                    if previous is None:
+                        self.first = current.next
+                    else:
+                        previous.next = current.next
+                else:
+                    # Otherwise, update the coefficient
+                    current.coeff = current.coeff
+            else:
+                # Insert the new term
+                new_link.next = current
+                if previous is None:
+                    self.first = new_link
+                else:
+                    previous.next = new_link
 
     # add polynomial p to this polynomial and return the sum
-    def add(self, p):
+    def add (self, p):
         result = LinkedList()
+        current_self = self.first
         current_p = p.first
-        current_q = self.first
 
-        while current_p is not None or current_q is not None:
-            if current_p is None:
-                result.insert_in_order(current_q.coeff, current_q.exp)
-                current_q = current_q.next
-            elif current_q is None:
-                result.insert_in_order(current_p.coeff, current_p.exp)
-                current_p = current_p.next
-            elif current_p.exp > current_q.exp:
-                result.insert_in_order(current_p.coeff, current_p.exp)
-                current_p = current_p.next
-            elif current_p.exp < current_q.exp:
-                result.insert_in_order(current_q.coeff, current_q.exp)
-                current_q = current_q.next
-            else:
-                result.insert_in_order(current_p.coeff + current_q.coeff, current_p.exp)
-                current_p = current_p.next
-                current_q = current_q.next
-
-        return result
-
-
-    def combine_like_terms(self):
-        current = self.first
-        while current is not None and current.next is not None:
-            if current.exp == current.next.exp:
-                current.coeff += current.next.coeff
-                current.next = current.next.next
-            else:
-                current = current.next
-
-        # Remove terms with a coefficient of 0
-        current = self.first
-        prev = None
-        while current is not None:
-            if current.coeff == 0:
-                if prev is None:
-                    self.first = current.next
+        while current_self is not None or current_p is not None:
+            if current_self is not None and current_p is not None:
+                if current_self.exp == current_p.exp:
+                    # If exponents are equal, add coefficients and insert the term
+                    sum_coeff = current_self.coeff + current_p.coeff
+                    if sum_coeff != 0:
+                        result.insert_in_order(sum_coeff, current_self.exp)
+                    current_self = current_self.next
+                    current_p = current_p.next
+                elif current_self.exp > current_p.exp:
+                    # If exponent in the first polynomial is greater, insert the term from the first polynomial
+                    result.insert_in_order(current_self.coeff, current_self.exp)
+                    current_self = current_self.next
                 else:
-                    prev.next = current.next
-            else:
-                prev = current
-            current = current.next
-
-        
-    # multiply polynomial p to this polynomial and return the product
-    def mult(self, p):
-        result = LinkedList()
-        current_p = p.first
-
-        while current_p is not None:
-            current_self = self.first
-            while current_self is not None:
-                coeff = current_self.coeff * current_p.coeff
-                exp = current_self.exp + current_p.exp
-                result.insert_in_order(coeff, exp)
+                    # If exponent in the second polynomial is greater, insert the term from the second polynomial
+                    result.insert_in_order(current_p.coeff, current_p.exp)
+                    current_p = current_p.next
+            elif current_self is not None:
+                # If there are remaining terms in the first polynomial, insert them
+                result.insert_in_order(current_self.coeff, current_self.exp)
                 current_self = current_self.next
+            else:
+                # If there are remaining terms in the second polynomial, insert them
+                result.insert_in_order(current_p.coeff, current_p.exp)
+                current_p = current_p.next
 
-            current_p = current_p.next
+        # Combine terms with the same exponent in the result
+        current_result = result.first
+        while current_result is not None and current_result.next is not None:
+            if current_result.exp == current_result.next.exp:
+                current_result.coeff += current_result.next.coeff
+                current_result.next = current_result.next.next
+            else:
+                current_result = current_result.next
 
         return result
 
+    # multiply polynomial p to this polynomial and return the product
+    def mult (self, p):
+        result = LinkedList()
+        current_self = self.first
 
+        while current_self is not None:
+            current_p = p.first
+            while current_p is not None:
+                new_coeff = current_self.coeff * current_p.coeff
+                new_exp = current_self.exp + current_p.exp
+                if new_coeff != 0:  # Exclude terms with coefficient 0
+                    result.insert_in_order(new_coeff, new_exp)
+                current_p = current_p.next
+            current_self = current_self.next
 
+        # Combine terms with the same exponent in the result
+        current_result = result.first
+        while current_result is not None and current_result.next is not None:
+            if current_result.exp == current_result.next.exp:
+                current_result.coeff += current_result.next.coeff
+                current_result.next = current_result.next.next
+            else:
+                current_result = current_result.next
 
+        return result
 
     # create a string representation of the polynomial
-    def __str__(self):
-        result = ''
+    def __str__ (self):
+        result = []
         current = self.first
         while current is not None:
-            result += '(' + str(current.coeff) + ', ' + str(current.exp) + ')'
+            result.append(str(current))
             current = current.next
-            if current is not None:
-                result += ' + '
-        return result
-
-
+        return ' + '.join(result)
 
 def main():
-    # Format: n, (coeff, exp) pairs, blank line, m, (coeff, exp) pairs
-    n = int(input())
-    poly1 = LinkedList()
+    # Read the number of terms in the first polynomial (p)
+    n = int(sys.stdin.readline().strip())
+
+    # Create the first polynomial (p)
+    p = LinkedList()
     for _ in range(n):
-        coeff, exp = map(int, input().split())
-        poly1.insert_in_order(coeff, exp)
+        coeff, exp = map(int, sys.stdin.readline().strip().split())
+        p.insert_in_order(coeff, exp)
 
-    input()
+    # Skip the blank line
+    sys.stdin.readline()
 
-    m = int(input())
-    poly2 = LinkedList()
+    # Read the number of terms in the second polynomial (q)
+    m = int(sys.stdin.readline().strip())
+
+    # Create the second polynomial (q)
+    q = LinkedList()
     for _ in range(m):
-        coeff, exp = map(int, input().split())
-        poly2.insert_in_order(coeff, exp)
+        coeff, exp = map(int, sys.stdin.readline().strip().split())
+        q.insert_in_order(coeff, exp)
 
-    # get sum of p and q and print sum
-    sum_result = poly1.add(poly2)
+    # Get the sum of p and q and print the sum
+    sum_result = p.add(q)
     print(sum_result)
 
-    # get product of p and q and print product
-    product_result = poly1.mult(poly2)
+    # Get the product of p and q and print the product
+    product_result = p.mult(q)
     print(product_result)
 
 if __name__ == "__main__":
-    main()
+  main()
