@@ -99,11 +99,11 @@ def main():
 
     # get sum of p and q and print sum
     sum_result = poly1.add(poly2)
-    print("Sum:", sum_result)
+    print(sum_result)
 
     # get product of p and q and print product
     product_result = poly1.mult(poly2)
-    print("Product:", product_result)
+    print(product_result)
 
 if __name__ == "__main__":
     main()
