@@ -56,6 +56,16 @@ class LinkedList(object):
 
         return result
 
+
+    def combine_like_terms(self):
+        current = self.first
+        while current is not None and current.next is not None:
+            if current.exp == current.next.exp:
+                current.coeff += current.next.coeff
+                current.next = current.next.next
+            else:
+                current = current.next
+        
     # multiply polynomial p to this polynomial and return the product
     def mult(self, p):
         result = LinkedList()
@@ -68,9 +78,15 @@ class LinkedList(object):
                 exp = current_p.exp + current_self.exp
                 result.insert_in_order(coeff, exp)
                 current_self = current_self.next
+
             current_p = current_p.next
 
+        # Combine like terms with the same exponent in the result
+        result.combine_like_terms()
+
         return result
+
+
 
 
     # create a string representation of the polynomial
