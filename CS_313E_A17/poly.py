@@ -105,14 +105,18 @@ class LinkedList(object):
 
     # create a string representation of the polynomial
     def __str__(self):
-        result_str = ''
+        result = ''
         current = self.first
         while current is not None:
-            result_str += str(current)
+            if current.exp == 0:
+                result += '(' + str(current.coeff) + ')'
+            else:
+                result += '(' + str(current.coeff) + ', ' + str(current.exp) + ')'
             current = current.next
             if current is not None:
-                result_str += ' + '
-        return result_str
+                result += ' + '
+        return result
+
 
 def main():
     # Format: n, (coeff, exp) pairs, blank line, m, (coeff, exp) pairs
