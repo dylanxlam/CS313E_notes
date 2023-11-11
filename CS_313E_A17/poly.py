@@ -59,20 +59,19 @@ class LinkedList(object):
     # multiply polynomial p to this polynomial and return the product
     def mult(self, p):
         result = LinkedList()
+
         current_p = p.first
-
         while current_p is not None:
-            temp_result = LinkedList()
-            current_q = self.first
-
-            while current_q is not None:
-                temp_result.insert_in_order(current_p.coeff * current_q.coeff, current_p.exp + current_q.exp)
-                current_q = current_q.next
-
-            result = result.add(temp_result)
+            current_self = self.first
+            while current_self is not None:
+                coeff = current_p.coeff * current_self.coeff
+                exp = current_p.exp + current_self.exp
+                result.insert_in_order(coeff, exp)
+                current_self = current_self.next
             current_p = current_p.next
 
         return result
+
 
     # create a string representation of the polynomial
     def __str__(self):
