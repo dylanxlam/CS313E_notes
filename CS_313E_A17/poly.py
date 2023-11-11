@@ -21,10 +21,14 @@ class LinkedList(object):
             self.first = new_link
         else:
             current = self.first
-            while current.next is not None and current.next.exp >= exp:
+            while current.next is not None and current.next.exp > exp:
                 current = current.next
-            new_link.next = current.next
-            current.next = new_link
+            if current.next is not None and current.next.exp == exp:
+                current.next.coeff += coeff
+            else:
+                new_link.next = current.next
+                current.next = new_link
+
 
     # add polynomial p to this polynomial and return the sum
     def add(self, p):
