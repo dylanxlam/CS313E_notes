@@ -65,6 +65,20 @@ class LinkedList(object):
                 current.next = current.next.next
             else:
                 current = current.next
+
+        # Remove terms with a coefficient of 0
+        current = self.first
+        prev = None
+        while current is not None:
+            if current.coeff == 0:
+                if prev is None:
+                    self.first = current.next
+                else:
+                    prev.next = current.next
+            else:
+                prev = current
+            current = current.next
+
         
     # multiply polynomial p to this polynomial and return the product
     def mult(self, p):
