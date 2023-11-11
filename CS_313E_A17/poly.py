@@ -83,22 +83,20 @@ class LinkedList(object):
     # multiply polynomial p to this polynomial and return the product
     def mult(self, p):
         result = LinkedList()
-
         current_p = p.first
+
         while current_p is not None:
             current_self = self.first
             while current_self is not None:
-                coeff = current_p.coeff * current_self.coeff
-                exp = current_p.exp + current_self.exp
+                coeff = current_self.coeff * current_p.coeff
+                exp = current_self.exp + current_p.exp
                 result.insert_in_order(coeff, exp)
                 current_self = current_self.next
 
             current_p = current_p.next
 
-        # Combine like terms with the same exponent in the result
-        result.combine_like_terms()
-
         return result
+
 
 
 
@@ -108,14 +106,12 @@ class LinkedList(object):
         result = ''
         current = self.first
         while current is not None:
-            if current.exp == 0:
-                result += '(' + str(current.coeff) + ')'
-            else:
-                result += '(' + str(current.coeff) + ', ' + str(current.exp) + ')'
+            result += '(' + str(current.coeff) + ', ' + str(current.exp) + ')'
             current = current.next
             if current is not None:
                 result += ' + '
         return result
+
 
 
 def main():
