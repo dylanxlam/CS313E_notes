@@ -50,14 +50,14 @@ class Tree(object):
                 if not stack.is_empty():
                     current_node = stack.pop()
             else:  # Operand
-                current_node.data = int(token)
+                current_node.data = float(token)  # Use float instead of int
                 current_node = stack.pop() if not stack.is_empty() else current_node
 
     def evaluate(self, aNode):
         if aNode.data is None:
             return None
-        if isinstance(aNode.data, int):
-            return float(aNode.data)  # Convert integers to float for consistent formatting
+        if isinstance(aNode.data, (int, float)):
+            return float(aNode.data)
         left_value = self.evaluate(aNode.lChild)
         right_value = self.evaluate(aNode.rChild)
 
