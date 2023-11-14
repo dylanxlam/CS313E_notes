@@ -1,3 +1,14 @@
+#  Description: This program takes a valid infix expression with parentheses 
+    #  as input, constructs an expression tree, evaluates the expression, 
+    #  and outputs the result along with its corresponding prefix and postfix 
+    #  notations, handling both integer and floating-point operands while 
+    #  preserving exact representations for floating-point results.
+
+
+
+
+
+
 import sys
 
 operators = ['+', '-', '*', '/', '//', '%', '**']
@@ -50,7 +61,7 @@ class Tree(object):
                 if not stack.is_empty():
                     current_node = stack.pop()
             else:  # Operand
-                current_node.data = float(token)  # Use float instead of int
+                current_node.data = token  # Use string for operand
                 current_node = stack.pop() if not stack.is_empty() else current_node
 
     def evaluate(self, aNode):
