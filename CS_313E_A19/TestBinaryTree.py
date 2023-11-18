@@ -52,6 +52,8 @@ class Tree(object):
             root.rChild = self._insert(root.rChild, data)
         return root
 
+# Inside the Tree class
+
     def is_similar(self, pNode):
         '''
         Check if two binary trees are similar.
@@ -84,6 +86,7 @@ class Tree(object):
                 self._is_similar(root1.rChild, root2.rChild)
             )
         return False
+
 
     def get_level(self, level):
         '''
