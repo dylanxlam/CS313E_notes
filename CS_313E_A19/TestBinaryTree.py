@@ -52,7 +52,6 @@ class Tree(object):
             root.rChild = self._insert(root.rChild, data)
         return root
 
-# Inside the Tree class
 
     def is_similar(self, pNode):
         '''
@@ -88,36 +87,43 @@ class Tree(object):
         return False
 
 
+
+
     def get_level(self, level):
         '''
-        Get nodes at a specific level in the binary search tree.
+        Get nodes at a given level from left to right.
 
         Parameters:
-        - level: The level for which to retrieve nodes.
+        - level: The level of the tree.
 
         Returns:
-        - A list of nodes at the specified level.
+        - List of node data at the specified level.
         '''
         nodes = []
         self._get_level(self.root, level, nodes)
-        return nodes
+        return [node.data for node in nodes]  # Extract data from Node objects
 
     def _get_level(self, root, level, nodes):
         '''
-        Helper method to recursively get nodes at a specific level.
+        Helper method to recursively get nodes at a given level.
 
         Parameters:
-        - root: The current root node.
-        - level: The level for which to retrieve nodes.
-        - nodes: List to store nodes at the specified level.
+        - root: Root of the tree.
+        - level: The level of the tree.
+        - nodes: List to store node data.
+
+        Returns:
+        - None
         '''
         if root is None:
             return
         if level == 0:
-            nodes.append(root.data)
+            nodes.append(root)
         elif level > 0:
             self._get_level(root.lChild, level - 1, nodes)
             self._get_level(root.rChild, level - 1, nodes)
+
+
 
     def get_height(self):
         '''
