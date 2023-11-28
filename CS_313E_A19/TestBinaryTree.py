@@ -1,3 +1,26 @@
+
+#  File: TestBinaryTree.py
+
+#  Description: This Python code defines a linked list-based representation of polynomials, 
+        #  with functionalities to insert terms in descending order of exponents, 
+        #  perform polynomial addition, multiplication, and output the results.
+
+#  Student Name: Alexander Romero-Barrionuevo
+
+#  Student UT EID: ANR3784
+
+#  Partner Name:  Dylan Lam
+
+#  Partner UT EID: DXL85
+
+#  Course Name: CS 313E
+
+#  Unique Number: 52605
+
+#  Date Created: 11/14/23
+
+#  Date Last Modified: 11/17/23
+
 import sys
 
 class Node(object):
@@ -89,6 +112,9 @@ class Tree(object):
 
 
 
+
+
+
     def get_level(self, level):
         '''
         Get nodes at a given level from left to right.
@@ -97,11 +123,11 @@ class Tree(object):
         - level: The level of the tree.
 
         Returns:
-        - List of node data at the specified level.
+        - List of Node objects at the specified level.
         '''
         nodes = []
         self._get_level(self.root, level, nodes)
-        return [node.data for node in nodes]  # Extract data from Node objects
+        return nodes  # Return the list of Node objects
 
     def _get_level(self, root, level, nodes):
         '''
@@ -110,7 +136,7 @@ class Tree(object):
         Parameters:
         - root: Root of the tree.
         - level: The level of the tree.
-        - nodes: List to store node data.
+        - nodes: List to store node objects.
 
         Returns:
         - None
@@ -118,10 +144,12 @@ class Tree(object):
         if root is None:
             return
         if level == 0:
-            nodes.append(root)
+            nodes.append(root.data)
         elif level > 0:
             self._get_level(root.lChild, level - 1, nodes)
             self._get_level(root.rChild, level - 1, nodes)
+
+
 
 
 
