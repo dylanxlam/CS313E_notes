@@ -12,14 +12,14 @@ class LinkedList(object):
     def __init__(self):
         self.first = None
 
-    # add an item at the beginning of the list
+    # add at the beginning of the list
     def insert_first(self, item):
         new_link = Link(item)
 
         new_link.next = self.first
         self.first = new_link
 
-    # add an item at the end of a list
+    # add at the end of a list
     def insert_last(self, item):
         new_link = Link(item)
 
@@ -35,39 +35,30 @@ class LinkedList(object):
         # rotates self by k spaces
         assert k > 0
 
-        # Get the length of the linked list
-        length = 0
+        # Find the length of the linked list
         current = self.first
-        while current:
+        length = 0
+        while current is not None:
             length += 1
             current = current.next
 
-        # For where k is greater than the length of the linked list
-        k = k % length
+        # Where the linked list is empty or k is larger than the length
+        if length == 0 or k % length == 0:
+            return  # No rotation needed
 
-        if k == 0:
-            # Don't rotate if k is a multiple of the length
-            return
+        # Find the new last node after rotation
+        new_last = self.first
+        for _ in range(length - k % length - 1):
+            new_last = new_last.next
 
-        # Find the new head and tail positions
-        new_head_pos = length - k
-        new_tail_pos = new_head_pos - 1
-
-        # Find the new head and tail nodes
-        new_head_node = self.first
-        new_tail_node = self.first
-        for i in range(new_tail_pos):
-            new_tail_node = new_tail_node.next
-
-        # Rearrange the pointers
-        self.first = new_tail_node.next
-        new_tail_node.next = None
-
-        # Connect the original head to the original tail
-        current = self.first
-        while current.next:
+        # Update pointers to perform rotation
+        new_first = new_last.next
+        new_last.next = None
+        current = new_first
+        while current.next is not None:
             current = current.next
-        current.next = new_head_node
+        current.next = self.first
+        self.first = new_first
 
 
 if __name__ == "__main__":
