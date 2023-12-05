@@ -3,22 +3,26 @@ class Link:
         self.data = data
         self.next = None
 
+
 class LinkedList(object):
     # linked list class
     # feel free to add helper methods but do not change existing methods
+
     # create a linked list
     def __init__(self):
         self.first = None
 
-    # add an item at the beginning of the list
+    # add at the beginning of the list
     def insert_first(self, item):
         new_link = Link(item)
+
         new_link.next = self.first
         self.first = new_link
 
-    # add an item at the end of a list
+    # add at the end of a list
     def insert_last(self, item):
         new_link = Link(item)
+
         current = self.first
         if current is None:
             self.first = new_link
@@ -38,13 +42,13 @@ class LinkedList(object):
             length += 1
             current = current.next
 
-        # Handle the case where the linked list is empty or k is larger than the length
+        # When the linked list is empty or k is larger than the length
         if length == 0 or k % length == 0:
             return  # No rotation needed
 
         # Find the new last node after rotation
         new_last = self.first
-        for _ in range(length - k - 1):
+        for _ in range(length - k % length - 1):
             new_last = new_last.next
 
         # Update pointers to perform rotation
@@ -55,6 +59,7 @@ class LinkedList(object):
             current = current.next
         current.next = self.first
         self.first = new_first
+
 
 if __name__ == "__main__":
     # write debug statements, test cases, etc (use assert statements)
