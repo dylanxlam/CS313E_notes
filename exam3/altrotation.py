@@ -38,10 +38,8 @@ class LinkedList(object):
             length += 1
             current = current.next
 
-        # Handle the case where k is larger than the length
-        k = k % length
-
-        if k == 0:
+        # Handle the case where the linked list is empty or k is larger than the length
+        if length == 0 or k % length == 0:
             return  # No rotation needed
 
         # Find the new last node after rotation
