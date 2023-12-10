@@ -42,15 +42,13 @@ class LinkedList(object):
             length += 1
             current = current.next
 
-        # When k is larger than the length
-        k = k % length
-
-        if k == 0:
+        # Where the linked list is empty or k is larger than the length
+        if length == 0 or k % length == 0:
             return  # No rotation needed
 
         # Find the new last node after rotation
         new_last = self.first
-        for _ in range(length - k - 1):
+        for _ in range(length - k % length - 1):
             new_last = new_last.next
 
         # Update pointers to perform rotation
