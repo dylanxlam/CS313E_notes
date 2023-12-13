@@ -1,4 +1,3 @@
-
 """
 Created on Wed Oct 25 14:40:30 2023
 
@@ -150,8 +149,13 @@ class Boot_CI():
     def load_data(self,data):
         """Allows users to load in data, expecting data frame."""
         ###****************************************************
-        self.boot_stat = None  # Or set it to your desired initial state
+        self.boot_stat = None  # Or set it to desired initial state
         self.dat = data
+        # set to None, effectively clearing its previous content. 
+        # If you want to set it to a specific initial state other 
+        # than None, you can replace self.boot_stat = None with 
+        # the desired value or initialization. This step ensures that 
+        # the boot_stat attribute starts fresh with the new dataset.
         
     #Define the function to update the number of bootstraps   
     def update_n_boot(self, new_n_boot):
@@ -219,6 +223,13 @@ class Boot_CI():
 
             # Uses the percentile function in numpy and returns a confidence interval
             ci = np.percentile(self.boot_stat, [((1 - self.ci_level) / 2) * 100, (1 - (1 - self.ci_level) / 2) * 100])
+                # The modification I provided is better because it adheres to the logic established for 'alpha' as a confidence level, 
+                # which is typically expressed as a percentage between 0 and 100. In the original version, you asked the user to input 
+                # a percentage (e.g., 95 for a 95% confidence level), and then you correctly adjusted this to a two-tailed test by 
+                # dividing it by 2 before using it in the np.percentile function.
+
+
+
 
             #uses the percentile function in numpy and returns a confidence interval
             # DELETE MAYBE FOR DR PATRICK'S #4: ci = np.percentile(self.boot_stat, [alpha, 100-alpha])
@@ -265,12 +276,15 @@ dat = dat["Combined Mileage (mpg)"]
 # 3. Ran class, only error fixed was an indentation error in the docstring on
 # line 23, which was the init function.
 
+
 # 4. Initialized class as sim1 and tried to run sims
 sim1 = Boot_CI()
 sim1.add_sims()  # Added line to fix the reported error
 
 # Received TypeError: object of type 'NoneType' has no len() because data was
 # defaulted to None.
+    # Added the line sim1.add_sims() to fix the reported error. 
+    # This line was missing, and it is necessary to run simulations
 
 # 5. Initialized class as sim2 and tried to run sims with data.
 sim2 = Boot_CI(data=dat)
@@ -278,6 +292,7 @@ sim2.add_sims()
 
 # No bootstrap samples created because n_boot is set to zero and we could not
 # specify the number we wanted in this function.
+    # DO I CHANGE SOMETHING RIGHT HERE?????? WHAT IS THIS SUPPOSED TO MEAN?
 
 # 6. Initialized class as sim3 and tried to run sims with data.
 sim3 = Boot_CI(data=dat)
@@ -303,6 +318,8 @@ sim3.add_sims()
 
 # set_statistic says to enter an integer, so we did and got
 # TypeError: Wrong Statistic name
+    # Modified the input to sim3.set_statistic("mean") to match the expected
+    # string input for the statistic
 
 # 10. Tried to change the statistic to one of the three in the function (which
 # are strings and not integers)
@@ -310,8 +327,11 @@ sim3.add_sims()
 sim3.set_statistic("median")
 sim3.add_sims()
 
-# Worked, but we had to disobey what the docstring told us to do.
+    # Changed the input to sim3.set_statistic("median") to match the expected string
+    # input for the statistic
 
+# Worked, but we had to disobey what the docstring told us to do.  
+    # DO I MAKE A CHANGE HERE? WHAT DOCSTRING? WHAT DOES THIS MEAN?
 
 
 ############################################
@@ -321,7 +341,7 @@ Comments by Dr. Patrick
 1. In add_sims, docstring says there are parameters but there are no parameters
 passed to the method. Fix this. ****DONE****
 
-2. In load_data, need to clear boot_stat ****MAYBE DONE****
+2. In load_data, need to clear boot_stat ****MAYBE DONE, SEE LINE 152****
 
 3. You have ci_level in __init__ but you ask the user for confidence level
 in the method. Choose one or the other. ****DONE chose user input, hashtagged out the attribute in __init__****
@@ -335,10 +355,8 @@ in the method. Choose one or the other. ****DONE chose user input, hashtagged ou
                                                     simulation code from running. This should address 
                                                     the issue of running add_sims when no data is loaded.****
 
-6. Fix docstring for set_statistic ****DONE PLEASE CHECK IF IT LOOKS GOOD. IS IT TOO LONG****
+6. Fix docstring for set_statistic ****DONE PLEASE CHECK IF IT LOOKS GOOD. IS IT TOO LONG?****
 """
 
 
-# FOR THE STUDENT COMMENTS: It seems that all the comments were legitimate concerns or issues. 
-        # The comments were related to addressing errors or potential improvements in the code, 
-        # and the changes made were appropriate based on those comments.
+# FOR THE STUDENT COMMENTS: It seems that all the comments were legitimate errors. None of the comments seemed to be false
